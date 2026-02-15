@@ -98,6 +98,12 @@ Alexa, Яндекс Cloud)
 ESP32-C3 при работе WiFi создаёт импульсные помехи до 300 mA. Если обе платы на
 одной батарее → измерения INA219 будут зашумлены этими скачками.
 
+| <img width="1133" height="625" alt="image" src="https://github.com/user-attachments/assets/d6a88a68-b8ca-407e-a077-7c79f3d8c458" /> |
+| ----------------------------------------------------------------------------------------------------------------------------------- |
+
+<details>
+<summary>Исходный код диаграммы (Mermaid)</summary>
+
 ```mermaid
 ---
 config:
@@ -146,7 +152,10 @@ flowchart LR
     classDef sensor fill:#fff4e1,stroke:#ff9800,stroke-width:2px
     classDef logger fill:#f0fff0,stroke:#4caf50,stroke-width:2px
     classDef audio fill:#ffe1f0,stroke:#e91e63,stroke-width:2px
+
 ```
+
+</details>
 
 ### TODO
 
