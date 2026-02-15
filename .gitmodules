@@ -1,0 +1,3 @@
+[submodule "edge-ai-voice-recognition"]
+	path = edge-ai-voice-recognition
+	url = https://github.com/worthant/edge-ai-voice-recognition.git
