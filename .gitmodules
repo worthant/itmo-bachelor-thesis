@@ -1,3 +1,6 @@
 [submodule "edge-ai-voice-recognition"]
 	path = edge-ai-voice-recognition
 	url = https://github.com/worthant/edge-ai-voice-recognition.git
+[submodule "precise-power-logger"]
+	path = precise-power-logger
+	url = git@github.com:worthant/precise-power-logger.git
