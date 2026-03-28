@@ -37,18 +37,22 @@
 - [x] research: analog mic types, availability, precision
 - [x] order: max9814
 
-- [ ] code: add power (in w) to measurnments
-- [ ] code: python script to read UART CSV and compose graph
+- [x] research: rtc gpio capabilities, pin power strengths
+- [x] decision: mic power control - 1. mosfet / `2. rtc gpio` / 3. mosfet + rtc
+      gpio
+- [ ] solder: add red LED to any gpio supporting RTC IO matrix
+- [ ] code(s3): go to deep sleep, blink red LED using ULP RISC-V
+  - [ ] (decide) does rtc gpio output work in deep sleep?
+- [ ] solder: max9814 & pin headers, connect accordingly
+- [ ] code(s3): ULP RISC-V - read adc, blink led on ">=" threshold
+- [ ] code(s3): ULP RISC-V - full wakeup/lull main cpu & max9814 & inmp441
+
+- [ ] code(c3): add power (in w) to measurnments
+- [ ] code(c3): python script to read UART CSV and compose graph
 - [ ] code&research: sink s3 into deep sleep mode, measure power consumption
 - [ ] research: find redundant power consumption sources in deep sleep, minimise
-- [ ] solder: max9814 & pin headers, connect accordingly
-- [ ] code: ULP RISC-V - read adc, setup threshold, wakeup main cpu
-- [ ] decision: mic power control - 1. mosfet / 2. rtc gpio / 3. mosfet + rtc
-      gpio
-- [ ] (decide) solder: ao3401, connect to rtc gpio
 - [ ] measure: active / light sleep / deep sleep / deep sleep + MOSFET
 - [ ] docs: write chapter 3.3, add tables, graphs
-
 - [ ] docs: add assembly process photos
 - [ ] docs: create full electrical circuit scheme (LaTeX / draw.io / ?)
 - [ ] docs: FSM diagram
