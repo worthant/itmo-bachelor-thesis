@@ -35,17 +35,26 @@
 - [x] research: mosfet types - schematics, p/n channels, sockets, availability
 - [x] order: p-channel ao3401 mosfet & add datasheet to repo
 - [x] research: analog mic types, availability, precision
-- [x] order: max9814
 
 - [x] research: rtc gpio capabilities, pin power strengths
 - [x] decision: mic power control - 1. mosfet / `2. rtc gpio` / 3. mosfet + rtc
       gpio
+- [x] research: does rtc gpio output work in deep sleep?
+  - note: we have 20-40ma for each rtc io pin, ~400ma max for all
 - [ ] solder: add red LED to any gpio supporting RTC IO matrix
 - [ ] code(s3): go to deep sleep, blink red LED using ULP RISC-V
-  - [ ] (decide) does rtc gpio output work in deep sleep?
-- [ ] solder: max9814 & pin headers, connect accordingly
-- [ ] code(s3): ULP RISC-V - read adc, blink led on ">=" threshold
-- [ ] code(s3): ULP RISC-V - full wakeup/lull main cpu & max9814 & inmp441
+- [ ] solder: add ready-to-go sound-detection module to rtc gpio
+- [ ] code: add ext0 on sound-detection module OUT rtc gpio, wakeup on it, do
+      inference right away
+- [ ] verify: check keyword detection, measure power consumption (ina219 &
+      multimeter)
+
+- [x] decision: WILL WE DO OUR OWN DS-CNN OR FUCK NO?
+  - note: we will do some kind of nn for practise to detect our own commands
+- [ ] research: how we need to do, what we need to do. how to do fastest,
+      simplest, most efficient, and for it just to work properly
+- [ ] code: train this nn, test on datasets, implement on s3
+- [ ] write: full practise report
 
 - [ ] code(c3): add power (in w) to measurnments
 - [ ] code(c3): python script to read UART CSV and compose graph
@@ -61,11 +70,36 @@
 - [ ] docs: write full component prices e.t.c., compose ordering list
 - [ ] docs: write technical requirements, show bykovskiy
 
-- [ ] decision: WILL WE DO OUR OWN DS-CNN OR FUCK NO?
+### ULP VAD (Voice Activity Detection)
+
+- [x] research: ULP VAD architectures & components
+- [x] decision: Electret capsule + Ultra-low-power Comparator (MCP6541/LMV331)
+- [x] order: ready-to-go sound-detection based on LM393
+  - note: this is the module we complete the prac with
+- [ ] order: MCP6541T-I/OT (Ozon/ЧипИДип) + SOT23-DIP adapters
+  - note: this is the module for `thesis`!
+- [ ] order: Electret capsules (EM6027, HMO0603)
+  - note: this is the module for `thesis`!
+- [ ] order: High-ohm resistors (470k, 1M) + 1M Potentiometers
+  - note: this is the module for `thesis`!
+- [ ] lab: Assemble "Practice" version (LM393 module)
+- [ ] lab: Measure "Practice" idle current (target: compare vs baseline)
+- [ ] code(s3): Setup ext0 wakeup on RTC_GPIO from Comparator Output
+- [ ] lab: Assemble "Thesis" version (MCP6541 + 1M resistors)
+  - [ ] add?: positive feedback resistor for Hysteresis
+  - [ ] add?: filtering capacitor on Vref
+- [ ] lab: Measure "Thesis" idle current (target: < 100uA total)
+- [ ] verify: calibrate threshold to ignore background noise but catch "Hey"
+- [ ] docs: Create comparison table: LM393 (Practice) vs MCP6541 (Thesis)
 
 ## robot application
 
 - [x] research: need small power source with protection
 - [x] order: 250mah & 430mah versions of Li-Pol GoPower LP502030 PK1 3.7V
 - [x] research: smallest lipo chargers
-- [x] order:
+- [x] order: small lipo chargers
+- [x] assemble: 2 versions of lipo + 2 lipo chargers.
+- [x] verify: both lipo+charger combinations charge&function
+- [ ] assemble: once testing ready, assemble inmp441 & ULP VAD components
+- [ ] code: (uart?) protocol communication for directional commands
+      (forwards/backwards/left/right)
