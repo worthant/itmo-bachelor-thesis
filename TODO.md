@@ -39,15 +39,29 @@
 - [x] research: rtc gpio capabilities, pin power strengths
 - [x] decision: mic power control - 1. mosfet / `2. rtc gpio` / 3. mosfet + rtc
       gpio
+  - note: sadly ordered mosfets are redundant because we have rtc gpio which
+    already has them
 - [x] research: does rtc gpio output work in deep sleep?
   - note: we have 20-40ma for each rtc io pin, ~400ma max for all
-- [ ] solder: add red LED to any gpio supporting RTC IO matrix
-- [ ] code(s3): go to deep sleep, blink red LED using ULP RISC-V
-- [ ] solder: add ready-to-go sound-detection module to rtc gpio
-- [ ] code: add ext0 on sound-detection module OUT rtc gpio, wakeup on it, do
-      inference right away
-- [ ] verify: check keyword detection, measure power consumption (ina219 &
-      multimeter)
+- [x] solder: add red LED to any gpio supporting RTC IO matrix
+  - note: chose `Sourcing` scheme, because no leaks when "0" (gpio -> led ->
+    resistor -> gnd), and also it's simpler to control. For current CMOS schemes
+    we have 20ma for both sinking and sourcing schemes, so it doesn't matter.
+  - `Sinking` scheme can have small leaks when we have small gnd leak (3.3v ->
+    led -> resistor -> gpio)
+- [x] code(s3): go to deep sleep, light green LED using ULP RISC-V
+- [x] ulp vad: premade module
+  - [x] hw: calibrate sound module treshold via multimeter (~2v on in+)
+  - [x] verify: Sound module works (active low logic, led blinking on sound)
+  - [x] solder: add ready-to-go sound-detection module to rtc gpio
+- [x] code: add ext0 on sound-detection module OUT rtc gpio, wakeup on it
+- [ ] docs: record a video with the system going into/out of deepsleep, with
+      power consumption drops
+- [ ] code: do inference right away after wakeup
+- [ ] verify: measure power consumption in deep sleep (ina219 & multimeter)
+  - note: got 24ma in deep sleep wtf. should be 1ma.
+- [ ] ?: red rid of current leaks in deep sleep
+- [ ] verify: check keyword detection
 
 - [x] decision: WILL WE DO OUR OWN DS-CNN OR FUCK NO?
   - note: we will do some kind of nn for practise to detect our own commands
