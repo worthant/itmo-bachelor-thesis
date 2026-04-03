@@ -54,17 +54,29 @@
   - [x] hw: calibrate sound module treshold via multimeter (~2v on in+)
   - [x] verify: Sound module works (active low logic, led blinking on sound)
   - [x] solder: add ready-to-go sound-detection module to rtc gpio
-- [x] code: add ext0 on sound-detection module OUT rtc gpio, wakeup on it
+- [x] code(s3): add ext0 on sound-detection module OUT rtc gpio, wakeup on it
 - [ ] docs: record a video with the system going into/out of deepsleep, with
       power consumption drops
-- [ ] code: do inference right away after wakeup
-- [ ] verify: measure power consumption in deep sleep (ina219 & multimeter)
-  - note: got 24ma in deep sleep wtf. should be 1ma.
-- [ ] ?: red rid of current leaks in deep sleep
+- [ ] code(s3): do inference right away after wakeup
+- [x] verify: measure power consumption in deep sleep (ina219 & multimeter)
+  - note: got 24ma in deep sleep wtf. should be 10uA. ina219 not accurate enough
+- [x] solder: mount ina228 instead of ina219 for better accuracy
+- [x] code(c3): setup ina228
+- [x] verify: measure power consumption in deep sleep (ina228)
+  - note: got 0.5ma in deep sleep. should be like 10uA.
+- [x] ?: red rid of current leaks in deep sleep
+  - note: too much work. esp32 s3 zero is just shit, was not meant for ULP
+- [x] verify: measure voice detection sensor power consumptionh (ina228)
+  - note: got 1.2ma on high out (led off), ~4.8ma on low out (led light)
+  - note: probably soldering off the led will reduce the power consumption, but
+    this ky-037 module is also not meant for ULP. it's comparator is heavy on
+    power, and schematics could be better. there are VAD mics that use 10mkA in
+    the wild.
 - [ ] verify: check keyword detection
 
 - [x] decision: WILL WE DO OUR OWN DS-CNN OR FUCK NO?
-  - note: we will do some kind of nn for practise to detect our own commands
+  - note: we will 100% need to do some kind of ds-cnn or whatever for practise
+    to detect our own commands
 - [ ] research: how we need to do, what we need to do. how to do fastest,
       simplest, most efficient, and for it just to work properly
 - [ ] code: train this nn, test on datasets, implement on s3
