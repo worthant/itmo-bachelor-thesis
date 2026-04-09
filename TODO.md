@@ -1,6 +1,6 @@
 # TODO
 
-## practise
+## Practise
 
 - [x] research: keyword voice detection architectures, energy efficent &
       optimisation methods & approaches, availability, costs
@@ -67,34 +67,50 @@
 - [x] ?: red rid of current leaks in deep sleep
   - note: too much work. esp32 s3 zero is just shit, was not meant for ULP
 - [x] verify: measure voice detection sensor power consumptionh (ina228)
+
   - note: got 1.2ma on high out (led off), ~4.8ma on low out (led light)
   - note: probably soldering off the led will reduce the power consumption, but
     this ky-037 module is also not meant for ULP. it's comparator is heavy on
     power, and schematics could be better. there are VAD mics that use 10mkA in
     the wild.
-- [ ] verify: check keyword detection
 
+- [x] code(c3): python script to read UART CSV and compose graph
+- [x] code&research: sink s3 into deep sleep mode, measure power consumption
+- [x] measure: active / light sleep / deep sleep / deep sleep + MOSFET
+- [x] docs: write chapter 3.3, add tables, graphs
+- [x] docs: add assembly process photos
+- [x] create simple electrical circuit scheme
+- [x] docs: FSM diagram
+- [x] docs: beaitufy uml diagrams
+- [x] docs: add final test bench photos
+- [x] docs: write full component prices e.t.c., compose ordering list
+- [x] docs: write technical requirements, show bykovskiy
+- [x] write: full practise report
+
+## Thesis
+
+- [ ] research: more about quantization methods and NN architectures
+  - [ ] do we need any math basis in our thesis for this?
+- [ ] check if turbo quant is applicable in out situation
+- [ ] research: "T-gap" problem
+- [ ] docs: think&write about multiple solutions to our problem:
+  - analog MEMS mic + exteral SRAM with cycle buffering. (too much power
+    consumption, but it's a solution)
+  - MEMS mic with embedded analog buffer on ~1.7sec. Consumes ~87mka on work
+    mode, and writes sound in cycle buffer. On wakeup - we read this buffer, and
+    get ~1.5-1.7sec "from the past".
+- [ ] research: how hard is it to acquire Vesper VM3011 and analogs. What
+      analogs are there. How hard to manufacture.
+- [ ] verify: check keyword detection
+- [ ] code(c3): add power (in w) to measurnments
+- [ ] research: find redundant power consumption sources in deep sleep, minimise
+- [ ] docs: create full electrical circuit scheme (LaTeX / draw.io / ?)
 - [x] decision: WILL WE DO OUR OWN DS-CNN OR FUCK NO?
   - note: we will 100% need to do some kind of ds-cnn or whatever for practise
     to detect our own commands
 - [ ] research: how we need to do, what we need to do. how to do fastest,
       simplest, most efficient, and for it just to work properly
 - [ ] code: train this nn, test on datasets, implement on s3
-- [ ] write: full practise report
-
-- [ ] code(c3): add power (in w) to measurnments
-- [ ] code(c3): python script to read UART CSV and compose graph
-- [ ] code&research: sink s3 into deep sleep mode, measure power consumption
-- [ ] research: find redundant power consumption sources in deep sleep, minimise
-- [ ] measure: active / light sleep / deep sleep / deep sleep + MOSFET
-- [ ] docs: write chapter 3.3, add tables, graphs
-- [ ] docs: add assembly process photos
-- [ ] docs: create full electrical circuit scheme (LaTeX / draw.io / ?)
-- [ ] docs: FSM diagram
-- [ ] docs: perfect uml diagrams
-- [ ] docs: add final test bench photos
-- [ ] docs: write full component prices e.t.c., compose ordering list
-- [ ] docs: write technical requirements, show bykovskiy
 
 ### ULP VAD (Voice Activity Detection)
 
