@@ -4,3 +4,6 @@
 [submodule "precise-power-logger"]
 	path = precise-power-logger
 	url = git@github.com:worthant/precise-power-logger.git
+[submodule "itmo-industrial-practise-report"]
+	path = itmo-industrial-practise-report
+	url = https://github.com/worthant/itmo-industrial-practise-report
