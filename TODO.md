@@ -63,7 +63,9 @@ gantt
 
 **Дедлайн: всё работает и замерено — 19 апреля 23:59**
 
-### 2.1 Окружение (цель: готовая среда для обучения)
+### Training
+
+#### 2.1 Сетап (цель: готовая среда для training)
 
 - [x] Создать директорию `nn/` в репозитории edge-ai-voice-recognition
 - [x] `python -m venv venv` + активация
@@ -76,26 +78,25 @@ gantt
     google collab
 - [x] **артефакт:** `nn/README.md` с инструкцией воспроизведения
 
-### 2.2 Baseline FP32 (цель: обученная модель и цифра accuracy)
+#### 2.2 Baseline FP32 (цель: обученная модель и цифра accuracy)
 
 - [x] Взять готовый скрипт обучения DS-CNN из MLPerf Tiny или TF Simple Audio
       tutorial
 - [x] Адаптировать под 10 команд (yes, no, up, down, left, right, on, off, stop,
       go)
-- [ ]? сделать отдельный quickstart.ipynb для коллаба чтоб там тренировками
-  заниматься?
-- [ ] добавить в train.py автосохранение в drive после обучения чтоб не забыть,
+- [x] сделать `colab_train.ipynb` чтобы там тренировать модель на T4 GPU
+- [x] добавить в train.py автосохранение в drive после обучения чтоб не забыть,
       или напоминалку просто
-- [ ] Добавить код для загрузки директории на гугл коллаб, установки
+- [x] Добавить код для загрузки директории на гугл коллаб, установки
       зависимостей и проверки GPU устройства на гугл коллабе через tf
-- [ ] Запустить обучение (на google collab!)
+- [x] Запустить обучение (на google collab!)
 - [ ] Зафиксировать test accuracy
-- [ ] Сохранить модель в `nn/models/ds_cnn_fp32.h5`
+- [ ] Сохранить модель в `nn/models/ds_cnn_fp32.keras`
 - [ ] **артефакт:** `nn/results/baseline.txt` с accuracy и размером
 
-### 2.3 PTQ INT8 (цель: квантизованная модель + дельта accuracy)
+#### 2.3 PTQ INT8 (цель: квантизованная модель + дельта accuracy)
 
-- [ ] Написать скрипт `nn/quantize_ptq.py` (20 строк через
+- [x] Написать скрипт `nn/quantize_ptq.py` (20 строк через
       tf.lite.TFLiteConverter)
 - [ ] Подготовить representative dataset (100 примеров из train)
 - [ ] Прогнать квантизацию
@@ -103,16 +104,18 @@ gantt
 - [ ] Сохранить `nn/models/ds_cnn_ptq_int8.tflite`
 - [ ] **артефакт:** строка в `nn/results/comparison.md` — PTQ: accuracy, size
 
-### 2.4 QAT INT8 (цель: QAT модель + дельта accuracy)
+#### 2.4 QAT INT8 (цель: QAT модель + дельта accuracy)
 
-- [ ] Написать скрипт `nn/quantize_qat.py` через tensorflow_model_optimization
+- [x] Написать скрипт `nn/quantize_qat.py` через tensorflow_model_optimization
 - [ ] Дообучить модель 5-10 эпох с fake quantization
 - [ ] Сконвертировать в TFLite INT8
 - [ ] Замерить accuracy
 - [ ] Сохранить `nn/models/ds_cnn_qat_int8.tflite`
 - [ ] **артефакт:** строка в `nn/results/comparison.md` — QAT: accuracy, size
 
-### 2.5 Деплой на ESP32-S3 (цель: inference работает на устройстве)
+### Deploy
+
+#### Интеграция с прошивкой на ESP32-S3 (цель: inference на устройстве)
 
 - [ ] Создать ветку `tflite-micro` в прошивке
 - [ ] Добавить компонент tflite-micro в `idf_component.yml`
@@ -124,7 +127,9 @@ gantt
 - [ ] Проверить что детектит хотя бы одно слово
 - [ ] **артефакт:** видео с телефона — "yes"/"no" детектится на устройстве
 
-### 2.6 Замеры (цель: таблица сравнения готова)
+### Measurements
+
+#### Первичные замеры (цель: таблица сравнения)
 
 - [ ] Замерить латентность inference (esp_timer между начало/конец invoke)
 - [ ] Замерить ток при inference через INA228 (200Hz sampling)
