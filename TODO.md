@@ -92,27 +92,30 @@ gantt
 #### 2.1.3 PTQ INT8 (цель: квантизованная модель + дельта accuracy)
 
 - [x] Квантизация через tf.lite.TFLiteConverter, full INT8, I/O int8
-- [x] **Результат: test accuracy 95.19%, drop -1.27 п.п., size 261.7 KB**
+- [x] **Результат: test accuracy 96.15%, drop -0.31 п.п., size 261.7 KB**
 - [x] Сохранить `results/models/ds_cnn_ptq_int8.tflite`
-- [ ] **FIX: silence классифицируется как go (0% recall)**
+- [x] **FIX: silence классифицируется как go (0% recall)**
   - причина: eval использует WAV-based pipeline, silence-файлы не загружаются
   - фикс: переключить eval и representative dataset на `build_dataset_cached`
   - после фикса: перезапустить PTQ
 - [ ] Перепроверить representative dataset — должен включать все 12 классов
-- [ ] **артефакт:** строка в `results/comparison.md`
+- [x] **артефакт:** строка в `results/comparison.md`
 
 #### 2.1.4 QAT INT8 (цель: QAT модель + дельта accuracy)
 
 - [x] Написать `quantize_qat.py` через tensorflow_model_optimization
-- [ ] **FIX: tfmot несовместим с Keras 3 (TF 2.19)**
+- [x] **FIX: tfmot несовместим с Keras 3 (TF 2.19)**
   - причина: tfmot 0.8.0 проверяет isinstance на tf_keras типы
   - фикс: `TF_USE_LEGACY_KERAS=1` + load weights из .weights.h5
   - одноразово: сохранить веса в портабельном формате
-- [ ] Запустить QAT: 10 эпох fine-tune с fake quantization
-- [ ] Сконвертировать в TFLite INT8
-- [ ] Замерить accuracy, сравнить с PTQ и FP32
-- [ ] Сохранить `results/models/ds_cnn_qat_int8.tflite`
-- [ ] **артефакт:** confusion matrix, строка в `results/comparison.md`
+- [x] Запустить QAT: 10 эпох fine-tune с fake quantization
+- [x] Запустить QAT: 25 эпох fine-tune с fake quantization
+- [x] Сконвертировать в TFLite INT8
+- [x] Замерить accuracy, сравнить с PTQ и FP32
+  - note: с 25 эпохами всё встало на свои места: `fp32>qat>ptq`
+- [x] **Результат: test accuracy 96.36%, drop -0.10 п.п., size 261.3 KB**
+- [x] Сохранить `results/models/ds_cnn_qat_int8.tflite`
+- [x] **артефакт:** confusion matrix, строка в `results/comparison.md`
 
 #### 2.1.5 Экспорт для ESP32
 
@@ -191,11 +194,17 @@ gantt
 - [ ] Замерить wake-up time из deep sleep (для раздела об ULP VAD)
 - [ ] **артефакт:** `results/comparison.md` — финальная таблица
 
-| Модель     | Accuracy | Size (KB) | Latency (ms) | Current (mA) | Energy (mJ) |
-| ---------- | -------- | --------- | ------------ | ------------ | ----------- |
-| WakeNet9   | —        | —         | —            | —            | —           |
-| DS-CNN PTQ | 95.19%   | 261.7     | —            | —            | —           |
-| DS-CNN QAT | —        | —         | —            | —            | —           |
+| Модель          | Accuracy | Size (KB) | ESP32-S3 CPU Inference (CPU, ms) | Current (mA) | Energy (mJ) |
+| --------------- | -------- | --------- | -------------------------------- | ------------ | ----------- |
+| WakeNet9        | —        | —         | —                                | —            | —           |
+| DS-CNN fp32     | 96.46%   | 956.0     | —                                |              |             |
+| DS-CNN QAT INT8 | 96.29%   | 261.3     | —                                | —            | —           |
+| DS-CNN PTQ INT8 | 96.15%   | 261.7     | —                                | —            | —           |
+
+> а надо ли вообще с WakeNet9 сравнивать, если там нет таких команд, а только
+> скудный выбор с `hi_esp` и прочими?
+
+> todo мб: замерить latency на esp32 после деплоя
 
 ### (кратко) ВКР
 
