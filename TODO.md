@@ -63,83 +63,162 @@ gantt
 
 **Дедлайн: всё работает и замерено — 19 апреля 23:59**
 
-### Training
+### 2.1 Training
 
-#### 2.1 Сетап (цель: готовая среда для training)
+#### 2.1.1 Сетап (цель: готовая среда для training)
 
-- [x] Создать директорию `nn/` в репозитории edge-ai-voice-recognition
-- [x] `python -m venv venv` + активация
-- [x] `pip install tensorflow tensorflow-model-optimization numpy matplotlib`
-- [x] Скачать Google Speech Commands v2 (2.3GB):
-      `wget http://download.tensorflow.org/data/speech_commands_v0.02.tar.gz`
-- [x] Распаковать в `nn/data/`
-- [x] Проверить что GPU видится (если есть) или CPU работает
-  - note: на ноуте только встройка, так что мы на cpu. Вышло долго, идём на
-    google collab
-- [x] **артефакт:** `nn/README.md` с инструкцией воспроизведения
+- [x] Создать директорию `nn/` в репозитории
+- [x] Настроить Google Colab с T4 GPU
+- [x] Скачать Google Speech Commands v2
+- [x] Настроить симлинки Drive для персистентности
+- [x] Скрипт обновления кода из GitHub без перезагрузки Colab
+- [x] **артефакт:** `nn/README.md`, `nn/COLAB_GUIDE.md`
 
-#### 2.2 Baseline FP32 (цель: обученная модель и цифра accuracy)
+#### 2.1.2 Baseline FP32 (цель: обученная модель и цифра accuracy)
 
-- [x] Взять готовый скрипт обучения DS-CNN из MLPerf Tiny или TF Simple Audio
-      tutorial
-- [x] Адаптировать под 10 команд (yes, no, up, down, left, right, on, off, stop,
-      go)
-- [x] сделать `colab_train.ipynb` чтобы там тренировать модель на T4 GPU
-- [x] добавить в train.py автосохранение в drive после обучения чтоб не забыть,
-      или напоминалку просто
-- [x] Добавить код для загрузки директории на гугл коллаб, установки
-      зависимостей и проверки GPU устройства на гугл коллабе через tf
-- [x] Запустить обучение (на google collab!)
-- [ ] Зафиксировать test accuracy
-- [ ] Сохранить модель в `nn/models/ds_cnn_fp32.keras`
-- [ ] **артефакт:** `nn/results/baseline.txt` с accuracy и размером
+- [x] Реализовать DS-CNN M архитектуру (6 блоков × 172 фильтра, 200K параметров)
+  - note: на самом деле сначала сделал S, но для увеличения точности сделал M,
+    т.к. на чипе есть 8 MB памяти, а после квантизации и так влезет (чип
+    ESP32-S3-zero N8R8).
+- [x] MFCC pipeline (49 фреймов × 10 коэффициентов)
+- [x] Аугментации: time shift ±100 мс, background noise mixing, SpecAugment
+- [x] Предвычисление MFCC (`precompute_mfcc.py`)
+  - note: ускорение обучения с 80 мин до 6 мин
+- [x] Обучение 50 эпох, Adam + cosine decay LR
+- [x] **Результат: test accuracy 96.46%, val 96.06%**
+- [x] Сохранить модель в `results/models/ds_cnn_fp32.keras`
+- [x] **артефакт:** confusion matrix, training curves, classification report
 
-#### 2.3 PTQ INT8 (цель: квантизованная модель + дельта accuracy)
+#### 2.1.3 PTQ INT8 (цель: квантизованная модель + дельта accuracy)
 
-- [x] Написать скрипт `nn/quantize_ptq.py` (20 строк через
-      tf.lite.TFLiteConverter)
-- [ ] Подготовить representative dataset (100 примеров из train)
-- [ ] Прогнать квантизацию
-- [ ] Замерить accuracy на test после квантизации
-- [ ] Сохранить `nn/models/ds_cnn_ptq_int8.tflite`
-- [ ] **артефакт:** строка в `nn/results/comparison.md` — PTQ: accuracy, size
+- [x] Квантизация через tf.lite.TFLiteConverter, full INT8, I/O int8
+- [x] **Результат: test accuracy 95.19%, drop -1.27 п.п., size 261.7 KB**
+- [x] Сохранить `results/models/ds_cnn_ptq_int8.tflite`
+- [ ] **FIX: silence классифицируется как go (0% recall)**
+  - причина: eval использует WAV-based pipeline, silence-файлы не загружаются
+  - фикс: переключить eval и representative dataset на `build_dataset_cached`
+  - после фикса: перезапустить PTQ
+- [ ] Перепроверить representative dataset — должен включать все 12 классов
+- [ ] **артефакт:** строка в `results/comparison.md`
 
-#### 2.4 QAT INT8 (цель: QAT модель + дельта accuracy)
+#### 2.1.4 QAT INT8 (цель: QAT модель + дельта accuracy)
 
-- [x] Написать скрипт `nn/quantize_qat.py` через tensorflow_model_optimization
-- [ ] Дообучить модель 5-10 эпох с fake quantization
+- [x] Написать `quantize_qat.py` через tensorflow_model_optimization
+- [ ] **FIX: tfmot несовместим с Keras 3 (TF 2.19)**
+  - причина: tfmot 0.8.0 проверяет isinstance на tf_keras типы
+  - фикс: `TF_USE_LEGACY_KERAS=1` + load weights из .weights.h5
+  - одноразово: сохранить веса в портабельном формате
+- [ ] Запустить QAT: 10 эпох fine-tune с fake quantization
 - [ ] Сконвертировать в TFLite INT8
-- [ ] Замерить accuracy
-- [ ] Сохранить `nn/models/ds_cnn_qat_int8.tflite`
-- [ ] **артефакт:** строка в `nn/results/comparison.md` — QAT: accuracy, size
+- [ ] Замерить accuracy, сравнить с PTQ и FP32
+- [ ] Сохранить `results/models/ds_cnn_qat_int8.tflite`
+- [ ] **артефакт:** confusion matrix, строка в `results/comparison.md`
 
-### Deploy
+#### 2.1.5 Экспорт для ESP32
 
-#### Интеграция с прошивкой на ESP32-S3 (цель: inference на устройстве)
+- [ ] Запустить `export_to_c.py` — конвертация лучшей .tflite в model_data.cc/h
+- [ ] Запустить `compare_models.py` — финальная таблица сравнения
+- [ ] **артефакт:** `results/comparison.md`,
+      `results/c_export/model_data.{cc,h}`
 
-- [ ] Создать ветку `tflite-micro` в прошивке
-- [ ] Добавить компонент tflite-micro в `idf_component.yml`
-- [ ] Конвертировать `.tflite` в C-array:
-      `xxd -i ds_cnn_qat_int8.tflite > model_data.cc`
-- [ ] Написать `nn_inference.c` — инициализация интерпретатора, буферы, invoke
-- [ ] Интегрировать с существующим I2S pipeline (MFCC → model input)
-- [ ] Flash на ESP32-S3, посмотреть логи inference
-- [ ] Проверить что детектит хотя бы одно слово
-- [ ] **артефакт:** видео с телефона — "yes"/"no" детектится на устройстве
+### 2.2 Deploy
 
-### Measurements
+> Notes
+>
+> Обучил я DS-CNN нейронку, отлично. Как мне эффективно утилизировать LX7 Xtensa
+> архитектуру esp32-s3 и показать красиво это в дипломе? Это ведь SIMD насколько
+> я знаю, архитектура параллельных вычислений такая. DS-CNN состоит из depthwise
+> свёрток и из pointwise свёрток. Вот pointwise свёртки это вроде просто куча
+> умножений матриц, и вот их и можно за счёт SIMD ускорить. Для этого надо
+> наверное точно квантизировать модель до INT8, что мы и делали, потому что типа
+> с INT8 будет прирост ощутимый, флоаты esp32-s3 наверное не оч быстро считает.
+> Потом сделать модель .tflite, и импортировать с ESp-DL, но не шарю. Я читал
+> кажется у них в ридми что ESP-DL умеет гарантировать чтоб каждый слой
+> использовал векторный ускоритель. А может можно просто нормально было сделать
+> TensorFlow Lite Micro и оно само будет работать.
+>
+> По поводу LX7: насколько я понимаю, LX7 это название ядра которое Espressif
+> покупают у другой конторы какой-то китайской. В нём добавлены дополнительные
+> регистры размером 128 бит (в отличие от обычных 32-битных регистров в
+> процессорах). Это значит, что туда можно положить или 4 числа по 32 бита
+> (float/int), или 8 чисел по 16 бит, или 16 чисел по 8 бит (как раз INT8). Вот
+> из этого я и сделал вывод про то что INT8 будет практически идеальной в нашей
+> ситуации.
+>
+> То есть, получается что в pointwise свёртках можно будет загонять по 16 int8
+> чисел в такие регистры и делать операции умножения одной инструкцией сразу над
+> пачкой данных, т.е. в данном случае 16 отдельных умножений весов на данные мы
+> сделаем за 1-2 такта.
+>
+> Дальше я задался вопросом а как вообще в эти широкие регистры данные
+> поставляются, если обычно интерконнект системный 32-битный, а вот оказалось
+> что espressif расширили шину данных для этого и как-то оптимизировали работу с
+> внутренней памятью. хз как.
+>
+> В общем видимо надо как-то подготовить модель под векторные инструкции LX7,
+> рассказать про это в ВКР и на прослушивании. Мб хайп. И подстроить под это
+> задачи и всякое такое.
+>
+> Сейчас в коде квантизации я использую `TFLITE_BUILTINS_INT8`, а это по идее
+> как раз если испоьзовать esp-dl, esp-nn или что там надо использовать,
+> подхватит эти слов и применит xtensa lx7 SIMD инструкции.
 
-#### Первичные замеры (цель: таблица сравнения)
+#### 2.2.1 Интеграция с прошивкой ESP32-S3
 
-- [ ] Замерить латентность inference (esp_timer между начало/конец invoke)
-- [ ] Замерить ток при inference через INA228 (200Hz sampling)
-- [ ] Энергия на inference = U × I_avg × T (посчитать в mJ)
-- [ ] Повторить для WakeNet9 (уже есть, просто перемерить)
-- [ ] **артефакт:** `nn/results/comparison.md` — финальная таблица: | Модель |
-      Accuracy | Size | Latency | Current | Energy/inference |
-      |--------|----------|------|---------|---------|------------------| |
-      WakeNet9 | - | - | - | - | - | | DS-CNN PTQ | - | - | - | - | - | | DS-CNN
-      QAT | - | - | - | - | - |
+- [ ] Скопировать `model_data.cc/h` в
+      `esp32_firmware/components/nn_inference/src/`
+- [ ] Добавить `espressif/esp-tflite-micro` в `idf_component.yml`
+- [ ] Проверить что `nn_init()` проходит (AllocateTensors, arena size)
+- [ ] Интегрировать с I2S pipeline (запись 1с → MFCC → inference)
+- [ ] Проверить MFCC parity: сравнить Python vs C++ выходы поэлементно
+- [ ] **артефакт:** видео с демонстрацией детекции на устройстве
+
+#### 2.2.2 Оптимизация под Xtensa LX7 SIMD
+
+- [ ] Убедиться что INT8 ops используют векторные инструкции (esp-nn)
+- [ ] Профилирование: latency по слоям (MFCC vs inference)
+- [ ] Оценить возможность замены float FFT на esp-dsp `dsps_fft2r_fc32`
+- [ ] **артефакт:** таблица latency по слоям
+
+### 2.3 Measurements
+
+#### 2.3.1 Замеры на устройстве
+
+- [ ] Latency inference: `esp_timer_get_time()` до/после invoke
+- [ ] Ток при inference через INA228 (200 Hz sampling)
+- [ ] Энергия = U × I_avg × T (в мДж)
+- [ ] Сравнить с WakeNet9 (baseline от Espressif)
+- [ ] Замерить wake-up time из deep sleep (для раздела об ULP VAD)
+- [ ] **артефакт:** `results/comparison.md` — финальная таблица
+
+| Модель     | Accuracy | Size (KB) | Latency (ms) | Current (mA) | Energy (mJ) |
+| ---------- | -------- | --------- | ------------ | ------------ | ----------- |
+| WakeNet9   | —        | —         | —            | —            | —           |
+| DS-CNN PTQ | 95.19%   | 261.7     | —            | —            | —           |
+| DS-CNN QAT | —        | —         | —            | —            | —           |
+
+### (кратко) ВКР
+
+#### Графики и таблицы для текста
+
+- [x] Training curves (loss + accuracy)
+- [x] Confusion matrix FP32
+- [x] Confusion matrix PTQ INT8
+- [ ] Confusion matrix QAT INT8
+- [ ] Scatter plot: accuracy vs model size
+- [ ] Таблица сравнения FP32 / PTQ / QAT
+- [ ] Таблица per-class precision / recall / F1
+
+#### Разделы ВКР связанные с нейронкой
+
+- [ ] Обоснование выбора DS-CNN (Hello Edge, MLPerf Tiny)
+- [ ] Описание MFCC pipeline с параметрами
+- [ ] Описание аугментаций и их влияния
+- [ ] Анализ квантизации: PTQ vs QAT, accuracy drop, compression ratio
+- [ ] ULP VAD архитектура: deep sleep + пороговый детектор + wake-up time
+  - проблема потери начала слова, time shift как частичная компенсация
+  - предложение ring buffer на ULP или VM1010 wake-on-sound
+- [ ] Xtensa LX7 SIMD: как INT8 квантизация утилизирует 128-бит регистры
 
 ---
 
