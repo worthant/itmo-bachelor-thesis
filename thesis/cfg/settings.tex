@@ -1,0 +1,178 @@
+% "высота букв, цифр и других знаков - не менее 12пт"
+\documentclass[a4paper,12pt]{extarticle}
+
+% Кодировка и язык
+\usepackage{polyglossia}
+\setdefaultlanguage{russian}
+\setotherlanguage{english}
+
+% Шрифты
+\usepackage{fontspec}
+\setmainfont{Times New Roman}
+
+% Настройка полей страницы
+\usepackage{geometry}
+\geometry{
+	left=30mm,
+	right=15mm,
+	top=20mm,
+	bottom=20mm
+}
+
+% Межстрочный интервал 1.5
+\usepackage{setspace}
+\onehalfspacing
+
+% Абзацный отступ
+\usepackage{indentfirst}
+\setlength{\parindent}{1.25cm}
+
+% Нумерация страниц
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+
+% Ограничение глубины содержания (только 1.1, без 1.1.1)
+\setcounter{tocdepth}{2}
+
+% Настройка заголовков (ГОСТ)
+\usepackage{titlesec}
+
+% Настраиваем абзацный отступ для всех уровней
+\newlength{\gostindent}
+\setlength{\gostindent}{1.25cm}
+
+% --- РАЗДЕЛЫ ---
+% Нумерованные: с прописной буквы, жирный, 14пт, абзацный отступ
+\titleformat{\section}
+{\normalfont\fontsize{14pt}{\baselineskip}\selectfont\bfseries}
+{\thesection}
+{1em}
+{}
+\titlespacing*{\section}{\gostindent}{0pt}{0pt}
+
+% НЕНУМЕРОВАННЫЕ разделы (Введение, Список лит-ры) — ПО ЦЕНТРУ
+\titleformat{name=\section,numberless}
+{\normalfont\fontsize{14pt}{\baselineskip}\selectfont\bfseries\centering}
+{}
+{0pt}
+{\MakeUppercase}
+\titlespacing*{name=\section,numberless}{0pt}{0pt}{0pt}
+
+% --- ПОДРАЗДЕЛЫ ---
+\titleformat{\subsection}
+{\normalfont\fontsize{12pt}{\baselineskip}\selectfont\bfseries}
+{\thesubsection}
+{1em}
+{}
+\titlespacing*{\subsection}{\gostindent}{1em}{0.5em}
+
+% --- ПОДПУНКТЫ ---
+\titleformat{\subsubsection}
+{\normalfont\fontsize{14pt}{\baselineskip}\selectfont\bfseries}
+{\thesubsubsection}
+{1em}
+{}
+\titlespacing*{\subsubsection}{\gostindent}{0pt}{0pt}
+
+% Каждый раздел с новой страницы
+\newcommand{\sectionbreak}{\clearpage}
+
+% Графика и рисунки
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{subcaption}
+
+% Настройка подписей к рисункам
+\DeclareCaptionLabelSeparator{emdash}{ -- }
+\captionsetup[figure]{
+	labelsep=emdash,
+	justification=centering,
+	font=normalsize,
+	skip=6pt  % Отступ между рисунком и подписью
+}
+
+% Настройка подписей к таблицам
+\captionsetup[table]{
+	labelsep=emdash,
+	justification=raggedright,
+	singlelinecheck=false,
+	font=normalsize,
+	skip=6pt  % Отступ между подписью и таблицей
+}
+
+% Таблицы
+\usepackage{array}
+\usepackage{longtable}
+% Настройка подписи для longtable по ГОСТ
+\setlength\LTleft{0pt}
+\setlength\LTright{\fill}
+\captionsetup[longtable]{
+	labelsep=emdash,
+	justification=raggedright,
+	singlelinecheck=false,
+	font=normalsize,
+	skip=6pt
+}
+\usepackage{multirow}
+
+% Математика
+\usepackage{amsmath}
+\usepackage{amssymb}
+
+% Списки: БЕЗ ТОЧЕК, только тире или скобки
+\usepackage{enumitem}
+% Общая настройка для всех списков
+\setlist{
+	nosep,                      % Убираем лишние вертикальные отступы
+	labelindent=\parindent,     % Позиция номера = абзацный отступ (1.25см)
+	leftmargin=*,               % Текст после первой строки идет от левого поля
+	align=left                  % Выравнивание номера по левому краю отступа
+}
+
+% Настройка названия рисунков
+\addto\captionsrussian{\renewcommand{\figurename}{Рисунок}}
+
+% Нумерованные списки (1)
+\setlist[enumerate]{
+	label=\arabic*),
+	widest=0,                   % Чтобы номер не съедал лишнее место
+	ref=\arabic*
+}
+
+% Маркированные списки (тире)
+\setlist[itemize]{
+	label=---
+}
+
+% Гиперссылки (для кликабельного содержания)
+\usepackage{hyperref}
+\hypersetup{
+	colorlinks=true,
+	linkcolor=black,
+	citecolor=black,
+	urlcolor=blue,
+	breaklinks=true
+}
+\usepackage{xurl}
+\sloppy
+
+% Для вставки PDF в приложение
+\usepackage{pdfpages}
+
+% Кликабельные ссылки на источники литературы
+\newcommand{\srcref}[1]{\hyperlink{src:#1}{[#1]}}
+
+% Оформление содержания
+\usepackage{tocloft}
+\renewcommand{\cfttoctitlefont}{\hfill\fontsize{14pt}{\baselineskip}\selectfont\bfseries}
+\renewcommand{\cftaftertoctitle}{\hfill}
+\renewcommand{\cftaftertoctitleskip}{1em}
+\renewcommand{\cftsecleader}{\cftdotfill{\cftdotsep}}
+\renewcommand{\cftsubsecleader}{\cftdotfill{\cftdotsep}}
+\addto\captionsrussian{\renewcommand{\contentsname}{СОДЕРЖАНИЕ}}
+
+\usepackage{float}
