@@ -38,6 +38,7 @@ build/
 *.pdf
 !images/*.pdf
 !title.pdf
+!preparations/*.pdf
 
 ## Backup files
 *~
