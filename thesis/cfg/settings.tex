@@ -8,7 +8,10 @@
 
 % Шрифты
 \usepackage{fontspec}
+\defaultfontfeatures{Ligatures=TeX}
 \setmainfont{Times New Roman}
+\newfontfamily\cyrillicfont{Times New Roman}[Ligatures=TeX]
+\newfontfamily\cyrillicfonttt{Times New Roman}[Ligatures=TeX]
 
 % Настройка полей страницы
 \usepackage{geometry}
@@ -64,7 +67,7 @@
 
 % --- ПОДРАЗДЕЛЫ ---
 \titleformat{\subsection}
-{\normalfont\fontsize{12pt}{\baselineskip}\selectfont\bfseries}
+{\normalfont\fontsize{14pt}{\baselineskip}\selectfont\bfseries}
 {\thesubsection}
 {1em}
 {}
@@ -87,7 +90,7 @@
 \usepackage{subcaption}
 
 % Настройка подписей к рисункам
-\DeclareCaptionLabelSeparator{emdash}{ -- }
+\DeclareCaptionLabelSeparator{emdash}{ --- }
 \captionsetup[figure]{
 	labelsep=emdash,
 	justification=centering,
