@@ -75,7 +75,7 @@
 
 % --- ПОДПУНКТЫ ---
 \titleformat{\subsubsection}
-{\normalfont\fontsize{14pt}{\baselineskip}\selectfont\bfseries}
+{\normalfont\fontsize{14pt}{\baselineskip}\selectfont}
 {\thesubsubsection}
 {1em}
 {}
@@ -169,13 +169,77 @@
 % Кликабельные ссылки на источники литературы
 \newcommand{\srcref}[1]{\hyperlink{src:#1}{[#1]}}
 
-% Оформление содержания
+% ------------
+%  содержание
+% ------------
 \usepackage{tocloft}
+\usepackage{setspace}
+
+% -лишние вертикальные отступы
+% в article перед section по умолчанию стоит отступ. Обнуляем всё, 
+% чтобы работал только полуторный интервал setspace.
+\setlength{\cftbeforesecskip}{0pt}
+\setlength{\cftbeforesubsecskip}{0pt}
+\setlength{\cftbeforesubsubsecskip}{0pt}
+
+% отступы: 
+% > разделы 0
+% > подразделы 0.49см
+% > подпункты 0.99см
+\setlength{\cftsecindent}{0pt}
+\setlength{\cftsubsecindent}{0.49cm}
+\setlength{\cftsubsubsecindent}{0.99cm}
+
+% ширина номера
+\setlength{\cftsecnumwidth}{0.85em}
+\setlength{\cftsubsecnumwidth}{1.75em}
+\setlength{\cftsubsubsecnumwidth}{3.2em}
+
+% плотность точек
+\renewcommand{\cftdotsep}{1}
+
+% отточие до конца
+\setlength{\cftsetpnumwidth}{0.6cm}
+\renewcommand{\cftsecpagefont}{\normalfont\fontsize{14pt}{\baselineskip}\selectfont\makebox[0.7cm][r]}
+\renewcommand{\cftsubsecpagefont}{\normalfont\fontsize{14pt}{\baselineskip}\selectfont\makebox[0.7cm][r]}
+\renewcommand{\cftsubsubsecpagefont}{\normalfont\fontsize{14pt}{\baselineskip}\selectfont\makebox[0.7cm][r]}
+\setlength{\cftrmarg}{5cm}
+
 \renewcommand{\cfttoctitlefont}{\hfill\fontsize{14pt}{\baselineskip}\selectfont\bfseries}
 \renewcommand{\cftaftertoctitle}{\hfill}
 \renewcommand{\cftaftertoctitleskip}{1em}
-\renewcommand{\cftsecleader}{\cftdotfill{\cftdotsep}}
-\renewcommand{\cftsubsecleader}{\cftdotfill{\cftdotsep}}
-\addto\captionsrussian{\renewcommand{\contentsname}{СОДЕРЖАНИЕ}}
+
+\renewcommand{\cftsecleader}{\cftdotfill{\cftdotsep}\hspace{0.4cm}}
+\renewcommand{\cftsubsecleader}{\cftdotfill{\cftdotsep}\hspace{0.4cm}}
+
+% 2. А потом через \addto\captionsrussian меняем само слово
+\addto\captionsrussian{%
+	\renewcommand{\contentsname}{СОДЕРЖАНИЕ}%
+}
+
+% обычный, не жирный, шрифт
+\renewcommand{\cftsecfont}{\normalfont\fontsize{14pt}{\baselineskip}\selectfont}
+\renewcommand{\cftsubsecfont}{\normalfont\fontsize{14pt}{\baselineskip}\selectfont}
+\renewcommand{\cftsubsubsecfont}{\normalfont\fontsize{14pt}{\baselineskip}\selectfont}
+
+% Команда для вставки приложения в текст и TOC
+\newcommand{\appsection}[2]{% #1 - Буква (А, Б..), #2 - Название
+	\newpage
+	\begin{flushright}
+		\textbf{Приложение #1}
+	\end{flushright}
+	\begin{center}
+		\textbf{#2}
+	\end{center}
+
+	% Временно отключаем отточие (лидеры) для этой записи в TOC
+	\addtocontents{toc}{\protect\renewcommand{\protect\cftsecleader}{\protect\hfill}}
+
+	% Добавляем в содержание формат: ПРИЛОЖЕНИЕ Х (Название)
+	\addcontentsline{toc}{section}{ПРИЛОЖЕНИЕ #1 (#2)}
+
+	% Возвращаем отточие обратно для последующих записей (если будут)
+	\addtocontents{toc}{\protect\renewcommand{\protect\cftsecleader}{\cftdotfill{\cftdotsep}}}
+}
 
 \usepackage{float}
