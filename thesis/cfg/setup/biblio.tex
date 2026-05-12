@@ -1,0 +1,63 @@
+\usepackage[backend=biber,style=gost-numeric,sorting=none]{biblatex}
+\usepackage{etoolbox}
+\AtBeginBibliography{\hypersetup{hidelinks}}
+\DeclareFieldFormat{author}{\textnormal{#1}}
+\DeclareFieldFormat{editor}{\textnormal{#1}}
+\renewbibmacro*{author}{%
+  \printnames[author]{author}%
+}
+
+\defbibenvironment{bibliography}
+  {\list
+     {\printtext[labelnumberwidth]{%
+        \printfield{labelnumber}}}
+     {\setlength{\labelwidth}{1.25cm}% ширина метки (например, "[1]")
+      \setlength{\labelsep}{0.5em}% расстояние между номером и текстом
+      \setlength{\leftmargin}{1.25cm}% отступ всей записи
+      \setlength{\itemindent}{0pt}%
+      \setlength{\itemsep}{0pt}% расстояние между записями
+      \setlength{\parsep}{0pt}%
+      \setlength{\topsep}{0pt}%
+      \setlength{\partopsep}{0pt}%
+      \setlength{\listparindent}{1.25cm}% отступ для новых абзацев внутри записи
+      \setlength{\rightmargin}{0pt}%
+      \setlength{\parskip}{0pt}%
+      \setlength{\parindent}{1.25cm}%
+     }}
+  {\endlist}
+  {\item}
+
+\renewrobustcmd*{\mkbibemph}[1]{\normalfont#1}
+\ExecuteBibliographyOptions{maxbibnames=99, minbibnames=1}
+\addbibresource{lib/biblio.bib}
+\renewcommand*{\bibfont}{\setlength{\parindent}{1.25cm}
+\setmainfont{Times New Roman}\fontsize{14pt}\selectfont}
+\usepackage{booktabs}
+\usepackage{pdflscape}
+\DefineBibliographyStrings{russian}{
+    urlseen = {дата обращения} % Текст перед датой обращения
+}
+
+% Переопределяем, как выводится URL и дата обращения
+% Это более сложная настройка, если стандартный вывод gost-numeric не устраивает.
+% Сначала попробуйте просто с urldate и note/[howpublished] в .bib файле.
+% Если нужно тонко настроить, то можно так:
+\DeclareFieldFormat[online]{url}{%
+  {[Электронный ресурс]. URL:\space\nolinkurl{#1}}% <--- \nolinkurl убирает кликабельность
+}
+% или если всегда добавлять [Электронный ресурс] перед URL для @online
+
+\DeclareFieldFormat{urldate}{\mkbibparens{\bibstring{urlseen}\addcolon\space#1}}
+
+% Чтобы "URL:" появлялось перед самой ссылкой
+% (стили ГОСТ иногда требуют это, иногда нет)
+\DefineBibliographyStrings{russian}{
+  url = {URL} % Меняем "Режим доступа" на "URL"
+}
+
+\DeclareFieldFormat[article,inproceedings,incollection,book,thesis,report,patent,online,misc,unpublished]{title}{\normalfont{#1}} % Явно для основных типов
+\DeclareFieldFormat{booktitle}{\normalfont{#1}}    % Для названия сборника или трудов конференции
+\DeclareFieldFormat{journaltitle}{\normalfont{#1}} % Для названия журнала
+\DeclareFieldFormat{issuetitle}{\normalfont{#1}}   % Для названия выпуска журнала
+\DeclareFieldFormat{eventtitle}{\normalfont{#1}}   % Для названия мероприятия (конференции)
+\setlength{\bibindent}{1.25cm} % Отступ слева для каждого элемента списка

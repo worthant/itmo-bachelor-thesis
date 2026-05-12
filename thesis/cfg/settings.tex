@@ -141,9 +141,11 @@
 
 % Нумерованные списки (1)
 \setlist[enumerate]{
-	label=\arabic*),
+	label=\arabic*.,
 	widest=0,                   % Чтобы номер не съедал лишнее место
-	ref=\arabic*
+	ref=\arabic*,
+	leftmargin=\parindent,
+	itemindent=0pt
 }
 
 % Маркированные списки (тире)
@@ -165,9 +167,6 @@
 
 % Для вставки PDF в приложение
 \usepackage{pdfpages}
-
-% Кликабельные ссылки на источники литературы
-\newcommand{\srcref}[1]{\hyperlink{src:#1}{[#1]}}
 
 % ------------
 %  содержание
@@ -243,3 +242,5 @@
 }
 
 \usepackage{float}
+
+\input{cfg/setup/biblio}
