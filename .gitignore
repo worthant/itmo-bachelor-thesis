@@ -39,6 +39,9 @@ build/
 !images/*.pdf
 !title.pdf
 !preparations/*.pdf
+!thesis/meta/*.pdf
+!thesis/assets
+!thesis/lib/vak/*.pdf
 
 ## Backup files
 *~
