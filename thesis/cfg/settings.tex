@@ -139,13 +139,17 @@
 % Настройка названия рисунков
 \addto\captionsrussian{\renewcommand{\figurename}{Рисунок}}
 
-% Нумерованные списки (1)
+% Нумерованные списки: «1. текст», номер с абзацного отступа,
+% между номером и текстом ровно 0.5em (около одного символа в TNR 14pt).
+% leftmargin=* — enumitem сам считает ширину блока, текст продолжается ровно
+% под началом текста первого item'а.
 \setlist[enumerate]{
 	label=\arabic*.,
-	widest=0,                   % Чтобы номер не съедал лишнее место
 	ref=\arabic*,
-	leftmargin=\parindent,
-	itemindent=0pt
+	labelindent=\parindent,
+	labelsep=0.5em,
+	leftmargin=*,
+	align=left
 }
 
 % Маркированные списки (тире)
@@ -177,9 +181,9 @@
 % Вертикальный воздух между пунктами TOC.
 % Внутри пункта строки идут одинарным интервалом (см. \fontsize ниже),
 % а между пунктами добавляется небольшой пробел, имитирующий полуторный.
-\setlength{\cftbeforesecskip}{0.4em plus 0.1em}
-\setlength{\cftbeforesubsecskip}{0.25em plus 0.05em}
-\setlength{\cftbeforesubsubsecskip}{0.1em}
+\setlength{\cftbeforesecskip}{0pt}
+\setlength{\cftbeforesubsecskip}{0pt}
+\setlength{\cftbeforesubsubsecskip}{0pt}
 
 % отступы:
 % > разделы 0
@@ -189,18 +193,17 @@
 \setlength{\cftsubsecindent}{0.49cm}
 \setlength{\cftsubsubsecindent}{0.99cm}
 
-% Ширина колонки номера: «номер + один пробел». В TNR 14pt цифра ≈0.5em,
-% точка ≈0.3em. «1 » ≈ 0.8em, «1.1 » ≈ 1.6em, «1.1.1 » ≈ 2.4em — берём с запасом.
-\setlength{\cftsecnumwidth}{1.1em}
-\setlength{\cftsubsecnumwidth}{1.9em}
+% Ширина колонки номера
+\setlength{\cftsecnumwidth}{0.75em}
+\setlength{\cftsubsecnumwidth}{1.55em}
 \setlength{\cftsubsubsecnumwidth}{2.7em}
 
 % Плотность отточия
-\renewcommand{\cftdotsep}{1}
+\renewcommand{\cftdotsep}{1.1}
 
 % Ширина колонки номера страницы (2 цифры в кегле 14pt помещаются в 1.3em)
-\cftsetpnumwidth{1.5em}
-\cftsetrmarg{1.5em}
+\cftsetpnumwidth{0.85em}
+\cftsetrmarg{0.82em}
 
 \renewcommand{\cfttoctitlefont}{\hfill\fontsize{14pt}{\baselineskip}\selectfont\bfseries}
 \renewcommand{\cftaftertoctitle}{\hfill}
@@ -217,40 +220,29 @@
 
 % Шрифт записей TOC: одинарный интервал (baselineskip = 17pt при кегле 14pt).
 % Так многострочные пункты не разъезжаются.
-\renewcommand{\cftsecfont}{\normalfont\fontsize{14pt}{17pt}\selectfont}
-\renewcommand{\cftsubsecfont}{\normalfont\fontsize{14pt}{17pt}\selectfont}
-\renewcommand{\cftsubsubsecfont}{\normalfont\fontsize{14pt}{17pt}\selectfont}
+\renewcommand{\cftsecfont}{\normalfont\fontsize{14pt}{14pt}\selectfont}
+\renewcommand{\cftsubsecfont}{\normalfont\fontsize{14pt}{14pt}\selectfont}
+\renewcommand{\cftsubsubsecfont}{\normalfont\fontsize{14pt}{14pt}\selectfont}
 
 % Шрифт номеров страниц: тот же одинарный интервал, без принудительной ширины
-\renewcommand{\cftsecpagefont}{\normalfont\fontsize{14pt}{17pt}\selectfont}
-\renewcommand{\cftsubsecpagefont}{\normalfont\fontsize{14pt}{17pt}\selectfont}
-\renewcommand{\cftsubsubsecpagefont}{\normalfont\fontsize{14pt}{17pt}\selectfont}
+\renewcommand{\cftsecpagefont}{\normalfont\fontsize{14pt}{14pt}\selectfont}
+\renewcommand{\cftsubsecpagefont}{\normalfont\fontsize{14pt}{14pt}\selectfont}
+\renewcommand{\cftsubsubsecpagefont}{\normalfont\fontsize{14pt}{14pt}\selectfont}
 
-% Гасим растягивание пробелов внутри многострочных пунктов TOC.
-% Стандартный \@dottedtocline делает строки justified, что портит вид
-% при длинных заголовках. Делаем правое поле упругим (plus 1fil), чтобы
-% последнее слово на строке не дотягивалось до правого края title-колонки.
+% Гасим растягивание пробелов в многострочных пунктах TOC.
+% tocloft переопределяет \l@section/\l@subsection/\l@subsubsection своими
+% макросами, которые ставят \rightskip \@tocrmarg (фиксированное правое поле)
+% и тем самым justify-ят все строки заголовка. Через etoolbox\patchcmd
+% заменяем правое поле на упругое \@tocrmarg plus 1fil — теперь нерастянутые
+% строки оставляют пустое пространство справа, без растягивания пробелов.
+\usepackage{etoolbox}
 \makeatletter
-\renewcommand*\@dottedtocline[5]{%
-	\ifnum #1>\c@tocdepth \else
-		\vskip \z@ \@plus.2\p@
-		{\leftskip #2\relax \rightskip \@tocrmarg plus 1fil
-			\parfillskip -\@tocrmarg
-			\parindent #2\relax\@afterindenttrue
-			\interlinepenalty\@M
-			\hyphenpenalty=10000     % запрет автопереносов в TOC (п.4.4.4 ГОСТ)
-			\exhyphenpenalty=10000   % и по существующим дефисам компаунд-слов
-			\leavevmode
-			\@tempdima #3\relax
-			\advance\leftskip \@tempdima \null\nobreak\hskip -\leftskip
-			{#4}\nobreak
-			\leaders\hbox{$\m@th
-				\mkern \@dotsep mu\hbox{.}\mkern \@dotsep
-				mu$}\hfill
-			\nobreak
-			\hb@xt@\@pnumwidth{\hfil\normalfont \normalcolor #5}%
-			\par}%
-	\fi}
+\patchcmd{\l@section}
+  {\rightskip \@tocrmarg}{\rightskip \@tocrmarg plus 1fil}{}{}
+\patchcmd{\l@subsection}
+  {\rightskip \@tocrmarg}{\rightskip \@tocrmarg plus 1fil}{}{}
+\patchcmd{\l@subsubsection}
+  {\rightskip \@tocrmarg}{\rightskip \@tocrmarg plus 1fil}{}{}
 \makeatother
 
 % Команда для вставки приложения в текст и TOC
