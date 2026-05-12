@@ -1,5 +1,5 @@
 % "высота букв, цифр и других знаков - не менее 12пт"
-\documentclass[a4paper,12pt]{extarticle}
+\documentclass[a4paper,14pt]{extarticle}
 
 % Кодировка и язык
 \usepackage{polyglossia}
@@ -53,7 +53,7 @@
 \titleformat{\section}
 {\normalfont\fontsize{14pt}{\baselineskip}\selectfont\bfseries}
 {\thesection}
-{1em}
+{0.5em}
 {}
 \titlespacing*{\section}{\gostindent}{0pt}{0pt}
 
@@ -69,7 +69,7 @@
 \titleformat{\subsection}
 {\normalfont\fontsize{14pt}{\baselineskip}\selectfont\bfseries}
 {\thesubsection}
-{1em}
+{0.5em}
 {}
 \titlespacing*{\subsection}{\gostindent}{1em}{0.5em}
 
@@ -77,7 +77,7 @@
 \titleformat{\subsubsection}
 {\normalfont\fontsize{14pt}{\baselineskip}\selectfont}
 {\thesubsubsection}
-{1em}
+{0.5em}
 {}
 \titlespacing*{\subsubsection}{\gostindent}{0pt}{0pt}
 
@@ -174,14 +174,14 @@
 \usepackage{tocloft}
 \usepackage{setspace}
 
-% -лишние вертикальные отступы
-% в article перед section по умолчанию стоит отступ. Обнуляем всё, 
-% чтобы работал только полуторный интервал setspace.
-\setlength{\cftbeforesecskip}{0pt}
-\setlength{\cftbeforesubsecskip}{0pt}
-\setlength{\cftbeforesubsubsecskip}{0pt}
+% Вертикальный воздух между пунктами TOC.
+% Внутри пункта строки идут одинарным интервалом (см. \fontsize ниже),
+% а между пунктами добавляется небольшой пробел, имитирующий полуторный.
+\setlength{\cftbeforesecskip}{0.4em plus 0.1em}
+\setlength{\cftbeforesubsecskip}{0.25em plus 0.05em}
+\setlength{\cftbeforesubsubsecskip}{0.1em}
 
-% отступы: 
+% отступы:
 % > разделы 0
 % > подразделы 0.49см
 % > подпункты 0.99см
@@ -189,44 +189,76 @@
 \setlength{\cftsubsecindent}{0.49cm}
 \setlength{\cftsubsubsecindent}{0.99cm}
 
-% ширина номера
-\setlength{\cftsecnumwidth}{0.85em}
-\setlength{\cftsubsecnumwidth}{1.75em}
-\setlength{\cftsubsubsecnumwidth}{3.2em}
+% Ширина колонки номера: «номер + один пробел». В TNR 14pt цифра ≈0.5em,
+% точка ≈0.3em. «1 » ≈ 0.8em, «1.1 » ≈ 1.6em, «1.1.1 » ≈ 2.4em — берём с запасом.
+\setlength{\cftsecnumwidth}{1.1em}
+\setlength{\cftsubsecnumwidth}{1.9em}
+\setlength{\cftsubsubsecnumwidth}{2.7em}
 
-% плотность точек
+% Плотность отточия
 \renewcommand{\cftdotsep}{1}
 
-% отточие до конца
-\cftsetpnumwidth{0.6cm}
-\renewcommand{\cftsecpagefont}{\normalfont\fontsize{14pt}{\baselineskip}\selectfont\makebox[0.7cm][r]}
-\renewcommand{\cftsubsecpagefont}{\normalfont\fontsize{14pt}{\baselineskip}\selectfont\makebox[0.7cm][r]}
-\renewcommand{\cftsubsubsecpagefont}{\normalfont\fontsize{14pt}{\baselineskip}\selectfont\makebox[0.7cm][r]}
-\cftsetrmarg{5cm}
+% Ширина колонки номера страницы (2 цифры в кегле 14pt помещаются в 1.3em)
+\cftsetpnumwidth{1.5em}
+\cftsetrmarg{1.5em}
 
 \renewcommand{\cfttoctitlefont}{\hfill\fontsize{14pt}{\baselineskip}\selectfont\bfseries}
 \renewcommand{\cftaftertoctitle}{\hfill}
 \renewcommand{\cftaftertoctitleskip}{1em}
 
-\renewcommand{\cftsecleader}{\cftdotfill{\cftdotsep}\hspace{0.4cm}}
-\renewcommand{\cftsubsecleader}{\cftdotfill{\cftdotsep}\hspace{0.4cm}}
+% Отточие идёт вплотную к номеру страницы (без принудительного \hspace)
+\renewcommand{\cftsecleader}{\cftdotfill{\cftdotsep}}
+\renewcommand{\cftsubsecleader}{\cftdotfill{\cftdotsep}}
+\renewcommand{\cftsubsubsecleader}{\cftdotfill{\cftdotsep}}
 
-% 2. А потом через \addto\captionsrussian меняем само слово
 \addto\captionsrussian{%
 	\renewcommand{\contentsname}{СОДЕРЖАНИЕ}%
 }
 
-% обычный, не жирный, шрифт
-\renewcommand{\cftsecfont}{\normalfont\fontsize{14pt}{\baselineskip}\selectfont}
-\renewcommand{\cftsubsecfont}{\normalfont\fontsize{14pt}{\baselineskip}\selectfont}
-\renewcommand{\cftsubsubsecfont}{\normalfont\fontsize{14pt}{\baselineskip}\selectfont}
+% Шрифт записей TOC: одинарный интервал (baselineskip = 17pt при кегле 14pt).
+% Так многострочные пункты не разъезжаются.
+\renewcommand{\cftsecfont}{\normalfont\fontsize{14pt}{17pt}\selectfont}
+\renewcommand{\cftsubsecfont}{\normalfont\fontsize{14pt}{17pt}\selectfont}
+\renewcommand{\cftsubsubsecfont}{\normalfont\fontsize{14pt}{17pt}\selectfont}
+
+% Шрифт номеров страниц: тот же одинарный интервал, без принудительной ширины
+\renewcommand{\cftsecpagefont}{\normalfont\fontsize{14pt}{17pt}\selectfont}
+\renewcommand{\cftsubsecpagefont}{\normalfont\fontsize{14pt}{17pt}\selectfont}
+\renewcommand{\cftsubsubsecpagefont}{\normalfont\fontsize{14pt}{17pt}\selectfont}
+
+% Гасим растягивание пробелов внутри многострочных пунктов TOC.
+% Стандартный \@dottedtocline делает строки justified, что портит вид
+% при длинных заголовках. Делаем правое поле упругим (plus 1fil), чтобы
+% последнее слово на строке не дотягивалось до правого края title-колонки.
+\makeatletter
+\renewcommand*\@dottedtocline[5]{%
+	\ifnum #1>\c@tocdepth \else
+		\vskip \z@ \@plus.2\p@
+		{\leftskip #2\relax \rightskip \@tocrmarg plus 1fil
+			\parfillskip -\@tocrmarg
+			\parindent #2\relax\@afterindenttrue
+			\interlinepenalty\@M
+			\hyphenpenalty=10000     % запрет автопереносов в TOC (п.4.4.4 ГОСТ)
+			\exhyphenpenalty=10000   % и по существующим дефисам компаунд-слов
+			\leavevmode
+			\@tempdima #3\relax
+			\advance\leftskip \@tempdima \null\nobreak\hskip -\leftskip
+			{#4}\nobreak
+			\leaders\hbox{$\m@th
+				\mkern \@dotsep mu\hbox{.}\mkern \@dotsep
+				mu$}\hfill
+			\nobreak
+			\hb@xt@\@pnumwidth{\hfil\normalfont \normalcolor #5}%
+			\par}%
+	\fi}
+\makeatother
 
 % Команда для вставки приложения в текст и TOC
 \newcommand{\appsection}[2]{% #1 - Буква (А, Б..), #2 - Название
 	\newpage
-	\begin{flushright}
+	\begin{center}
 		\textbf{Приложение #1}
-	\end{flushright}
+	\end{center}
 	\begin{center}
 		\textbf{#2}
 	\end{center}
