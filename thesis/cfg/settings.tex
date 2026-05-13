@@ -126,36 +126,8 @@
 \usepackage{amsmath}
 \usepackage{amssymb}
 
-% Списки: БЕЗ ТОЧЕК, только тире или скобки
-\usepackage{enumitem}
-% Общая настройка для всех списков
-\setlist{
-	nosep,                      % Убираем лишние вертикальные отступы
-	labelindent=\parindent,     % Позиция номера = абзацный отступ (1.25см)
-	leftmargin=*,               % Текст после первой строки идет от левого поля
-	align=left                  % Выравнивание номера по левому краю отступа
-}
-
 % Настройка названия рисунков
 \addto\captionsrussian{\renewcommand{\figurename}{Рисунок}}
-
-% Нумерованные списки: «1. текст», номер с абзацного отступа,
-% между номером и текстом ровно 0.5em (около одного символа в TNR 14pt).
-% leftmargin=* — enumitem сам считает ширину блока, текст продолжается ровно
-% под началом текста первого item'а.
-\setlist[enumerate]{
-	label=\arabic*.,
-	ref=\arabic*,
-	labelindent=\parindent,
-	labelsep=0.5em,
-	leftmargin=*,
-	align=left
-}
-
-% Маркированные списки (тире)
-\setlist[itemize]{
-	label=---
-}
 
 % Гиперссылки (для кликабельного содержания)
 \usepackage{hyperref}
@@ -195,5 +167,6 @@
 
 \usepackage{float}
 
+\input{cfg/setup/enum}
 \input{cfg/setup/toc}
 \input{cfg/setup/biblio}

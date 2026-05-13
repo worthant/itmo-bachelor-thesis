@@ -3,6 +3,12 @@
 % -------------------
 \usepackage[backend=biber,style=gost-numeric,sorting=none]{biblatex}
 \usepackage{etoolbox}
+
+% Запрет переноса между инициалами и фамилией ("А. Ф.~Стефаниди"),
+% а также между двумя инициалами. Норма русской научной верстки.
+\setcounter{highnamepenalty}{10000}
+\setcounter{lownamepenalty}{10000}
+
 \AtBeginBibliography{\hypersetup{hidelinks}}
 \DeclareFieldFormat{author}{\textnormal{#1}}
 \DeclareFieldFormat{editor}{\textnormal{#1}}
@@ -10,22 +16,26 @@
   \printnames[author]{author}%
 }
 
+% ГОСТ 7.32 п.4.10.3: нумеровать арабскими цифрами с точкой и печатать с
+% абзацного отступа. Номер «N.» стоит с абзацного отступа (1.25 см) —
+% как обычный абзац, — текст идёт сразу за номером, переносы на новую
+% строку выравниваются по левому полю (висячий отступ).
 \defbibenvironment{bibliography}
   {\list
-     {\printtext[labelnumberwidth]{%
-        \printfield{labelnumber}}}
-     {\setlength{\labelwidth}{1.25cm}% ширина метки (например, "[1]")
-      \setlength{\labelsep}{0.5em}% расстояние между номером и текстом
-      \setlength{\leftmargin}{1.25cm}% отступ всей записи
-      \setlength{\itemindent}{0pt}%
-      \setlength{\itemsep}{0pt}% расстояние между записями
+     {\printfield{labelnumber}.}              % метка вида «1.»
+     {\setlength{\labelwidth}{0pt}%
+      \setlength{\labelsep}{0.4em}%           % один пробел между «1.» и текстом
+      \setlength{\leftmargin}{0pt}%           % перенос — по левому полю
+      \setlength{\itemindent}{1.25cm}%        % первая строка — с абзацного отступа
+      \setlength{\itemsep}{0pt}%
       \setlength{\parsep}{0pt}%
       \setlength{\topsep}{0pt}%
       \setlength{\partopsep}{0pt}%
-      \setlength{\listparindent}{1.25cm}% отступ для новых абзацев внутри записи
+      \setlength{\listparindent}{1.25cm}%
       \setlength{\rightmargin}{0pt}%
       \setlength{\parskip}{0pt}%
-      \setlength{\parindent}{1.25cm}%
+      \setlength{\parindent}{0pt}%
+      \renewcommand{\makelabel}[1]{##1\hfil}% выравнивание метки по левому краю
      }}
   {\endlist}
   {\item}
