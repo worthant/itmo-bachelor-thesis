@@ -32,9 +32,7 @@
 
 \begin{figure}[h!]
 	\centering
-	% TODO: добавить training_curves.png
-	% На рисунке: 2 субграфика — верхний с loss (train/val), нижний с accuracy (train/val), по горизонтали эпохи.
-	\fbox{\parbox{0.85\textwidth}{\centering\vspace{3cm}TODO: кривые обучения модели DS-CNN-M\vspace{3cm}}}
+	\includegraphics[width=1\textwidth]{assets/plots/training_curves.png}
 	\caption{Кривые обучения DS-CNN-M: функция потерь и точность классификации на обучающей и валидационной выборках по эпохам}
 	\label{fig:training_curves}
 \end{figure}
@@ -61,10 +59,7 @@ Tiny~\cite{src:5} (90\% на наборе Google Speech Commands) на
 
 \begin{figure}[h!]
 	\centering
-	% TODO: добавить cm_fp32.png (результат plot_confusion_matrix из train.py).
-	% На рисунке: матрица 12×12, по осям — истинные и предсказанные классы,
-	% в ячейках — нормированные значения, цветовая карта от белого к синему.
-	\fbox{\parbox{0.7\textwidth}{\centering\vspace{3cm}TODO: матрица ошибок FP32-модели\vspace{3cm}}}
+	\includegraphics[width=0.9\textwidth]{assets/plots/cm_fp32.png}
 	\caption{Матрица ошибок модели DS-CNN-M (FP32) на тестовой выборке Google Speech Commands}
 	\label{fig:cm_fp32}
 \end{figure}
@@ -100,16 +95,14 @@ argmax: класс с максимальным логитом принимает
 
 \begin{figure}[h!]
 	\centering
-	% TODO: cm_ptq.png — сгенерируется автоматически модулем quantize_ptq.py
-	\fbox{\parbox{0.65\textwidth}{\centering\vspace{3cm}TODO: матрица ошибок DS-CNN-M (PTQ INT8)\vspace{3cm}}}
+	\includegraphics[width=0.9\textwidth]{assets/plots/cm_ptq.png}
 	\caption{Матрица ошибок модели DS-CNN-M (PTQ INT8) на тестовой выборке}
 	\label{fig:cm_ptq}
 \end{figure}
 
 \begin{figure}[h!]
 	\centering
-	% TODO: cm_qat.png — сгенерируется автоматически модулем quantize_qat.py
-	\fbox{\parbox{0.65\textwidth}{\centering\vspace{3cm}TODO: матрица ошибок DS-CNN-M (QAT INT8)\vspace{3cm}}}
+	\includegraphics[width=0.9\textwidth]{assets/plots/cm_qat.png}
 	\caption{Матрица ошибок модели DS-CNN-M (QAT INT8) на тестовой выборке}
 	\label{fig:cm_qat}
 \end{figure}
@@ -215,7 +208,7 @@ TensorFlow Lite на персональном компьютере у PTQ-вар
 	% TODO: добавить plot_cascade.png — профиль тока от INA228 за полный цикл с
 	% подписанными участками (HW_BOOT, RECORD, MFCC, INFERENCE, RESULT, SHUTDOWN, DEEP_SLEEP).
 	% По горизонтали — время в секундах, по вертикали — ток в мА.
-	\fbox{\parbox{0.9\textwidth}{\centering\vspace{4cm}TODO: профиль тока полного цикла каскадной обработки\vspace{4cm}}}
+	\fbox{\parbox{0.9\textwidth}{\centering\vspace{4cm}профиль тока полного цикла каскадной обработки\vspace{4cm}}}
 	\caption{Профиль мгновенного тока полного цикла каскадной обработки на платформе ESP32-S3 с разметкой по состояниям конечного автомата}
 	\label{fig:cascade_profile}
 \end{figure}
@@ -338,7 +331,7 @@ Speech Commands: типовая длительность произнесени�
 	% Сектора: HW_BOOT 20.9%, RECORD 24.1%, MFCC 6.7%, INFERENCE 15.0%,
 	% RESULT 27.6%, SHUTDOWN 5.0%, DEEP_SLEEP 0.7%.
 	% Цвета: контрастные для соседних секторов; подписи с процентами на секторах.
-	\fbox{\parbox{0.7\textwidth}{\centering\vspace{4cm}TODO: распределение энергии цикла по этапам обработки\vspace{4cm}}}
+	\fbox{\parbox{0.7\textwidth}{\centering\vspace{4cm}распределение энергии цикла по этапам обработки\vspace{4cm}}}
 	\caption{Распределение энергопотребления одного цикла каскадной обработки по этапам}
 	\label{fig:energy_pie}
 \end{figure}

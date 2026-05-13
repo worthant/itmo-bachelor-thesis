@@ -104,13 +104,13 @@ KWS-пайплайна.
 
 \begin{figure}[h!]
 	\centering
-	% TODO: нарисовать схему каскада из 3 ступеней —
+	% TODO: НЕ ГОТОВО! нарисовать схему каскада из 3 ступеней —
 	% (1) аналоговый VAD на LM393: потребление ~300 мкА, активность 100% времени, выход на RTC GPIO;
 	% (2) MFCC-предобработка на ESP32-S3 в активном режиме: потребление ~55 мА, активна по событию;
 	% (3) нейросетевой инференс DS-CNN через TFLM+ESP-NN: потребление ~80 мА, активен при срабатывании ступени 2;
 	% Стрелками: поток событий, режим питания (Deep Sleep / Active) между ступенями.
 	% Сделать в draw.io / Inkscape / TikZ.
-	\fbox{\parbox{0.9\textwidth}{\centering\vspace{3cm}TODO: блок-диаграмма каскадного пробуждения\vspace{3cm}}}
+	\includegraphics[width=1\textwidth]{assets/images/cascade.png}
 	\caption{Концептуальная схема каскадного пробуждения: три ступени возрастающей вычислительной сложности с переключением режимов питания микроконтроллера}
 	\label{fig:cascade_concept}
 \end{figure}
@@ -245,13 +245,15 @@ ReLU; глобального усреднения по пространстве�
 
 \begin{figure}[h!]
 	\centering
-	% TODO: структурная схема DS-CNN-M.
+	% TODO: НЕ ГОТОВО! сделать нормальную структурную схема DS-CNN-M.
 	% Блоки слева направо или сверху вниз:
 	% [Input 49×10×1] → [Conv2D 10×4, 172 фильтра, stride 2×2] → [BN+ReLU]
 	% → [DSConv ×6] (раскрыть один блок отдельно: DW 3×3 → BN+ReLU → PW 1×1 → BN+ReLU)
 	% → [GAP] → [Dense 12] → [Softmax]
 	% Сделать в draw.io.
-	\fbox{\parbox{0.85\textwidth}{\centering\vspace{3cm}TODO: структурная схема DS-CNN-M\vspace{3cm}}}
+	%
+	% Это вставил щас как заглушку просто:
+	\includegraphics[width=0.6\textwidth]{assets/images/ds-cnn-struct.png}
 	\caption{Структурная схема модели DS-CNN-M с указанием размерностей входа, выхода и параметров слоёв}
 	\label{fig:dscnn_arch}
 \end{figure}

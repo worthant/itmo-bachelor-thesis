@@ -13,13 +13,20 @@
 	% аккумулятор 18650, ESP32-C3 Mini, INA228 по I2C, USB-UART к ПК,
 	% дисплей логгера. Разделение доменов жирной разделительной линией.
 	% Файл уже есть в репозитории precise-power-logger/docs/schematic.png
-	\fbox{\parbox{0.95\textwidth}{\centering\vspace{4cm}TODO: принципиальная схема двухдоменного измерительного стенда\vspace{4cm}}}
+	\fbox{\parbox{0.95\textwidth}{\centering\vspace{4cm}принципиальная схема двухдоменного измерительного стенда\vspace{4cm}}}
 	\caption{Принципиальная электрическая схема подключения компонентов лабораторного стенда}
 	\label{fig:schematic}
 \end{figure}
 
 \appsection{Б}{Структурные диаграммы программной архитектуры}
 \label{app:diagrams}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.7\textwidth]{assets/images/state_diagram.png}
+	\caption{Диаграмма состояний конечного автомата VAD}
+	\label{fig:fsm_states_diag}
+\end{figure}
 
 \begin{figure}[H]
 	\centering
@@ -34,7 +41,7 @@
 	%   RESULT --timeout--> SHUTDOWN
 	%   SHUTDOWN --deep_sleep_start--> DEEP_SLEEP
 	% Делать в draw.io как state diagram.
-	\fbox{\parbox{0.85\textwidth}{\centering\vspace{4cm}TODO: диаграмма состояний конечного автомата каскада\vspace{4cm}}}
+	\fbox{\parbox{0.85\textwidth}{\centering\vspace{4cm}диаграмма состояний конечного автомата каскада\vspace{4cm}}}
 	\caption{Диаграмма состояний конечного автомата каскадной обработки}
 	\label{fig:fsm_states_diag}
 \end{figure}
@@ -46,7 +53,7 @@
 	% (audio capture), mfcc (preprocessing), kws (inference), voice_engine
 	% (pipeline glue), display/ws2812_led (indication). Стрелки —
 	% зависимости через include и вызовы функций.
-	\fbox{\parbox{0.85\textwidth}{\centering\vspace{4cm}TODO: компонентная диаграмма прошивки\vspace{4cm}}}
+	\fbox{\parbox{0.85\textwidth}{\centering\vspace{4cm}компонентная диаграмма прошивки\vspace{4cm}}}
 	\caption{Диаграмма компонентов программной системы}
 	\label{fig:component_diag}
 \end{figure}
@@ -61,7 +68,7 @@
 	%   INA228 --measurement data--> ESP32-C3
 	%   ESP32-C3 --CSV over USB-UART--> PC
 	% Цикл повторяется каждые 200 мс.
-	\fbox{\parbox{0.95\textwidth}{\centering\vspace{4cm}TODO: диаграмма последовательности измерений\vspace{4cm}}}
+	\includegraphics[width=1\textwidth]{assets/images/sequence_diagram.png}
 	\caption{Диаграмма последовательности сбора измерительных данных}
 	\label{fig:sequence_diag}
 \end{figure}
@@ -75,7 +82,7 @@
 	% INA228 на плате, ESP32-S3-Zero с подключёнными INMP441, LM393,
 	% дисплеем, ESP32-C3 логгер с собственным дисплеем,
 	% подключение USB к ПК.
-	\fbox{\parbox{0.85\textwidth}{\centering\vspace{4cm}TODO: фотография собранного лабораторного стенда\vspace{4cm}}}
+	\includegraphics[width=1\textwidth]{assets/images/bench_assembled_old.jpg}
 	\caption{Общий вид лабораторного стенда}
 	\label{fig:bench_photo}
 \end{figure}
@@ -88,7 +95,7 @@
 	% TODO: accuracy_vs_size.png — генерируется compare_models.py.
 	% Scatter из трёх точек: FP32 (956 КБ, 96.46%), PTQ INT8 (260.6 КБ, 96.15%),
 	% QAT INT8 (261.3 КБ, 96.29%).
-	\fbox{\parbox{0.75\textwidth}{\centering\vspace{3cm}TODO: график точности от размера модели\vspace{3cm}}}
+	\fbox{\parbox{0.75\textwidth}{\centering\vspace{3cm}график точности от размера модели\vspace{3cm}}}
 	\caption{Зависимость точности классификации от размера модели для FP32, PTQ INT8 и QAT INT8 вариантов DS-CNN-M}
 	\label{fig:acc_vs_size}
 \end{figure}
