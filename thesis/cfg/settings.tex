@@ -22,6 +22,21 @@
 	bottom=20mm
 }
 
+% листинги
+\usepackage{listings}
+\usepackage{xcolor}
+\lstset{
+	basicstyle=\ttfamily\small,
+	breaklines=true,
+	frame=single,
+	captionpos=b,
+	showstringspaces=false,
+	columns=fullflexible,
+	language=C,
+	keywordstyle=\bfseries,
+	commentstyle=\itshape\color{gray!60!black}
+}
+
 % Межстрочный интервал 1.5
 \usepackage{setspace}
 \onehalfspacing
@@ -172,3 +187,4 @@
 \input{cfg/setup/enum}
 \input{cfg/setup/toc}
 \input{cfg/setup/biblio}
+\input{cfg/setup/listings}
