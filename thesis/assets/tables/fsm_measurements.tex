@@ -1,0 +1,23 @@
+% TODO: добавить microtypesetup
+\begin{longtable}{|p{4.5cm}|c|c|}
+	\caption{Длительности и средние значения тока на этапах каскадной обработки}
+	\label{tab:fsm_measurements}                                                         \\
+	\hline
+	\textbf{Этап (состояние FSM)} & \textbf{Длительность, мс} & \textbf{Средний ток, мА} \\
+	\hline
+	\endfirsthead
+	\hline
+	\textbf{Этап (состояние FSM)} & \textbf{Длительность, мс} & \textbf{Средний ток, мА} \\
+	\hline
+	\endhead
+	\hline
+	\endfoot
+	Инициализация (HW\_BOOT)      & 1860                      & 64,9                     \\ \hline
+	Захват аудио (RECORD)         & 2510                      & 55,5                     \\ \hline
+	Извлечение MFCC (MFCC)        & 480                       & 80,1                     \\ \hline
+	Инференс DS-CNN (INFERENCE)   & 1060                      & 81,9                     \\ \hline
+	Индикация результата (RESULT) & 3000                      & 53,2                     \\ \hline
+	Завершение (SHUTDOWN)         & 540                       & 53,3                     \\ \hline
+	Глубокий сон (DEEP\_SLEEP)    & ---                       & 6,3                      \\
+	\hline
+\end{longtable}

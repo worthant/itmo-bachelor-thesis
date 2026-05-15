@@ -1,0 +1,21 @@
+% TODO: добавить microtypesetup
+\begin{longtable}{|l|c|c|c|c|}
+	\caption{Сравнение моделей DS-CNN-M: FP32, PTQ INT8, QAT INT8}
+	\label{tab:quant_results}                                                                               \\
+	\hline
+	\textbf{Модель} & \textbf{Точность, \%} & \textbf{Размер, КБ} & \textbf{Сжатие} & \textbf{Инференс, мс} \\
+	\hline
+	\endfirsthead
+	\hline
+	\textbf{Модель} & \textbf{Точность, \%} & \textbf{Размер, КБ} & \textbf{Сжатие} & \textbf{Инференс, мс} \\
+	\hline
+	\endhead
+	\hline
+	\endfoot
+	FP32 (исходная) & 96,46                 & 956,0               & $1\times$       & 1,78                  \\
+	\hline
+	PTQ INT8        & 96,15                 & 260,6               & $3{,}67\times$  & 0,91                  \\
+	\hline
+	QAT INT8        & 96,29                 & 261,3               & $3{,}66\times$  & 1,34                  \\
+	\hline
+\end{longtable}

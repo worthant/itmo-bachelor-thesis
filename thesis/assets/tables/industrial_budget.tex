@@ -1,0 +1,22 @@
+% TODO: добавить microtypesetup
+\begin{longtable}{|p{6.5cm}|c|}
+	\caption{Покомпонентная проекция потребления в режиме глубокого сна для промышленной реализации}
+	\label{tab:industrial_budget}                                                                        \\
+	\hline
+	\textbf{Компонент}                                                       & \textbf{Потребление, мкА} \\
+	\hline
+	\endfirsthead
+	\hline
+	\textbf{Компонент}                                                       & \textbf{Потребление, мкА} \\
+	\hline
+	\endhead
+	\hline
+	\endfoot
+	ESP32-S3 в режиме глубокого сна с активным RTC IO~\cite{src:9}           & $\sim 10$                 \\ \hline
+	LDO с ультранизким током покоя (HT7333, MCP1700 и подобные)              & $\sim 4$                  \\ \hline
+	MEMS-микрофон с интегрированным wake-on-sound (Vesper VM1010 или аналог) & $\sim 10$                 \\ \hline
+	Цифровой микрофон INMP441, обесточенный через MOSFET-ключ                & 0                         \\ \hline
+	Подтягивающие резисторы, делители напряжения, паразитные токи            & $\sim 5$                  \\ \hline
+	\textbf{Расчётное итоговое потребление в режиме ожидания}                & \textbf{$\sim 30$}        \\
+	\hline
+\end{longtable}
