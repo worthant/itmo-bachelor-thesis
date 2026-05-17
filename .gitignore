@@ -44,6 +44,13 @@ build/
 !thesis/lib/vak/*.pdf
 !thesis/lib/*.pdf
 
+## Archives
+archive
+archive-code
+archive-code.zip
+thesis-tex-archive.zip
+thesis_archive.zip
+
 ## Backup files
 *~
 *.backup
