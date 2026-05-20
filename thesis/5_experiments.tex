@@ -306,9 +306,9 @@ ESP-NN; время инференса в пределах разумной ин�
 валидационной выборках~--- представлена на
 рис.~\ref{fig:training_curves}.
 
-\begin{figure}[h!]
+\begin{figure}[H]
 	\centering
-	\includegraphics[width=1\textwidth]{assets/plots/f104_b5_learning_curves.png}
+	\includegraphics[width=0.95\textwidth]{assets/plots/f104_b5_learning_curves.png}
 	\caption{Кривые обучения модели $f104\_b5$ (FP32): функция потерь и точность классификации на обучающей и валидационной выборках по эпохам}
 	\label{fig:training_curves}
 \end{figure}
@@ -326,35 +326,11 @@ smoothing) и аугментации данных временны\'{м} сдв�
 Подробные метрики качества классификации FP32 и
 квантизованного варианта PTQ INT8 выбранной модели на тестовой
 выборке Google Speech Commands~v2 приведены в
-табл.~\ref{tab:classification_metrics}.
+таблице~\ref{tab:classification_metrics}.
 
-\begin{table}[h!]
-	\centering
-	\caption{Метрики качества классификации модели $f104\_b5$ PTQ INT8 на тестовой выборке Google Speech Commands~v2}
-	\label{tab:classification_metrics}
-	\begin{tabular}{|l|c|c|c|c|}
-		\hline
-		\textbf{Класс}        & \textbf{Precision} & \textbf{Recall} & \textbf{F1-score} & \textbf{Support} \\
-		\hline
-		yes                   & 0,9647             & 0,9785          & 0,9716            & 419              \\ \hline
-		no                    & 0,9429             & 0,9778          & 0,9600            & 405              \\ \hline
-		up                    & 0,9543             & 0,9341          & 0,9441            & 425              \\ \hline
-		down                  & 0,9348             & 0,9532          & 0,9439            & 406              \\ \hline
-		left                  & 0,9780             & 0,9733          & 0,9757            & 412              \\ \hline
-		right                 & 0,9949             & 0,9848          & 0,9898            & 396              \\ \hline
-		on                    & 0,9642             & 0,9520          & 0,9581            & 396              \\ \hline
-		off                   & 0,9500             & 0,9453          & 0,9476            & 402              \\ \hline
-		stop                  & 0,9781             & 0,9781          & 0,9781            & 411              \\ \hline
-		go                    & 0,9370             & 0,9254          & 0,9312            & 402              \\ \hline
-		unknown               & 1,0000             & 1,0000          & 1,0000            & 40               \\ \hline
-		silence               & 0,7368             & 0,7000          & 0,7179            & 40               \\ \hline
-		\textbf{Macro avg}    & \textbf{0,9446}    & \textbf{0,9419} & \textbf{0,9432}   & 4154             \\ \hline
-		\textbf{Weighted avg} & \textbf{0,9581}    & \textbf{0,9581} & \textbf{0,9580}   & 4154             \\
-		\hline
-	\end{tabular}
-\end{table}
+\input{assets/tables/classification_metrics}
 
-Per-class анализ выявляет следующее:
+Поклассовый анализ выявляет следующее:
 
 \textit{Класс silence} демонстрирует ощутимо более низкие
 метрики (F1 = 0,72) при минимальном размере выборки данного
@@ -380,22 +356,35 @@ Per-class анализ выявляет следующее:
 \subsubsection{Матрицы ошибок}
 
 Матрицы ошибок FP32, PTQ INT8 и QAT INT8 вариантов выбранной
-модели на тестовой выборке представлены на
-рис.~\ref{fig:cm_combined}.
+модели на тестовой выборке представлены на рис.~\ref{fig:cm_fp32}--\ref{fig:cm_qat}.
+Для детального анализа распределения поклассовых ошибок изображения
+приведены в крупном масштабе.
 
-\begin{figure}[h!]
-	\centering
-	% TODO: композиция из трёх матриц 1x3 (FP32, PTQ, QAT).
-	% Можно также оставить только PTQ INT8 как реально
-	% развёрнутую модель.
-	\begin{tabular}{ccc}
-		\includegraphics[width=0.3\textwidth]{assets/diagrams/cm_fp32.png} &
-		\includegraphics[width=0.3\textwidth]{assets/diagrams/cm_ptq.png}  &
-		\includegraphics[width=0.3\textwidth]{assets/diagrams/cm_qat.png}                                \\
-		(а) FP32                                                           & (б) PTQ INT8 & (в) QAT INT8
-	\end{tabular}
-	\caption{Матрицы ошибок модели $f104\_b5$ для трёх вариантов квантизации}
-	\label{fig:cm_combined}
+\begin{figure}[H]
+    \StringSpacesFalse
+    \centering
+    % базовая матрица для fp32-варианта
+    \includegraphics[width=1\textwidth]{assets/diagrams/cm_fp32.png}
+    \caption{Матрица ошибок базовой модели $f104\_b5$ (FP32)}
+    \label{fig:cm_fp32}
+\end{figure}
+
+\begin{figure}[H]
+    \StringSpacesFalse
+    \centering
+    % матрица после пост-тренировочного квантования
+    \includegraphics[width=0.85\textwidth]{assets/diagrams/cm_ptq.png}
+    \caption{Матрица ошибок квантованной модели $f104\_b5$ (PTQ INT8)}
+    \label{fig:cm_ptq}
+\end{figure}
+
+\begin{figure}[H]
+    \StringSpacesFalse
+    \centering
+    % матрица после квантования в процессе дообучения
+    \includegraphics[width=0.85\textwidth]{assets/diagrams/cm_qat.png}
+    \caption{Матрица ошибок квантованной модели $f104\_b5$ (QAT INT8)}
+    \label{fig:cm_qat}
 \end{figure}
 
 Визуальное сравнение матриц подтверждает количественный вывод
@@ -405,7 +394,26 @@ FP32 к INT8 (как PTQ, так и QAT). Основная масса ошибо
 соответствующих парам акустически близких слов; квантизация не
 вносит качественно новых паттернов ошибок, а лишь равномерно
 снижает уверенность классификатора на тех же примерах, на
-которых модель ошибалась в FP32-варианте.
+которых модель ошибалась в FP32-вариации.
+
+При анализе результатов обнаруживается характерный феномен:
+точность квантованной модели $f104\_b5$ после применения процедуры
+PTQ INT8 (96,12\%) оказалась незначительно выше исходного варианта
+FP32 (95,81\%). Различие в 0,31 п.п. не является статистически
+значимым и полностью находится в пределах доверительного интервала
+Уилсона (±0,65 п.п.) для используемого объема тестовой выборки
+при $n = 4154$. Подобное поведение, при котором целочисленная модель
+показывает точность на уровне или несколько выше исходной, согласуется
+с независимыми результатами Сёренсена и др.~\cite{src:31}.
+
+С содержательной инженерной точки зрения данный эффект объясняется тем,
+что квантование весов и активаций до 8-битного представления вносит
+контролируемый шум округления, который действует как форма регуляризации.
+Для исходной FP32-модели, обладающей некоторой избыточной емкостью,
+этот сглаживающий фактор позволяет снизить слабую степень переобучения
+(overfitting) и незначительно улучшить обобщающую способность на независимой
+тестовой выборке. Подобный регуляризационный эффект дискретизации весов
+подробно описан в работе Jacob и др.~\cite{src:3}.
 
 \subsection{Профиль энергопотребления полного цикла каскадной обработки}
 
@@ -571,7 +579,9 @@ PSRAM в дежурном режиме, а также подключённый �
 STM32U5 с механизмом LPBAM, nRF52840 с функцией wake-on-sound и
 аналогичные.
 
+\addtocontents{toc}{\protect\gdef\protect\cftsubsecnumwidth{2.1em}}
 \subsection{Выводы по разделу}
+\addtocontents{toc}{\protect\gdef\protect\cftsubsecnumwidth{1.55em}}
 
 В настоящем разделе представлены результаты экспериментальной
 апробации предложенной каскадной KWS-системы на платформе

@@ -43,6 +43,7 @@ build/
 !thesis/assets
 !thesis/lib/vak/*.pdf
 !thesis/lib/*.pdf
+!thesis/assets/*/*
 
 ## Archives
 archive
