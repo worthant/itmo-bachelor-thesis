@@ -1,6 +1,5 @@
-% TODO: добавить microtypesetup
 \begin{longtable}{|p{4.5cm}|c|c|c|}
-	\caption{Декомпозиция энергопотребления одного цикла каскадной обработки}
+	\caption{Декомпозиция энергопотребления одного цикла каскадной обработки для модели $f104\_b5$ PTQ}
 	\label{tab:energy_decomp}                                                                              \\
 	\hline
 	\textbf{Этап}                 & \textbf{Длит., мс} & \textbf{Энергия, мДж} & \textbf{Доля бюджета, \%} \\
@@ -12,13 +11,11 @@
 	\endhead
 	\hline
 	\endfoot
-	Инициализация (HW\_BOOT)      & 1860               & 493,6                 & 20,9                      \\ \hline
-	Захват аудио (RECORD)         & 2510               & 569,9                 & 24,1                      \\ \hline
-	Извлечение MFCC (MFCC)        & 480                & 157,3                 & 6,7                       \\ \hline
-	Инференс DS-CNN (INFERENCE)   & 1060               & 355,1                 & 15,0                      \\ \hline
-	Индикация результата (RESULT) & 3000               & 653,0                 & 27,6                      \\ \hline
-	Завершение (SHUTDOWN)         & 540                & 117,6                 & 5,0                       \\ \hline
-	Глубокий сон (DEEP\_SLEEP)    & ---                & 16,3                  & 0,7                       \\ \hline
-	\textbf{Итого за цикл}        & \textbf{10~440}    & \textbf{2362,8}       & \textbf{100,0}            \\
+	Инициализация (HW\_BOOT)      & 1982               & 532,57                & 34,9                      \\ \hline
+	Захват аудио (RECORD)         & 2519               & 569,74                & 37,4                      \\ \hline
+	Извлечение MFCC (MFCC)        & 410                & 137,19                & 9,0                       \\ \hline
+	Инференс DS-CNN (INFERENCE)   & 460                & 155,65                & 10,2                      \\ \hline
+	Завершение (SHUTDOWN)         & 597                & 130,21                & 8,5                       \\ \hline
+	\textbf{Итого за цикл}        & \textbf{5968}      & \textbf{1525,4}       & \textbf{100,0}            \\
 	\hline
 \end{longtable}

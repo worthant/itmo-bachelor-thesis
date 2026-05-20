@@ -1,0 +1,37 @@
+\newcolumntype{L}[1]{>{\microtypesetup{activate=true}\RaggedRight\arraybackslash}p{#1}}
+\newcolumntype{C}[1]{>{\microtypesetup{activate=true}\Centering\arraybackslash}p{#1}}
+
+\begin{longtable}{|L{2.2cm}|C{2cm}|C{1.6cm}|C{1.5cm}|C{1.4cm}|C{2.6cm}|C{2.1cm}|}
+	\caption{Энергетические характеристики архитектур подмножества Парето-границы}
+	\label{tab:energy_inf} \\
+	\hline
+	\textbf{Арх-ра} & \textbf{Метод квантиз.} & \textbf{Размер, КБ} & \textbf{Время, мс} & \textbf{Ток, мА} & \textbf{Энергия, мДж} & \textbf{Точность, \%} \\
+	\hline
+	\endfirsthead
+	\multicolumn{7}{r}{Продолжение таблицы \thetable} \\[6pt]
+	\hline
+	\textbf{Арх-ра} & \textbf{Метод квантиз.} & \textbf{Размер, КБ} & \textbf{Время, мс} & \textbf{Ток, мА} & \textbf{Энергия, мДж} & \textbf{Точность, \%} \\
+	\hline
+	\endhead
+	\hline
+	\endfoot
+	f24\_b5  & QAT & 20.4  & 120  & 81.2 & 39.78 $\pm$ 0.41   & 91.84  \\ \hline
+	f24\_b3  & PTQ & 13.5  & 120  & 81.5 & 40.09 $\pm$ 1.01   & 90.30  \\ \hline
+	f40\_b2  & PTQ & 15.7  & 120  & 82.1 & 40.50 $\pm$ 1.67   & 91.45  \\ \hline
+	f32\_b4  & PTQ & 20.9  & 120  & 82.1 & 40.87 $\pm$ 0.88   & 92.59  \\ \hline
+	f32\_b6  & PTQ & 29.0  & 140  & 82.6 & 46.57 $\pm$ 11.71  & 93.43  \\ \hline
+	f48\_b3  & PTQ & 25.0  & 139  & 83.3 & 47.81 $\pm$ 11.59  & 93.07  \\ \hline
+	f48\_b4  & QAT & 31.9  & 160  & 84.3 & 54.91 $\pm$ 10.28  & 93.89  \\ \hline
+	f64\_b2  & PTQ & 25.5  & 180  & 82.8 & 60.76 $\pm$ 1.85   & 93.40  \\ \hline
+	f48\_b5  & PTQ & 37.5  & 180  & 83.5 & 62.04 $\pm$ 0.50   & 94.03  \\ \hline
+	f64\_b3  & QAT & 35.0  & 200  & 82.8 & 66.74 $\pm$ 11.50  & 93.98  \\ \hline
+	f72\_b3  & PTQ & 39.9  & 220  & 83.5 & 74.02 $\pm$ 11.75  & 94.56  \\ \hline
+	f72\_b4  & QAT & 51.1  & 240  & 83.0 & 82.16 $\pm$ 0.18   & 94.90  \\ \hline
+	f88\_b3  & PTQ & 51.7  & 280  & 83.1 & 96.02 $\pm$ 12.43  & 95.02  \\ \hline
+	f64\_b7  & PTQ & 70.7  & 300  & 83.1 & 102.01 $\pm$ 1.62  & 95.11  \\ \hline
+	f80\_b5  & QAT & 71.0  & 340  & 84.2 & 115.27 $\pm$ 11.08 & 95.16  \\ \hline
+	f88\_b6  & PTQ & 94.0  & 417  & 83.3 & 142.64 $\pm$ 8.92  & 95.67  \\ \hline
+	f104\_b5 & PTQ & 101.2 & 440  & 83.2 & 149.64 $\pm$ 9.52  & 96.12  \\ \hline
+	f176\_b7 & QAT & 314.5 & 1347 & 82.9 & 451.22 $\pm$ 7.58  & 96.29  \\
+	\hline
+\end{longtable}

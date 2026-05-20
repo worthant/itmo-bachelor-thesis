@@ -1,0 +1,998 @@
+% $ biblatex auxiliary file $
+% $ biblatex bbl format version 3.2 $
+% Do not modify the above lines!
+%
+% This is an auxiliary file used by the 'biblatex' package.
+% This file may safely be deleted. It will be recreated by
+% biber as required.
+%
+\begingroup
+\makeatletter
+\@ifundefined{ver@biblatex.sty}
+  {\@latex@error
+     {Missing 'biblatex' package}
+     {The bibliography requires the 'biblatex' package.}
+      \aftergroup\endinput}
+  {}
+\endgroup
+
+
+\refsection{0}
+  \datalist[entry]{none/global//global/global}
+    \entry{src:9}{online}{}
+      \name{author}{1}{}{%
+        {{hash=66589871a3c3f27bcbf3891133af42b1}{%
+           family={{Espressif Systems}},
+           familyi={E\bibinitperiod}}}%
+      }
+      \list{language}{1}{%
+        {english}%
+      }
+      \strng{namehash}{66589871a3c3f27bcbf3891133af42b1}
+      \strng{fullhash}{66589871a3c3f27bcbf3891133af42b1}
+      \strng{bibnamehash}{66589871a3c3f27bcbf3891133af42b1}
+      \strng{authorbibnamehash}{66589871a3c3f27bcbf3891133af42b1}
+      \strng{authornamehash}{66589871a3c3f27bcbf3891133af42b1}
+      \strng{authorfullhash}{66589871a3c3f27bcbf3891133af42b1}
+      \field{extraname}{1}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{ESP32-S3 Datasheet. Version 1.7}
+      \field{urlday}{1}
+      \field{urlmonth}{4}
+      \field{urlyear}{2026}
+      \field{year}{2024}
+      \field{urldateera}{ce}
+      \verb{urlraw}
+      \verb https://www.espressif.com/sites/default/files/documentation/esp32-s3_datasheet_en.pdf
+      \endverb
+      \verb{url}
+      \verb https://www.espressif.com/sites/default/files/documentation/esp32-s3_datasheet_en.pdf
+      \endverb
+    \endentry
+    \entry{src:1}{article}{useauthor=false}
+      \name{author}{4}{}{%
+        {{hash=1f26f664835ac6c347db22001b657f1a}{%
+           family={Zhang},
+           familyi={Z\bibinitperiod},
+           given={Y.},
+           giveni={Y\bibinitperiod}}}%
+        {{hash=ae512f3043c7afc1d0a18ca62174fa07}{%
+           family={Suda},
+           familyi={S\bibinitperiod},
+           given={N.},
+           giveni={N\bibinitperiod}}}%
+        {{hash=bcf9c5bbdeffa36d9c0d48a806732c66}{%
+           family={Lai},
+           familyi={L\bibinitperiod},
+           given={L.},
+           giveni={L\bibinitperiod}}}%
+        {{hash=e7b859a79b0689bc4a6b7e435b443109}{%
+           family={Chandra},
+           familyi={C\bibinitperiod},
+           given={V.},
+           giveni={V\bibinitperiod}}}%
+      }
+      \list{language}{1}{%
+        {english}%
+      }
+      \strng{authorbibnamehash}{09da5e9b7ed6da0143fe9d3033c05426}
+      \strng{authornamehash}{3c1307f04a2326d8574987ac3a9ef4db}
+      \strng{authorfullhash}{09da5e9b7ed6da0143fe9d3033c05426}
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{arXiv preprint arXiv:1711.07128}
+      \field{title}{Hello Edge: Keyword Spotting on Microcontrollers}
+      \field{year}{2018}
+      \field{pages}{12}
+      \range{pages}{1}
+    \endentry
+    \entry{src:12}{inproceedings}{useauthor=false}
+      \true{moreauthor}
+      \name{author}{3}{}{%
+        {{hash=4c83e612ca6179605e076be7f68a2296}{%
+           family={Choi},
+           familyi={C\bibinitperiod},
+           given={S.},
+           giveni={S\bibinitperiod}}}%
+        {{hash=bb00f78372517c16f08ef82cf70825d8}{%
+           family={Seo},
+           familyi={S\bibinitperiod},
+           given={S.},
+           giveni={S\bibinitperiod}}}%
+        {{hash=3b610362bcfbe8c64f0f1f57ad0f7b74}{%
+           family={Shin},
+           familyi={S\bibinitperiod},
+           given={B.},
+           giveni={B\bibinitperiod}}}%
+      }
+      \list{language}{1}{%
+        {english}%
+      }
+      \strng{authorbibnamehash}{c23c3ce38e3c9a5b2ba5f42af68c9fd3}
+      \strng{authornamehash}{c23c3ce38e3c9a5b2ba5f42af68c9fd3}
+      \strng{authorfullhash}{c23c3ce38e3c9a5b2ba5f42af68c9fd3}
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{Proc. Interspeech}
+      \field{title}{Temporal Convolution for Real-time Keyword Spotting on Mobile Devices}
+      \field{year}{2019}
+      \field{pages}{3372\bibrangedash 3376}
+      \range{pages}{5}
+    \endentry
+    \entry{src:3}{inproceedings}{useauthor=false}
+      \true{moreauthor}
+      \name{author}{3}{}{%
+        {{hash=dca6d20d17cddb6b7079c1fc8f321c7d}{%
+           family={Jacob},
+           familyi={J\bibinitperiod},
+           given={B.},
+           giveni={B\bibinitperiod}}}%
+        {{hash=9be7bc265abc778bf082894f90b3b5c6}{%
+           family={Kligys},
+           familyi={K\bibinitperiod},
+           given={S.},
+           giveni={S\bibinitperiod}}}%
+        {{hash=4813a7a1a94021e09e6c138d189a8ebe}{%
+           family={Chen},
+           familyi={C\bibinitperiod},
+           given={B.},
+           giveni={B\bibinitperiod}}}%
+      }
+      \list{language}{1}{%
+        {english}%
+      }
+      \strng{authorbibnamehash}{f8b7c2adf7bed53221b764b2e2a73592}
+      \strng{authornamehash}{f8b7c2adf7bed53221b764b2e2a73592}
+      \strng{authorfullhash}{f8b7c2adf7bed53221b764b2e2a73592}
+      \field{sortinit}{3}
+      \field{sortinithash}{ad6fe7482ffbd7b9f99c9e8b5dccd3d7}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{Proc. IEEE Conference on Computer Vision and Pattern Recognition (CVPR)}
+      \field{title}{Quantization and Training of Neural Networks for Efficient Integer-Arithmetic-Only Inference}
+      \field{year}{2018}
+      \field{pages}{2704\bibrangedash 2713}
+      \range{pages}{10}
+    \endentry
+    \entry{src:22}{online}{}
+      \name{author}{1}{}{%
+        {{hash=7b568e72d25af32b0cec03e49cbf3f70}{%
+           family={{Google LLC}},
+           familyi={G\bibinitperiod}}}%
+      }
+      \list{language}{1}{%
+        {english}%
+      }
+      \strng{namehash}{7b568e72d25af32b0cec03e49cbf3f70}
+      \strng{fullhash}{7b568e72d25af32b0cec03e49cbf3f70}
+      \strng{bibnamehash}{7b568e72d25af32b0cec03e49cbf3f70}
+      \strng{authorbibnamehash}{7b568e72d25af32b0cec03e49cbf3f70}
+      \strng{authornamehash}{7b568e72d25af32b0cec03e49cbf3f70}
+      \strng{authorfullhash}{7b568e72d25af32b0cec03e49cbf3f70}
+      \field{sortinit}{3}
+      \field{sortinithash}{ad6fe7482ffbd7b9f99c9e8b5dccd3d7}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{TensorFlow Model Optimization Toolkit --- Quantization Aware Training}
+      \field{urlday}{1}
+      \field{urlmonth}{4}
+      \field{urlyear}{2026}
+      \field{year}{2024}
+      \field{urldateera}{ce}
+      \verb{urlraw}
+      \verb https://www.tensorflow.org/model_optimization/guide/quantization/training
+      \endverb
+      \verb{url}
+      \verb https://www.tensorflow.org/model_optimization/guide/quantization/training
+      \endverb
+    \endentry
+    \entry{src:6}{inproceedings}{}
+      \name{author}{2}{}{%
+        {{hash=67f9df310b7896ce5c806ff6fcbe323f}{%
+           family={Hardy},
+           familyi={H\bibinitperiod},
+           given={E.},
+           giveni={E\bibinitperiod}}}%
+        {{hash=7e4322d9de85cb5536b3faeb36d36275}{%
+           family={Badets},
+           familyi={B\bibinitperiod},
+           given={F.},
+           giveni={F\bibinitperiod}}}%
+      }
+      \list{language}{1}{%
+        {english}%
+      }
+      \strng{namehash}{cb2100e6bdb59a27eb1c5632aa55024b}
+      \strng{fullhash}{cb2100e6bdb59a27eb1c5632aa55024b}
+      \strng{bibnamehash}{cb2100e6bdb59a27eb1c5632aa55024b}
+      \strng{authorbibnamehash}{cb2100e6bdb59a27eb1c5632aa55024b}
+      \strng{authornamehash}{cb2100e6bdb59a27eb1c5632aa55024b}
+      \strng{authorfullhash}{cb2100e6bdb59a27eb1c5632aa55024b}
+      \field{sortinit}{4}
+      \field{sortinithash}{9381316451d1b9788675a07e972a12a7}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{Proc. tinyML Research Symposium}
+      \field{title}{An Ultra-low Power RNN Classifier for Always-On Voice Wake-Up Detection Robust to Real-World Scenarios}
+      \field{year}{2021}
+      \field{pages}{7}
+      \range{pages}{1}
+    \endentry
+    \entry{src:7}{article}{useauthor=false}
+      \true{moreauthor}
+      \name{author}{3}{}{%
+        {{hash=b34e7860b4edb906c4a2bc32d4e56fb3}{%
+           family={Cerutti},
+           familyi={C\bibinitperiod},
+           given={G.},
+           giveni={G\bibinitperiod}}}%
+        {{hash=f11662c02f52a74f2575aabcaf505ea4}{%
+           family={Cavigelli},
+           familyi={C\bibinitperiod},
+           given={L.},
+           giveni={L\bibinitperiod}}}%
+        {{hash=2f9576753bb0b654ee1c5d89f0eeb7cf}{%
+           family={Andri},
+           familyi={A\bibinitperiod},
+           given={R.},
+           giveni={R\bibinitperiod}}}%
+      }
+      \list{language}{1}{%
+        {english}%
+      }
+      \strng{authorbibnamehash}{384d37b398423022cdfd08ac1888cebb}
+      \strng{authornamehash}{384d37b398423022cdfd08ac1888cebb}
+      \strng{authorfullhash}{384d37b398423022cdfd08ac1888cebb}
+      \field{sortinit}{4}
+      \field{sortinithash}{9381316451d1b9788675a07e972a12a7}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{IEEE Transactions on Circuits and Systems I: Regular Papers}
+      \field{title}{Sub-mW Keyword Spotting on an MCU: Analog Binary Feature Extraction and Binary Neural Networks}
+      \field{year}{2022}
+      \field{number}{5}
+      \range{number}{1}
+      \field{pages}{2002\bibrangedash 2012}
+      \range{pages}{11}
+      \field{volume}{69}
+      \range{volume}{1}
+    \endentry
+    \entry{src:23}{article}{useauthor=false}
+      \name{author}{4}{}{%
+        {{hash=3aeba3b2edf38d0bbab645bb1c2f28fb}{%
+           family={Стефаниди},
+           familyi={С\bibinitperiod},
+           given={А.\bibnamedelimi Ф.},
+           giveni={А\bibinitperiod\bibinitdelim Ф\bibinitperiod}}}%
+        {{hash=c2f646326c47d1e234106acff966f6c0}{%
+           family={Приоров},
+           familyi={П\bibinitperiod},
+           given={А.\bibnamedelimi Л.},
+           giveni={А\bibinitperiod\bibinitdelim Л\bibinitperiod}}}%
+        {{hash=5e8359bfede9aa9e0843b64fdcada2b7}{%
+           family={Топников},
+           familyi={Т\bibinitperiod},
+           given={А.\bibnamedelimi И.},
+           giveni={А\bibinitperiod\bibinitdelim И\bibinitperiod}}}%
+        {{hash=0b92ec63e87a87a7f49b69f9cf9c0d13}{%
+           family={Хрящев},
+           familyi={Х\bibinitperiod},
+           given={В.\bibnamedelimi В.},
+           giveni={В\bibinitperiod\bibinitdelim В\bibinitperiod}}}%
+      }
+      \list{language}{1}{%
+        {russian}%
+      }
+      \strng{authorbibnamehash}{78306567155ec0766291d3cd7c7ba8b0}
+      \strng{authornamehash}{de21e4c6605bb78b81b77a9eba384a89}
+      \strng{authorfullhash}{78306567155ec0766291d3cd7c7ba8b0}
+      \field{sortinit}{5}
+      \field{sortinithash}{20e9b4b0b173788c5dace24730f47d8c}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Цифровая обработка сигналов}
+      \field{title}{Комбинированный детектор голосовой активности}
+      \field{year}{2023}
+      \field{number}{1}
+      \range{number}{1}
+      \field{pages}{62\bibrangedash 67}
+      \range{pages}{6}
+    \endentry
+    \entry{src:24}{article}{useauthor=false}
+      \true{moreauthor}
+      \name{author}{3}{}{%
+        {{hash=b389c6a88c6df8de9cf94a748beb6b66}{%
+           family={Муртазин},
+           familyi={М\bibinitperiod},
+           given={Р.\bibnamedelimi А.},
+           giveni={Р\bibinitperiod\bibinitdelim А\bibinitperiod}}}%
+        {{hash=136428f47c9d44533b8b61c72dfb7380}{%
+           family={Кузнецов},
+           familyi={К\bibinitperiod},
+           given={А.\bibnamedelimi Ю.},
+           giveni={А\bibinitperiod\bibinitdelim Ю\bibinitperiod}}}%
+        {{hash=4047cf4dd298f28634d57e739c3a0175}{%
+           family={Фёдоров},
+           familyi={Ф\bibinitperiod},
+           given={Е.\bibnamedelimi А.},
+           giveni={Е\bibinitperiod\bibinitdelim А\bibinitperiod}}}%
+      }
+      \list{language}{1}{%
+        {russian}%
+      }
+      \strng{authorbibnamehash}{ac37bf0c44ec1fa5f4502faabf38dcb3}
+      \strng{authornamehash}{ac37bf0c44ec1fa5f4502faabf38dcb3}
+      \strng{authorfullhash}{ac37bf0c44ec1fa5f4502faabf38dcb3}
+      \field{sortinit}{5}
+      \field{sortinithash}{20e9b4b0b173788c5dace24730f47d8c}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Научно-технический вестник информационных технологий, механики и оптики}
+      \field{title}{Алгоритм выявления синтезированного голоса на основе кепстральных коэффициентов и сверточной нейронной сети}
+      \field{year}{2021}
+      \field{number}{4}
+      \range{number}{1}
+      \field{pages}{545\bibrangedash 552}
+      \range{pages}{8}
+      \field{volume}{21}
+      \range{volume}{1}
+    \endentry
+    \entry{src:26}{article}{}
+      \name{author}{3}{}{%
+        {{hash=71fb90d9ccaca7082dcf6264934448af}{%
+           family={Исхакова},
+           familyi={И\bibinitperiod},
+           given={А.\bibnamedelimi О.},
+           giveni={А\bibinitperiod\bibinitdelim О\bibinitperiod}}}%
+        {{hash=f6c90f41177a90f3ac12b99f47c17033}{%
+           family={Вольф},
+           familyi={В\bibinitperiod},
+           given={Д.\bibnamedelimi А.},
+           giveni={Д\bibinitperiod\bibinitdelim А\bibinitperiod}}}%
+        {{hash=404a54712857197eff52de0e9ab17724}{%
+           family={Мещеряков},
+           familyi={М\bibinitperiod},
+           given={Р.\bibnamedelimi В.},
+           giveni={Р\bibinitperiod\bibinitdelim В\bibinitperiod}}}%
+      }
+      \list{language}{1}{%
+        {russian}%
+      }
+      \strng{namehash}{515f8ac1dda2911dc18d3e35ca87b89b}
+      \strng{fullhash}{515f8ac1dda2911dc18d3e35ca87b89b}
+      \strng{bibnamehash}{515f8ac1dda2911dc18d3e35ca87b89b}
+      \strng{authorbibnamehash}{515f8ac1dda2911dc18d3e35ca87b89b}
+      \strng{authornamehash}{515f8ac1dda2911dc18d3e35ca87b89b}
+      \strng{authorfullhash}{515f8ac1dda2911dc18d3e35ca87b89b}
+      \field{sortinit}{5}
+      \field{sortinithash}{20e9b4b0b173788c5dace24730f47d8c}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Автоматика и телемеханика}
+      \field{title}{Способ снижения размерности пространства признаков при распознавании речевых эмоций с использованием СНС}
+      \field{year}{2022}
+      \field{number}{11}
+      \range{number}{1}
+      \field{pages}{147\bibrangedash 161}
+      \range{pages}{15}
+    \endentry
+    \entry{src:27}{article}{useauthor=false}
+      \name{author}{4}{}{%
+        {{hash=65647c50f2a14af7d163862efb91a4f4}{%
+           family={Khan},
+           familyi={K\bibinitperiod},
+           given={S.\bibnamedelimi A.},
+           giveni={S\bibinitperiod\bibinitdelim A\bibinitperiod}}}%
+        {{hash=6e1e82bccdb1ca4fa3e247799b0ed074}{%
+           family={Shulepina},
+           familyi={S\bibinitperiod},
+           given={S.},
+           giveni={S\bibinitperiod}}}%
+        {{hash=c32fecf07c1aa987e00744c5a8835ccb}{%
+           family={Shulepin},
+           familyi={S\bibinitperiod},
+           given={D.},
+           giveni={D\bibinitperiod}}}%
+        {{hash=40e92b2b5c69fb12bffbaa724a4a1496}{%
+           family={Lukmanov},
+           familyi={L\bibinitperiod},
+           given={R.\bibnamedelimi A.},
+           giveni={R\bibinitperiod\bibinitdelim A\bibinitperiod}}}%
+      }
+      \list{language}{1}{%
+        {english}%
+      }
+      \strng{authorbibnamehash}{be6e7a471c207db278d3fc646f207993}
+      \strng{authornamehash}{da09ef492c7e1832c981891e4a167a31}
+      \strng{authorfullhash}{be6e7a471c207db278d3fc646f207993}
+      \field{sortinit}{5}
+      \field{sortinithash}{20e9b4b0b173788c5dace24730f47d8c}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Компьютерные исследования и моделирование}
+      \field{title}{Review of algorithmic solutions for deployment of neural networks on lite devices}
+      \field{year}{2024}
+      \field{number}{7}
+      \range{number}{1}
+      \field{pages}{1601\bibrangedash 1619}
+      \range{pages}{19}
+      \field{volume}{16}
+      \range{volume}{1}
+    \endentry
+    \entry{src:8}{article}{}
+      \name{author}{2}{}{%
+        {{hash=d8e02d3de70106799ca67eae1d8c6f2c}{%
+           family={Bushur},
+           familyi={B\bibinitperiod},
+           given={J.},
+           giveni={J\bibinitperiod}}}%
+        {{hash=01fea9ce6da32048c0096b4f19fc1c50}{%
+           family={Chen},
+           familyi={C\bibinitperiod},
+           given={C.},
+           giveni={C\bibinitperiod}}}%
+      }
+      \list{language}{1}{%
+        {english}%
+      }
+      \strng{namehash}{e170e5e516e3f8786176206bd50e6bbf}
+      \strng{fullhash}{e170e5e516e3f8786176206bd50e6bbf}
+      \strng{bibnamehash}{e170e5e516e3f8786176206bd50e6bbf}
+      \strng{authorbibnamehash}{e170e5e516e3f8786176206bd50e6bbf}
+      \strng{authornamehash}{e170e5e516e3f8786176206bd50e6bbf}
+      \strng{authorfullhash}{e170e5e516e3f8786176206bd50e6bbf}
+      \field{sortinit}{7}
+      \field{sortinithash}{108d0be1b1bee9773a1173443802c0a3}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Future Internet}
+      \field{title}{Neural Network Exploration for Keyword Spotting on Edge Devices}
+      \field{year}{2023}
+      \field{number}{6}
+      \range{number}{1}
+      \field{pages}{219}
+      \range{pages}{1}
+      \field{volume}{15}
+      \range{volume}{1}
+    \endentry
+    \entry{src:2}{article}{}
+      \name{author}{1}{}{%
+        {{hash=a4785bd3d60b458f24cd720e94585b05}{%
+           family={Warden},
+           familyi={W\bibinitperiod},
+           given={P.},
+           giveni={P\bibinitperiod}}}%
+      }
+      \list{language}{1}{%
+        {english}%
+      }
+      \strng{namehash}{a4785bd3d60b458f24cd720e94585b05}
+      \strng{fullhash}{a4785bd3d60b458f24cd720e94585b05}
+      \strng{bibnamehash}{a4785bd3d60b458f24cd720e94585b05}
+      \strng{authorbibnamehash}{a4785bd3d60b458f24cd720e94585b05}
+      \strng{authornamehash}{a4785bd3d60b458f24cd720e94585b05}
+      \strng{authorfullhash}{a4785bd3d60b458f24cd720e94585b05}
+      \field{sortinit}{8}
+      \field{sortinithash}{a231b008ebf0ecbe0b4d96dcc159445f}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{arXiv preprint arXiv:1804.03209}
+      \field{title}{Speech Commands: A Dataset for Limited-Vocabulary Speech Recognition}
+      \field{year}{2018}
+      \field{pages}{11}
+      \range{pages}{1}
+    \endentry
+    \entry{src:5}{inproceedings}{useauthor=false}
+      \true{moreauthor}
+      \name{author}{3}{}{%
+        {{hash=dffab7d8edc4f4ce5bd29bc5a51e27ef}{%
+           family={Banbury},
+           familyi={B\bibinitperiod},
+           given={C.},
+           giveni={C\bibinitperiod}}}%
+        {{hash=a6a712c09f842eb0d530bc71d0f67d24}{%
+           family={Reddi},
+           familyi={R\bibinitperiod},
+           given={V.\bibnamedelimi J.},
+           giveni={V\bibinitperiod\bibinitdelim J\bibinitperiod}}}%
+        {{hash=b8fccf1ffbe2bc0fb26c3d4bee3fd14b}{%
+           family={Torelli},
+           familyi={T\bibinitperiod},
+           given={P.},
+           giveni={P\bibinitperiod}}}%
+      }
+      \list{language}{1}{%
+        {english}%
+      }
+      \strng{authorbibnamehash}{8c9bcb8c00f3fcf646c3d3da95a1773e}
+      \strng{authornamehash}{8c9bcb8c00f3fcf646c3d3da95a1773e}
+      \strng{authorfullhash}{8c9bcb8c00f3fcf646c3d3da95a1773e}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{Proc. Neural Information Processing Systems Datasets and Benchmarks Track}
+      \field{title}{MLPerf Tiny Benchmark}
+      \field{year}{2021}
+      \field{pages}{15}
+      \range{pages}{1}
+    \endentry
+    \entry{src:10}{article}{}
+      \name{author}{2}{}{%
+        {{hash=65c85dc43bbf4ea9a6c7721bae9880e4}{%
+           family={Davis},
+           familyi={D\bibinitperiod},
+           given={S.},
+           giveni={S\bibinitperiod}}}%
+        {{hash=4116874f4a33f8658fca89fb05e43aed}{%
+           family={Mermelstein},
+           familyi={M\bibinitperiod},
+           given={P.},
+           giveni={P\bibinitperiod}}}%
+      }
+      \list{language}{1}{%
+        {english}%
+      }
+      \strng{namehash}{069cad1bdc47b47b7f091c602eda42c5}
+      \strng{fullhash}{069cad1bdc47b47b7f091c602eda42c5}
+      \strng{bibnamehash}{069cad1bdc47b47b7f091c602eda42c5}
+      \strng{authorbibnamehash}{069cad1bdc47b47b7f091c602eda42c5}
+      \strng{authornamehash}{069cad1bdc47b47b7f091c602eda42c5}
+      \strng{authorfullhash}{069cad1bdc47b47b7f091c602eda42c5}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{IEEE Transactions on Acoustics, Speech, and Signal Processing}
+      \field{title}{Comparison of Parametric Representations for Monosyllabic Word Recognition in Continuously Spoken Sentences}
+      \field{year}{1980}
+      \field{number}{4}
+      \range{number}{1}
+      \field{pages}{357\bibrangedash 366}
+      \range{pages}{10}
+      \field{volume}{28}
+      \range{volume}{1}
+    \endentry
+    \entry{src:21}{inproceedings}{useauthor=false}
+      \true{moreauthor}
+      \name{author}{3}{}{%
+        {{hash=0d1724866f9a5eddd3c4b7f1c11ddc5d}{%
+           family={Duarte},
+           familyi={D\bibinitperiod},
+           given={J.},
+           giveni={J\bibinitperiod}}}%
+        {{hash=1063c3b754fad58df2446dc9f4d18133}{%
+           family={Trahms},
+           familyi={T\bibinitperiod},
+           given={M.},
+           giveni={M\bibinitperiod}}}%
+        {{hash=d3c6003a7b540c5ff34223fdfc8eee3d}{%
+           family={Borras},
+           familyi={B\bibinitperiod},
+           given={H.},
+           giveni={H\bibinitperiod}}}%
+      }
+      \list{language}{1}{%
+        {english}%
+      }
+      \strng{authorbibnamehash}{f15bdc2b71e0bca5b16e47957c4b5a82}
+      \strng{authornamehash}{f15bdc2b71e0bca5b16e47957c4b5a82}
+      \strng{authorfullhash}{f15bdc2b71e0bca5b16e47957c4b5a82}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{Proc. Machine Learning and Systems (MLSys)}
+      \field{title}{Open-source FPGA-ML Codesign for the MLPerf Tiny Benchmark}
+      \field{year}{2022}
+      \field{pages}{6}
+      \range{pages}{1}
+    \endentry
+    \entry{src:25}{article}{}
+      \name{author}{2}{}{%
+        {{hash=eed758d615cc4503d2122169d52b87ec}{%
+           family={Ушенина},
+           familyi={У\bibinitperiod},
+           given={И.\bibnamedelimi В.},
+           giveni={И\bibinitperiod\bibinitdelim В\bibinitperiod}}}%
+        {{hash=f6979c41ed4a56c3e9a4c5ca6fb85df3}{%
+           family={Данилов},
+           familyi={Д\bibinitperiod},
+           given={Е.\bibnamedelimi А.},
+           giveni={Е\bibinitperiod\bibinitdelim А\bibinitperiod}}}%
+      }
+      \list{language}{1}{%
+        {russian}%
+      }
+      \strng{namehash}{5712c1c8d4a4cba22621111c5734ce9c}
+      \strng{fullhash}{5712c1c8d4a4cba22621111c5734ce9c}
+      \strng{bibnamehash}{5712c1c8d4a4cba22621111c5734ce9c}
+      \strng{authorbibnamehash}{5712c1c8d4a4cba22621111c5734ce9c}
+      \strng{authornamehash}{5712c1c8d4a4cba22621111c5734ce9c}
+      \strng{authorfullhash}{5712c1c8d4a4cba22621111c5734ce9c}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Цифровая обработка сигналов}
+      \field{title}{Реализация на ПЛИС модуля искусственного нейрона для последовательно-параллельных архитектур нейронных сетей с прямой связью}
+      \field{year}{2025}
+      \field{number}{1}
+      \range{number}{1}
+      \field{pages}{78\bibrangedash 84}
+      \range{pages}{7}
+    \endentry
+    \entry{src:29}{article}{useauthor=false}
+      \name{author}{5}{}{%
+        {{hash=4e6fe5946a342625d61c1d8e3370d779}{%
+           family={Chen},
+           familyi={C\bibinitperiod},
+           given={F.},
+           giveni={F\bibinitperiod}}}%
+        {{hash=63862689e523b3a8d2297f6501c4ac43}{%
+           family={Un},
+           familyi={U\bibinitperiod},
+           given={K.-F.},
+           giveni={K\bibinithyphendelim F\bibinitperiod}}}%
+        {{hash=7821f427c94a966b0d348b5b6743eb82}{%
+           family={Yu},
+           familyi={Y\bibinitperiod},
+           given={W.-H.},
+           giveni={W\bibinithyphendelim H\bibinitperiod}}}%
+        {{hash=792dbe0775ea0982640bcd8567c59ce4}{%
+           family={Mak},
+           familyi={M\bibinitperiod},
+           given={P.-I.},
+           giveni={P\bibinithyphendelim I\bibinitperiod}}}%
+        {{hash=b4af02793229c8f167897ac440d42c31}{%
+           family={Martins},
+           familyi={M\bibinitperiod},
+           given={R.\bibnamedelimi P.},
+           giveni={R\bibinitperiod\bibinitdelim P\bibinitperiod}}}%
+      }
+      \list{language}{1}{%
+        {english}%
+      }
+      \strng{authorbibnamehash}{cf9e9ed15d0e8f752335b971be7f2d65}
+      \strng{authornamehash}{f1bb88a32c618cd578272765accf026f}
+      \strng{authorfullhash}{cf9e9ed15d0e8f752335b971be7f2d65}
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{IEEE Journal of Solid-State Circuits}
+      \field{title}{A 108-nW 0.8-mm$^2$ Analog Voice Activity Detector Featuring a Time-Domain CNN With Sparsity-Aware Computation and Sparsified Quantization in 28-nm CMOS}
+      \field{year}{2022}
+      \field{number}{11}
+      \range{number}{1}
+      \field{pages}{3288\bibrangedash 3297}
+      \range{pages}{10}
+      \field{volume}{57}
+      \range{volume}{1}
+    \endentry
+    \entry{src:30}{article}{useauthor=false}
+      \name{author}{5}{}{%
+        {{hash=11ccc60d0ab0725822a1eae13191a8ca}{%
+           family={Lin},
+           familyi={L\bibinitperiod},
+           given={J.},
+           giveni={J\bibinitperiod}}}%
+        {{hash=63862689e523b3a8d2297f6501c4ac43}{%
+           family={Un},
+           familyi={U\bibinitperiod},
+           given={K.-F.},
+           giveni={K\bibinithyphendelim F\bibinitperiod}}}%
+        {{hash=7821f427c94a966b0d348b5b6743eb82}{%
+           family={Yu},
+           familyi={Y\bibinitperiod},
+           given={W.-H.},
+           giveni={W\bibinithyphendelim H\bibinitperiod}}}%
+        {{hash=b4af02793229c8f167897ac440d42c31}{%
+           family={Martins},
+           familyi={M\bibinitperiod},
+           given={R.\bibnamedelimi P.},
+           giveni={R\bibinitperiod\bibinitdelim P\bibinitperiod}}}%
+        {{hash=792dbe0775ea0982640bcd8567c59ce4}{%
+           family={Mak},
+           familyi={M\bibinitperiod},
+           given={P.-I.},
+           giveni={P\bibinithyphendelim I\bibinitperiod}}}%
+      }
+      \list{language}{1}{%
+        {english}%
+      }
+      \strng{authorbibnamehash}{a341699b2511f1e7ea72ccfd15adafbf}
+      \strng{authornamehash}{2587358d66860dc162e126841784410a}
+      \strng{authorfullhash}{a341699b2511f1e7ea72ccfd15adafbf}
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{IEEE Journal of Solid-State Circuits}
+      \field{title}{A 47-nW Voice Activity Detector (VAD) Featuring a Short-Time CNN Feature Extractor and an RNN-Based Classifier With a Non-Volatile CAP-ROM}
+      \field{year}{2023}
+      \field{number}{11}
+      \range{number}{1}
+      \field{pages}{3020\bibrangedash 3029}
+      \range{pages}{10}
+      \field{volume}{58}
+      \range{volume}{1}
+    \endentry
+    \entry{src:11}{article}{useauthor=false}
+      \true{moreauthor}
+      \name{author}{3}{}{%
+        {{hash=f958b111a2ada2625ec355244c59c370}{%
+           family={Howard},
+           familyi={H\bibinitperiod},
+           given={A.\bibnamedelimi G.},
+           giveni={A\bibinitperiod\bibinitdelim G\bibinitperiod}}}%
+        {{hash=30400d7ee97b79e350b676ee97b077cd}{%
+           family={Zhu},
+           familyi={Z\bibinitperiod},
+           given={M.},
+           giveni={M\bibinitperiod}}}%
+        {{hash=4813a7a1a94021e09e6c138d189a8ebe}{%
+           family={Chen},
+           familyi={C\bibinitperiod},
+           given={B.},
+           giveni={B\bibinitperiod}}}%
+      }
+      \list{language}{1}{%
+        {english}%
+      }
+      \strng{authorbibnamehash}{ad6be8538b374dbf18bfa9354041ddd5}
+      \strng{authornamehash}{ad6be8538b374dbf18bfa9354041ddd5}
+      \strng{authorfullhash}{ad6be8538b374dbf18bfa9354041ddd5}
+      \field{sortinit}{3}
+      \field{sortinithash}{ad6fe7482ffbd7b9f99c9e8b5dccd3d7}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{arXiv preprint arXiv:1704.04861}
+      \field{title}{MobileNets: Efficient Convolutional Neural Networks for Mobile Vision Applications}
+      \field{year}{2017}
+      \field{pages}{9}
+      \range{pages}{1}
+    \endentry
+    \entry{src:4}{inproceedings}{useauthor=false}
+      \true{moreauthor}
+      \name{author}{3}{}{%
+        {{hash=05ba6271e3051517ff98d6596397e00c}{%
+           family={David},
+           familyi={D\bibinitperiod},
+           given={R.},
+           giveni={R\bibinitperiod}}}%
+        {{hash=143b0d2f06b2454d9bcb42beaba74fc6}{%
+           family={Duke},
+           familyi={D\bibinitperiod},
+           given={J.},
+           giveni={J\bibinitperiod}}}%
+        {{hash=b8a48184e3794e3037528773cc004bb8}{%
+           family={Jain},
+           familyi={J\bibinitperiod},
+           given={A.},
+           giveni={A\bibinitperiod}}}%
+      }
+      \list{language}{1}{%
+        {english}%
+      }
+      \strng{authorbibnamehash}{4d8ff773b7c07167ad4b022272007647}
+      \strng{authornamehash}{4d8ff773b7c07167ad4b022272007647}
+      \strng{authorfullhash}{4d8ff773b7c07167ad4b022272007647}
+      \field{sortinit}{4}
+      \field{sortinithash}{9381316451d1b9788675a07e972a12a7}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{Proceedings of Machine Learning and Systems}
+      \field{title}{TensorFlow Lite Micro: Embedded Machine Learning for TinyML Systems}
+      \field{year}{2021}
+      \field{pages}{800\bibrangedash 811}
+      \range{pages}{12}
+      \field{volume}{3}
+      \range{volume}{1}
+    \endentry
+    \entry{src:13}{article}{}
+      \name{author}{3}{}{%
+        {{hash=bcf9c5bbdeffa36d9c0d48a806732c66}{%
+           family={Lai},
+           familyi={L\bibinitperiod},
+           given={L.},
+           giveni={L\bibinitperiod}}}%
+        {{hash=ae512f3043c7afc1d0a18ca62174fa07}{%
+           family={Suda},
+           familyi={S\bibinitperiod},
+           given={N.},
+           giveni={N\bibinitperiod}}}%
+        {{hash=e7b859a79b0689bc4a6b7e435b443109}{%
+           family={Chandra},
+           familyi={C\bibinitperiod},
+           given={V.},
+           giveni={V\bibinitperiod}}}%
+      }
+      \list{language}{1}{%
+        {english}%
+      }
+      \strng{namehash}{2c344ee4f9634c0a91b8843ed30d07c7}
+      \strng{fullhash}{2c344ee4f9634c0a91b8843ed30d07c7}
+      \strng{bibnamehash}{2c344ee4f9634c0a91b8843ed30d07c7}
+      \strng{authorbibnamehash}{2c344ee4f9634c0a91b8843ed30d07c7}
+      \strng{authornamehash}{2c344ee4f9634c0a91b8843ed30d07c7}
+      \strng{authorfullhash}{2c344ee4f9634c0a91b8843ed30d07c7}
+      \field{sortinit}{4}
+      \field{sortinithash}{9381316451d1b9788675a07e972a12a7}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{arXiv preprint arXiv:1801.06601}
+      \field{title}{CMSIS-NN: Efficient Neural Network Kernels for Arm Cortex-M CPUs}
+      \field{year}{2018}
+      \field{pages}{6}
+      \range{pages}{1}
+    \endentry
+    \entry{src:17}{online}{}
+      \name{author}{1}{}{%
+        {{hash=66589871a3c3f27bcbf3891133af42b1}{%
+           family={{Espressif Systems}},
+           familyi={E\bibinitperiod}}}%
+      }
+      \list{language}{1}{%
+        {english}%
+      }
+      \strng{namehash}{66589871a3c3f27bcbf3891133af42b1}
+      \strng{fullhash}{66589871a3c3f27bcbf3891133af42b1}
+      \strng{bibnamehash}{66589871a3c3f27bcbf3891133af42b1}
+      \strng{authorbibnamehash}{66589871a3c3f27bcbf3891133af42b1}
+      \strng{authornamehash}{66589871a3c3f27bcbf3891133af42b1}
+      \strng{authorfullhash}{66589871a3c3f27bcbf3891133af42b1}
+      \field{extraname}{2}
+      \field{sortinit}{5}
+      \field{sortinithash}{20e9b4b0b173788c5dace24730f47d8c}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{ESP-IDF Programming Guide. Version 5.4}
+      \field{urlday}{1}
+      \field{urlmonth}{4}
+      \field{urlyear}{2026}
+      \field{year}{2026}
+      \field{urldateera}{ce}
+      \verb{urlraw}
+      \verb https://docs.espressif.com/projects/esp-idf/en/v5.4/esp32s3/
+      \endverb
+      \verb{url}
+      \verb https://docs.espressif.com/projects/esp-idf/en/v5.4/esp32s3/
+      \endverb
+    \endentry
+    \entry{src:15}{online}{}
+      \name{author}{1}{}{%
+        {{hash=c86f06371e182a0f5e1e62ba43e46d8f}{%
+           family={{InvenSense (TDK)}},
+           familyi={I\bibinitperiod}}}%
+      }
+      \list{language}{1}{%
+        {english}%
+      }
+      \strng{namehash}{c86f06371e182a0f5e1e62ba43e46d8f}
+      \strng{fullhash}{c86f06371e182a0f5e1e62ba43e46d8f}
+      \strng{bibnamehash}{c86f06371e182a0f5e1e62ba43e46d8f}
+      \strng{authorbibnamehash}{c86f06371e182a0f5e1e62ba43e46d8f}
+      \strng{authornamehash}{c86f06371e182a0f5e1e62ba43e46d8f}
+      \strng{authorfullhash}{c86f06371e182a0f5e1e62ba43e46d8f}
+      \field{sortinit}{5}
+      \field{sortinithash}{20e9b4b0b173788c5dace24730f47d8c}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{INMP441 Omnidirectional Microphone with Bottom Port and I2S Digital Output. Datasheet}
+      \field{urlday}{1}
+      \field{urlmonth}{4}
+      \field{urlyear}{2026}
+      \field{year}{2023}
+      \field{urldateera}{ce}
+      \verb{urlraw}
+      \verb https://invensense.tdk.com/products/analog/inmp441/
+      \endverb
+      \verb{url}
+      \verb https://invensense.tdk.com/products/analog/inmp441/
+      \endverb
+    \endentry
+    \entry{src:18}{online}{}
+      \name{author}{1}{}{%
+        {{hash=66589871a3c3f27bcbf3891133af42b1}{%
+           family={{Espressif Systems}},
+           familyi={E\bibinitperiod}}}%
+      }
+      \list{language}{1}{%
+        {english}%
+      }
+      \strng{namehash}{66589871a3c3f27bcbf3891133af42b1}
+      \strng{fullhash}{66589871a3c3f27bcbf3891133af42b1}
+      \strng{bibnamehash}{66589871a3c3f27bcbf3891133af42b1}
+      \strng{authorbibnamehash}{66589871a3c3f27bcbf3891133af42b1}
+      \strng{authornamehash}{66589871a3c3f27bcbf3891133af42b1}
+      \strng{authorfullhash}{66589871a3c3f27bcbf3891133af42b1}
+      \field{extraname}{3}
+      \field{sortinit}{7}
+      \field{sortinithash}{108d0be1b1bee9773a1173443802c0a3}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{ESP32-S3 Technical Reference Manual. Version 1.2}
+      \field{urlday}{2}
+      \field{urlmonth}{4}
+      \field{urlyear}{2026}
+      \field{year}{2024}
+      \field{urldateera}{ce}
+      \verb{urlraw}
+      \verb https://www.espressif.com/documentation/esp32-s3_technical_reference_manual_en.pdf
+      \endverb
+      \verb{url}
+      \verb https://www.espressif.com/documentation/esp32-s3_technical_reference_manual_en.pdf
+      \endverb
+    \endentry
+    \entry{src:16}{online}{}
+      \name{author}{1}{}{%
+        {{hash=67e54b1ee931f3f4bddfefa5fbde5fd8}{%
+           family={{Texas Instruments}},
+           familyi={T\bibinitperiod}}}%
+      }
+      \list{language}{1}{%
+        {english}%
+      }
+      \strng{namehash}{67e54b1ee931f3f4bddfefa5fbde5fd8}
+      \strng{fullhash}{67e54b1ee931f3f4bddfefa5fbde5fd8}
+      \strng{bibnamehash}{67e54b1ee931f3f4bddfefa5fbde5fd8}
+      \strng{authorbibnamehash}{67e54b1ee931f3f4bddfefa5fbde5fd8}
+      \strng{authornamehash}{67e54b1ee931f3f4bddfefa5fbde5fd8}
+      \strng{authorfullhash}{67e54b1ee931f3f4bddfefa5fbde5fd8}
+      \field{sortinit}{8}
+      \field{sortinithash}{a231b008ebf0ecbe0b4d96dcc159445f}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{INA228 85-V, 20-Bit, Ultra-Precise Power/Energy/Charge Monitor. Datasheet}
+      \field{urlday}{2}
+      \field{urlmonth}{4}
+      \field{urlyear}{2026}
+      \field{year}{2022}
+      \field{urldateera}{ce}
+      \verb{urlraw}
+      \verb https://www.ti.com/lit/ds/symlink/ina228.pdf
+      \endverb
+      \verb{url}
+      \verb https://www.ti.com/lit/ds/symlink/ina228.pdf
+      \endverb
+    \endentry
+    \entry{src:31}{article}{}
+      \name{author}{3}{}{%
+        {{hash=23234f5ba53b529dad31f71975878ad9}{%
+           family={S{ø}rensen},
+           familyi={S\bibinitperiod},
+           given={P.\bibnamedelimi M.},
+           giveni={P\bibinitperiod\bibinitdelim M\bibinitperiod}}}%
+        {{hash=ebb7cf9b4c47a0feb69111f79f2e205c}{%
+           family={Epp},
+           familyi={E\bibinitperiod},
+           given={B.},
+           giveni={B\bibinitperiod}}}%
+        {{hash=d48429fdfe6e2fa52a8d5636c55922fc}{%
+           family={May},
+           familyi={M\bibinitperiod},
+           given={T.},
+           giveni={T\bibinitperiod}}}%
+      }
+      \list{language}{1}{%
+        {english}%
+      }
+      \strng{namehash}{cdb9113c67ba73842e72e15cab5edbeb}
+      \strng{fullhash}{cdb9113c67ba73842e72e15cab5edbeb}
+      \strng{bibnamehash}{cdb9113c67ba73842e72e15cab5edbeb}
+      \strng{authorbibnamehash}{cdb9113c67ba73842e72e15cab5edbeb}
+      \strng{authornamehash}{cdb9113c67ba73842e72e15cab5edbeb}
+      \strng{authorfullhash}{cdb9113c67ba73842e72e15cab5edbeb}
+      \field{sortinit}{8}
+      \field{sortinithash}{a231b008ebf0ecbe0b4d96dcc159445f}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{EURASIP Journal on Audio, Speech, and Music Processing}
+      \field{title}{A Depthwise Separable Convolutional Neural Network for Keyword Spotting on an Embedded System}
+      \field{year}{2020}
+      \field{number}{1}
+      \range{number}{1}
+      \field{pages}{10}
+      \range{pages}{1}
+      \field{volume}{2020}
+      \range{volume}{1}
+    \endentry
+  \enddatalist
+\endrefsection
+\endinput
+

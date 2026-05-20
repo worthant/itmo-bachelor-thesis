@@ -1,30 +1,25 @@
-\newcolumntype{C}[1]{>{\microtypesetup{activate=true}\centering\arraybackslash}p{#1}}
-\begin{longtable}{|C{3.5cm}|C{2.5cm}|C{2.5cm}|C{2.5cm}|C{2.5cm}|}
+\begin{table}[h!]
+	\centering
 	\caption{Метрики качества классификации модели $f104\_b5$ PTQ INT8 на тестовой выборке Google Speech Commands~v2}
-	\label{tab:classification_metrics}                                                                  \\
-	\hline
-	\textbf{Класс}        & \textbf{Precision} & \textbf{Recall} & \textbf{F1-score} & \textbf{Support} \\
-	\hline
-	\endfirsthead
-	\hline
-	\textbf{Класс}        & \textbf{Precision} & \textbf{Recall} & \textbf{F1-score} & \textbf{Support} \\
-	\hline
-	\endhead
-	\hline
-	\endfoot
-	yes                   & 0,9647             & 0,9785          & 0,9716            & 419              \\ \hline
-	no                    & 0,9429             & 0,9778          & 0,9600            & 405              \\ \hline
-	up                    & 0,9543             & 0,9341          & 0,9441            & 425              \\ \hline
-	down                  & 0,9348             & 0,9532          & 0,9439            & 406              \\ \hline
-	left                  & 0,9780             & 0,9733          & 0,9757            & 412              \\ \hline
-	right                 & 0,9949             & 0,9848          & 0,9898            & 396              \\ \hline
-	on                    & 0,9642             & 0,9520          & 0,9581            & 396              \\ \hline
-	off                   & 0,9500             & 0,9453          & 0,9476            & 402              \\ \hline
-	stop                  & 0,9781             & 0,9781          & 0,9781            & 411              \\ \hline
-	go                    & 0,9370             & 0,9254          & 0,9312            & 402              \\ \hline
-	unknown               & 1,0000             & 1,0000          & 1,0000            & 40               \\ \hline
-	silence               & 0,7368             & 0,7000          & 0,7179            & 40               \\ \hline
-	\textbf{Macro avg}    & \textbf{0,9446}    & \textbf{0,9419} & \textbf{0,9432}   & 4154             \\ \hline
-	\textbf{Weighted avg} & \textbf{0,9581}    & \textbf{0,9581} & \textbf{0,9580}   & 4154             \\
-	\hline
-\end{longtable}
+	\label{tab:classification_metrics}
+	\begin{tabular}{|l|c|c|c|c|}
+		\hline
+		\textbf{Класс}        & \textbf{Precision} & \textbf{Recall} & \textbf{F1-score} & \textbf{Support} \\
+		\hline
+		yes                   & 0,9647             & 0,9785          & 0,9716            & 419              \\ \hline
+		no                    & 0,9429             & 0,9778          & 0,9600            & 405              \\ \hline
+		up                    & 0,9543             & 0,9341          & 0,9441            & 425              \\ \hline
+		down                  & 0,9348             & 0,9532          & 0,9439            & 406              \\ \hline
+		left                  & 0,9780             & 0,9733          & 0,9757            & 412              \\ \hline
+		right                 & 0,9949             & 0,9848          & 0,9898            & 396              \\ \hline
+		on                    & 0,9642             & 0,9520          & 0,9581            & 396              \\ \hline
+		off                   & 0,9500             & 0,9453          & 0,9476            & 402              \\ \hline
+		stop                  & 0,9781             & 0,9781          & 0,9781            & 411              \\ \hline
+		go                    & 0,9370             & 0,9254          & 0,9312            & 402              \\ \hline
+		unknown               & 1,0000             & 1,0000          & 1,0000            & 40               \\ \hline
+		silence               & 0,7368             & 0,7000          & 0,7179            & 40               \\ \hline
+		\textbf{Macro avg}    & \textbf{0,9446}    & \textbf{0,9419} & \textbf{0,9432}   & 4154             \\ \hline
+		\textbf{Weighted avg} & \textbf{0,9581}    & \textbf{0,9581} & \textbf{0,9580}   & 4154             \\
+		\hline
+	\end{tabular}
+\end{table}
