@@ -37,24 +37,83 @@ EXT1, завершение DMA-передачи) или программными
 	\label{fig:fsm_diagram}
 \end{figure}
 
-\appsection{В}{Фотография лабораторного стенда}
+\appsection{В}{Фотографии лабораторного стенда в различных режимах работы}
 \label{app:photos}
 
-Общий вид собранного лабораторного стенда, использованного для
-экспериментальной апробации системы, приведён на
-рис.~\ref{fig:bench_photo}. На фотографии видны: измеряемая
-система (домен~1) с микроконтроллером ESP32-S3-Zero, цифровым
-микрофоном INMP441, модулем компаратора LM393 с электретным
-капсюлем, TFT-дисплеем ST7789, литий-ионным аккумулятором;
-система измерений (домен~2) с микроконтроллером ESP32-C3 Mini,
-монитором мощности INA228, собственным дисплеем и
-аккумулятором; подключение USB-UART к персональному компьютеру.
+Общий вид собранного лабораторного стенда в различных фазах функционирования
+приведён на рис.~\ref{fig:bench_photos}. Каждое изображение соответствует
+определённому состоянию конечного автомата каскадной системы обработки,
+описанного в подразделе~3.1, и демонстрирует визуальную индикацию текущего
+режима на периферийных устройствах стенда.
+
+На представленной сетке снимков отображены следующие режимы:
+\begin{itemize}
+	\item режим ожидания (рис.~\ref{fig:bench_sleep})~--- состояние \texttt{DEEP\_SLEEP},
+	      минимальное энергопотребление до срабатывания аппаратного компаратора;
+	\item режим записи (рис.~\ref{fig:bench_record})~--- состояние \texttt{RECORD},
+	      процесс захвата аудиопотока с MEMS-микрофона INMP441 в буфер DMA;
+	\item извлечение признаков (рис.~\ref{fig:bench_mfcc})~--- состояние \texttt{MFCC},
+	      расчёт матриц спектральных коэффициентов с использованием инструкций ESP-DSP;
+	\item нейросетевой инференс (рис.~\ref{fig:bench_inference})~--- состояние \texttt{INFERENCE},
+	      выполнение квантованной модели DS-CNN интерпретатором TFLite Micro;
+	\item индикация отсутствия полезного сигнала (рис.~\ref{fig:bench_res_silence})~--- состояние \texttt{RESULT},
+	      алгоритм классифицировал входной фрейм как фоновый шум или тишину;
+	\item индикация распознанной команды (рис.~\ref{fig:bench_res_command})~--- состояние \texttt{RESULT},
+	      фиксация положительного исхода классификации и вывод имени команды на дисплей.
+\end{itemize}
 
 \begin{figure}[H]
+	\StringSpacesFalse
 	\centering
-	\includegraphics[width=1\textwidth]{assets/images/bench_assembled_old.jpg}
-	\caption{Общий вид лабораторного стенда}
-	\label{fig:bench_photo}
+	% первый ряд: инициализация конвейера
+	\begin{subfigure}[b]{0.48\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{assets/images/bench_assembled_sleep.jpg}
+		\caption{Режим ожидания}
+		\label{fig:bench_sleep}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[b]{0.48\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{assets/images/bench_assembled_record.jpg}
+		\caption{Режим записи (Record)}
+		\label{fig:bench_record}
+	\end{subfigure}
+	\\ \vspace{4mm} % отступ между первым и вторым рядом
+
+	% второй ряд: вычислительные этапы
+	\begin{subfigure}[b]{0.48\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{assets/images/bench_assembled_mfcc.jpg}
+		\caption{Извлечение признаков}
+		\label{fig:bench_mfcc}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[b]{0.48\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{assets/images/bench_assembled_inference.jpg}
+		\caption{Инференс модели}
+		\label{fig:bench_inference}
+	\end{subfigure}
+	\\ \vspace{4mm} % отступ между вторым и третьим рядом
+
+	% третий ряд: варианты исходов классификации
+	\begin{subfigure}[b]{0.48\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{assets/images/bench_assembled_silence.jpg}
+		\caption{Результат: «Тишина»}
+		\label{fig:bench_res_silence}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[b]{0.48\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{assets/images/bench_assembled_command.jpg}
+		\caption{Результат: команда «off»}
+		\label{fig:bench_res_command}
+	\end{subfigure}
+
+	\caption{Лабораторный измерительный стенд в различных фазах работы конвейера обработки}
+	\label{fig:bench_photos}
 \end{figure}
 
 \appsection{Г}{Исходный код и репозитории проекта}
@@ -280,3 +339,20 @@ def fold_bn(conv_layer, bn_layer):
 nvs,        data,  nvs,      0x9000,    0x6000
 factory,    app,   factory,  0x10000,   2000K
 \end{verbatim}
+
+\appsection{И}{Диаграмма последовательности сбора измерительных данных}
+\label{app:sequence_diagram}
+
+Диаграмма последовательности сбора измерительных данных, отражающая
+временные интервалы и порядок взаимодействия компонентов измерительного
+стенда, приведена на рис.~\ref{fig:sequence_diagram}. Схема подробно
+иллюстрирует совместную работу целевого микроконтроллера (ESP32-S3),
+контроллера логгера (ESP32-C3) и цифрового монитора питания INA228
+при формировании пакетов данных для последующей передачи на ПК.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=1\textwidth]{assets/diagrams/measurements_sequence_diagram.png}
+	\caption{Диаграмма последовательности сбора измерительных данных}
+	\label{fig:sequence_diagram}
+\end{figure}
