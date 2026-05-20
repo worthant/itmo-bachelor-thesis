@@ -162,6 +162,7 @@
 \usepackage{pdfpages}
 
 
+\makeatletter
 % Команда для вставки приложения в текст и TOC
 \newcommand{\appsection}[2]{% #1 - Буква (А, Б..), #2 - Название
 	\newpage
@@ -180,7 +181,12 @@
 
 	% Возвращаем отточие обратно для последующих записей (если будут)
 	\addtocontents{toc}{\protect\renewcommand{\protect\cftsecleader}{\protect\cftdotfill{\protect\cftdotsep}}}
+
+	% === ПЕРЕНЕСЕНО В САМЫЙ КОНЕЦ ===
+	\phantomsection % Создаем правильный якорь для ссылок hyperref
+	\protected@edef\@currentlabel{#1}% Жестко прописываем букву приложения для \label
 }
+\makeatother
 
 \usepackage{float}
 

@@ -4,201 +4,112 @@
 
 \appsection{А}{Принципиальная электрическая схема лабораторного стенда}
 \label{app:schematic}
+
+Полная принципиальная электрическая схема двухдоменного
+измерительного стенда, разработанная в среде KiCad, приведена
+на рис.~\ref{fig:schematic}. Схема отражает разделение
+измеряемой системы (домен~1) и системы измерений (домен~2) с
+включением монитора мощности INA228 в разрыв линии питания
+домена~1, описанное в подразделе~3.5.
+
 \begin{figure}[H]
 	\centering
-	% TODO: добавить schematic.png — принципиальная схема стенда.
-	% На схеме показать: аккумулятор 18650, INA228, ESP32-S3-Zero,
-	% INMP441 (I2S), LM393 (детектор звука с подключением к RTC GPIO),
-	% дисплей ST7789 (SPI), светодиод индикации. Второй домен:
-	% аккумулятор 18650, ESP32-C3 Mini, INA228 по I2C, USB-UART к ПК,
-	% дисплей логгера. Разделение доменов жирной разделительной линией.
-	% Файл уже есть в репозитории precise-power-logger/docs/schematic.png
-	\fbox{\parbox{0.95\textwidth}{\centering\vspace{4cm}принципиальная схема двухдоменного измерительного стенда\vspace{4cm}}}
-	\caption{Принципиальная электрическая схема подключения компонентов лабораторного стенда}
+	\includegraphics[width=1\textwidth]{assets/diagrams/kicad_board_shematics.pdf}
+	\caption{Принципиальная электрическая схема двухдоменного измерительного стенда}
 	\label{fig:schematic}
 \end{figure}
 
-\appsection{Б}{Структурные диаграммы программной архитектуры}
+\appsection{Б}{Диаграмма состояний конечного автомата}
 \label{app:diagrams}
 
-\begin{figure}[H]
-	\centering
-	\includegraphics[width=0.7\textwidth]{assets/images/state_diagram.png}
-	\caption{Диаграмма состояний конечного автомата VAD}
-	\label{fig:fsm_states_diag}
-\end{figure}
+Диаграмма состояний конечного автомата каскадной обработки,
+описанного в подразделе~3.1, приведена на
+рис.~\ref{fig:fsm_diagram}. Состояния автомата соответствуют
+строкам таблицы~\ref{tab:fsm_states}; переходы между
+состояниями инициируются аппаратными событиями (пробуждение по
+EXT1, завершение DMA-передачи) или программными решениями
+(положительная классификация, истечение временных интервалов).
 
 \begin{figure}[H]
 	\centering
-	% TODO: диаграмма состояний FSM каскадной обработки.
-	% Состояния (узлы): DEEP_SLEEP, HW_BOOT, RECORD, MFCC, INFERENCE,
-	% RESULT, SHUTDOWN. Переходы:
-	%   DEEP_SLEEP --EXT1(LM393)--> HW_BOOT
-	%   HW_BOOT --init done--> RECORD
-	%   RECORD --buffer filled--> MFCC
-	%   MFCC --features ready--> INFERENCE
-	%   INFERENCE --result--> RESULT
-	%   RESULT --timeout--> SHUTDOWN
-	%   SHUTDOWN --deep_sleep_start--> DEEP_SLEEP
-	% Делать в draw.io как state diagram.
-	\fbox{\parbox{0.85\textwidth}{\centering\vspace{4cm}диаграмма состояний конечного автомата каскада\vspace{4cm}}}
+	\includegraphics[width=0.5\textwidth]{assets/diagrams/edge_ai_voice_recognition_fsm.png}
 	\caption{Диаграмма состояний конечного автомата каскадной обработки}
-	\label{fig:fsm_states_diag}
+	\label{fig:fsm_diagram}
 \end{figure}
 
-\begin{figure}[H]
-	\centering
-	% TODO: диаграмма компонентов программной системы.
-	% Блоки: main.c (orchestrator), vad_sleep (sleep manager), i2s_mic
-	% (audio capture), mfcc (preprocessing), kws (inference), voice_engine
-	% (pipeline glue), display/ws2812_led (indication). Стрелки —
-	% зависимости через include и вызовы функций.
-	\fbox{\parbox{0.85\textwidth}{\centering\vspace{4cm}компонентная диаграмма прошивки\vspace{4cm}}}
-	\caption{Диаграмма компонентов программной системы}
-	\label{fig:component_diag}
-\end{figure}
-
-\begin{figure}[H]
-	\centering
-	% TODO: диаграмма последовательности измерительной части.
-	% Участники: ESP32-S3 (KWS device), INA228, ESP32-C3 (logger), PC.
-	% Сообщения:
-	%   ESP32-S3 --GPIO state bits--> ESP32-C3
-	%   ESP32-C3 --I2C read VBUS/CURRENT/VSHUNT--> INA228
-	%   INA228 --measurement data--> ESP32-C3
-	%   ESP32-C3 --CSV over USB-UART--> PC
-	% Цикл повторяется каждые 200 мс.
-	\includegraphics[width=1\textwidth]{assets/images/sequence_diagram.png}
-	\caption{Диаграмма последовательности сбора измерительных данных}
-	\label{fig:sequence_diag}
-\end{figure}
-
-\appsection{В}{Фотографии лабораторного стенда}
+\appsection{В}{Фотография лабораторного стенда}
 \label{app:photos}
 
+Общий вид собранного лабораторного стенда, использованного для
+экспериментальной апробации системы, приведён на
+рис.~\ref{fig:bench_photo}. На фотографии видны: измеряемая
+система (домен~1) с микроконтроллером ESP32-S3-Zero, цифровым
+микрофоном INMP441, модулем компаратора LM393 с электретным
+капсюлем, TFT-дисплеем ST7789, литий-ионным аккумулятором;
+система измерений (домен~2) с микроконтроллером ESP32-C3 Mini,
+монитором мощности INA228, собственным дисплеем и
+аккумулятором; подключение USB-UART к персональному компьютеру.
+
 \begin{figure}[H]
 	\centering
-	% TODO: фотография собранного стенда. На фото видны: аккумуляторы,
-	% INA228 на плате, ESP32-S3-Zero с подключёнными INMP441, LM393,
-	% дисплеем, ESP32-C3 логгер с собственным дисплеем,
-	% подключение USB к ПК.
 	\includegraphics[width=1\textwidth]{assets/images/bench_assembled_old.jpg}
 	\caption{Общий вид лабораторного стенда}
 	\label{fig:bench_photo}
 \end{figure}
 
-\appsection{Г}{Дополнительные графики результатов}
-\label{app:plots}
+\appsection{Г}{Исходный код и репозитории проекта}
+\label{app:repos}
 
-\begin{figure}[H]
-	\centering
-	% TODO: accuracy_vs_size.png — генерируется compare_models.py.
-	% Scatter из трёх точек: FP32 (956 КБ, 96.46%), PTQ INT8 (260.6 КБ, 96.15%),
-	% QAT INT8 (261.3 КБ, 96.29%).
-	\fbox{\parbox{0.75\textwidth}{\centering\vspace{3cm}график точности от размера модели\vspace{3cm}}}
-	\caption{Зависимость точности классификации от размера модели для FP32, PTQ INT8 и QAT INT8 вариантов DS-CNN-M}
-	\label{fig:acc_vs_size}
-\end{figure}
+Полные исходные тексты программного обеспечения, разработанного
+в рамках настоящей работы, размещены в публичных репозиториях
+автора. Объём кода составляет несколько тысяч строк и не
+приводится в тексте работы полностью; ключевые фрагменты
+вынесены в приложения~\ref{app:firmware_code}
+и~\ref{app:python_code}, полная версия доступна по ссылкам ниже.
 
-\appsection{Д}{Исходный код прошивки микроконтроллера}
+\begin{itemize}
+	\item \textbf{Прошивка микроконтроллера ESP32-S3} (язык~C,
+	      фреймворк ESP-IDF~5.4), реализующая каскадный цикл
+	      обработки, тракт MFCC-предобработки и нейросетевой
+	      инференс через TensorFlow Lite Micro:
+	      \\
+	      \href{https://github.com/worthant/edge-ai-voice-recognition}%
+	      {\texttt{github.com/worthant/edge-ai-voice-recognition}}
+
+	\item \textbf{Прошивка логгера измерительного стенда}
+	      (ESP32-C3, опрос INA228 по I2C, синхронизация с FSM
+	      через GPIO, трансляция CSV-потока по USB-UART):
+	      \\
+	      \href{https://github.com/worthant/precise-power-logger}%
+	      {\texttt{github.com/worthant/precise-power-logger}}
+
+	\item \textbf{Текст и исходники настоящей ВКР} (LaTeX,
+	      экспериментальные данные, скрипты построения графиков,
+	      обученные модели):
+	      \\
+	      \href{https://github.com/worthant/itmo-bachelor-thesis}%
+	      {\texttt{github.com/worthant/itmo-bachelor-thesis}}
+\end{itemize}
+
+\appsection{Д}{Ключевые фрагменты прошивки микроконтроллера}
 \label{app:firmware_code}
 
-В настоящем приложении приведены ключевые модули прошивки
-микроконтроллера ESP32-S3, реализующей каскадную систему
-распознавания ключевых слов. Полный исходный код доступен в
-репозитории автора. Листинги приводятся в форме, максимально
-приближённой к рабочему коду, с минимальными косметическими
-изменениями для удобства чтения.
+В настоящем приложении приведены два ключевых фрагмента
+прошивки, иллюстрирующих критические аспекты реализации:
+корректную последовательность операций перехода в режим
+глубокого сна (подраздел~Д.1) и инициализацию интерпретатора
+TensorFlow Lite Micro с размещением арены тензоров во
+внутреннем SRAM (подраздел~Д.2). Полный исходный код прошивки
+доступен в репозитории, указанном в приложении~\ref{app:repos}.
 
-\subsection*{Д.1. Точка входа прошивки (main.c)}
+\subsection*{Д.1. Переход в режим глубокого сна (vad\_sleep.c)}
 
-Модуль реализует общий поток управления каскадным циклом обработки
-и определяет состояния конечного автомата, описанного в подразделе~3.1.
-
-\begin{verbatim}
-#include "display.h"
-#include "esp_log.h"
-#include "esp_timer.h"
-#include "freertos/FreeRTOS.h"
-#include "freertos/task.h"
-#include "i2s_mic.h"
-#include "vad_sleep.h"
-#include "voice_engine.h"
-#include "ws2812_led.h"
-#include <stdio.h>
-
-static const char *TAG = "main";
-
-static void on_detect(int idx, const char *word) {
-    ESP_LOGW(TAG, ">>> DETECTED: %s <<<", word);
-    ws2812_blink_model(idx);
-}
-
-void app_main(void) {
-    int64_t t_boot = esp_timer_get_time();
-
-    ESP_ERROR_CHECK(ws2812_init());
-    ESP_ERROR_CHECK(display_init());
-
-    if (!vad_sleep_wakeup_by_sound()) {
-        ESP_LOGI(TAG, "cold boot -> sleep");
-        display_fsm("SLEEP", "zzz...", DISP_DKGREEN, DISP_BLACK);
-        vTaskDelay(pdMS_TO_TICKS(500));
-        vad_sleep_enter(true);
-        return;
-    }
-
-    char buf[32];
-    snprintf(buf, sizeof(buf), "%lldms", (long long)(t_boot / 1000));
-    display_fsm("WAKE UP", buf, DISP_RED, DISP_BLACK);
-    ESP_LOGI(TAG, "sound wakeup -> inference (boot %lldms)",
-             (long long)(t_boot / 1000));
-
-    ESP_ERROR_CHECK(i2s_mic_init());
-    ESP_ERROR_CHECK(voice_engine_init());
-
-    int64_t t0 = esp_timer_get_time();
-    voice_engine_run(2500, on_detect);
-    int total_ms = (int)((esp_timer_get_time() - t0) / 1000);
-    ESP_LOGI(TAG, "total pipeline: %dms", total_ms);
-
-    vTaskDelay(pdMS_TO_TICKS(3000));
-
-    ws2812_clear();
-    display_fsm("SLEEP", "zzz...", DISP_DKGREEN, DISP_BLACK);
-    vTaskDelay(pdMS_TO_TICKS(500));
-
-    voice_engine_deinit();
-    vad_sleep_enter(true);
-}
-\end{verbatim}
-
-\subsection*{Д.2. Управление режимом глубокого сна (vad\_sleep.c)}
-
-Модуль реализует переход в режим глубокого сна с настройкой
-аппаратного источника пробуждения EXT1 по сигналу от компаратора
-LM393 и корректную обработку выхода из сна.
+Порядок операций критичен: деинициализация периферии и изоляция
+GPIO предшествуют настройке источника пробуждения. Нарушение
+порядка приводит к ложному срабатыванию EXT1 из-за переходных
+процессов на выводах RTC GPIO в момент перехода в режим сна.
 
 \begin{verbatim}
-#include "vad_sleep.h"
-#include "driver/rtc_io.h"
-#include "esp_log.h"
-#include "esp_sleep.h"
-#include "freertos/FreeRTOS.h"
-#include "freertos/task.h"
-
-static const char *TAG = "vad_sleep";
-
-bool vad_sleep_wakeup_by_sound(void) {
-    rtc_gpio_hold_dis(SLEEP_LED_GPIO);
-    rtc_gpio_set_level(SLEEP_LED_GPIO, 0);
-    rtc_gpio_deinit(SLEEP_LED_GPIO);
-
-    esp_sleep_wakeup_cause_t cause = esp_sleep_get_wakeup_cause();
-    ESP_LOGI(TAG, "wakeup cause: %d", cause);
-    return cause == ESP_SLEEP_WAKEUP_EXT1;
-}
-
 void vad_sleep_enter(bool enable_led) {
     if (enable_led) {
         rtc_gpio_init(SLEEP_LED_GPIO);
@@ -215,146 +126,36 @@ void vad_sleep_enter(bool enable_led) {
     ESP_ERROR_CHECK(esp_sleep_enable_ext1_wakeup(
         1ULL << SOUND_GPIO, ESP_EXT1_WAKEUP_ANY_LOW));
 
-    ESP_LOGI(TAG, "entering deep sleep");
     esp_deep_sleep_start();
 }
 \end{verbatim}
 
-\subsection*{Д.3. Извлечение MFCC-признаков (mfcc.c)}
+\subsection*{Д.2. Инициализация инференса (kws.cpp)}
 
-Модуль реализует полный пайплайн предобработки аудиосигнала,
-описанный в подразделе~3.2: оконную сегментацию с применением окна
-Хэмминга, дискретное преобразование Фурье с аппаратным ускорением
-библиотеки ESP-DSP, проекцию на мел-шкалу, логарифмирование и
-дискретное косинусное преобразование. Параметры пайплайна
-($f_s$, размер окна, шаг, размер БПФ, число мел-фильтров, число
-коэффициентов) задаются макросами в заголовочном файле и должны в
-точности соответствовать параметрам, использованным при обучении
-модели.
+Арена тензоров размером 140~КБ обязательно размещается во
+внутреннем SRAM микроконтроллера (флаг
+\texttt{MALLOC\_CAP\_INTERNAL}), поскольку аппаратное
+SIMD-ускорение библиотеки ESP-NN корректно работает только с
+этим типом памяти.
 
 \begin{verbatim}
-#include "mfcc.h"
-#include "dsps_fft2r.h"
-#include "esp_heap_caps.h"
-#include "esp_log.h"
-#include "mel_matrix.h"
-#include <math.h>
-#include <stdlib.h>
-#include <string.h>
-
-struct mfcc_ctx {
-    float hann[MFCC_WINDOW_SAMPLES];
-    float dct_matrix[MFCC_NUM_COEFFS][MFCC_MEL_BINS];
-    float *fft_buf;
-    float *mag_buf;
-};
-
-static void build_hann(float *w, int n) {
-    for (int i = 0; i < n; i++)
-        w[i] = 0.5f * (1.0f - cosf(2.0f * (float)M_PI * i / n));
-}
-
-static void build_dct(float d[MFCC_NUM_COEFFS][MFCC_MEL_BINS]) {
-    float s = sqrtf(2.0f / MFCC_MEL_BINS);
-    for (int c = 0; c < MFCC_NUM_COEFFS; c++)
-        for (int m = 0; m < MFCC_MEL_BINS; m++)
-            d[c][m] = s * cosf((float)M_PI * c * (2 * m + 1) /
-                               (2.0f * MFCC_MEL_BINS));
-}
-
-esp_err_t mfcc_compute(mfcc_ctx_t *c, const int16_t *pcm,
-                       float out[MFCC_NUM_FRAMES][MFCC_NUM_COEFFS]) {
-    const int K = MFCC_FFT_LENGTH / 2 + 1;
-
-    for (int f = 0; f < MFCC_NUM_FRAMES; f++) {
-        const int off = f * MFCC_STRIDE_SAMPLES;
-        float *cb = c->fft_buf;
-
-        /* 1. окно Хэмминга + дополнение нулями -> комплексное представление */
-        memset(cb, 0, 2 * MFCC_FFT_LENGTH * sizeof(float));
-        for (int i = 0; i < MFCC_WINDOW_SAMPLES; i++)
-            cb[2 * i] = ((float)pcm[off + i] / 32768.0f) * c->hann[i];
-
-        /* 2. БПФ (аппаратное ускорение через ESP-DSP) */
-        dsps_fft2r_fc32(cb, MFCC_FFT_LENGTH);
-        dsps_bit_rev_fc32(cb, MFCC_FFT_LENGTH);
-
-        /* 3. амплитудный спектр |X[k]| */
-        float *mag = c->mag_buf;
-        for (int k = 0; k < K; k++) {
-            float re = cb[2 * k], im = cb[2 * k + 1];
-            mag[k] = sqrtf(re * re + im * im);
-        }
-
-        /* 4. мел-фильтрация, логарифм, ДКП */
-        float mel[MFCC_MEL_BINS];
-        for (int m = 0; m < MFCC_MEL_BINS; m++) {
-            float s = 0.0f;
-            for (int k = 0; k < K; k++)
-                s += g_mel_matrix[k * MFCC_MEL_BINS + m] * mag[k];
-            mel[m] = logf(s + 1e-6f);
-        }
-        for (int cc = 0; cc < MFCC_NUM_COEFFS; cc++) {
-            float s = 0.0f;
-            for (int m = 0; m < MFCC_MEL_BINS; m++)
-                s += c->dct_matrix[cc][m] * mel[m];
-            out[f][cc] = s;
-        }
-    }
-    return ESP_OK;
-}
-\end{verbatim}
-
-\subsection*{Д.4. Инференс нейросетевой модели (kws.cpp)}
-
-Модуль выполняет инференс квантизованной модели DS-CNN через
-фреймворк TensorFlow Lite Micro. Реализованы инициализация
-интерпретатора, регистрация необходимых операторов в op-resolver,
-аллокация арены тензоров во внутреннем SRAM (для корректной работы
-аппаратного ускорения ESP-NN) и процедура классификации с
-квантизацией входа и деквантизацией выхода.
-
-\begin{verbatim}
-#include "kws.h"
-#include "model_data.h"
-
-#include "esp_heap_caps.h"
-#include "esp_log.h"
-#include "esp_timer.h"
-#include "tensorflow/lite/micro/micro_interpreter.h"
-#include "tensorflow/lite/micro/micro_mutable_op_resolver.h"
-#include "tensorflow/lite/schema/schema_generated.h"
-
-#include <cmath>
-#include <cstring>
-
-/* Tensor arena во внутреннем SRAM:
- * DS-CNN-M ~300K параметров -> ~260 KB tflite.
- * Tensor arena ~60-120 KB. Берём 140 KB с запасом. */
 static constexpr int kArenaSize = 140 * 1024;
 static uint8_t *tensor_arena = nullptr;
-
-static const tflite::Model *model = nullptr;
-static tflite::MicroInterpreter *interpreter = nullptr;
-static TfLiteTensor *input_tensor = nullptr;
-static TfLiteTensor *output_tensor = nullptr;
 
 esp_err_t kws_init(void) {
     model = tflite::GetModel(g_model_data);
     if (model->version() != TFLITE_SCHEMA_VERSION) return ESP_FAIL;
 
-    /* op-resolver: регистрируем только нужные операторы */
     static tflite::MicroMutableOpResolver<8> resolver;
     resolver.AddConv2D();
     resolver.AddDepthwiseConv2D();
     resolver.AddFullyConnected();
-    resolver.AddMean();         /* GlobalAveragePooling2D */
+    resolver.AddMean();
     resolver.AddReshape();
     resolver.AddQuantize();
     resolver.AddDequantize();
     resolver.AddSoftmax();
 
-    /* Tensor arena обязательно во внутреннем SRAM */
     tensor_arena = (uint8_t *)heap_caps_malloc(
         kArenaSize, MALLOC_CAP_INTERNAL | MALLOC_CAP_8BIT);
     if (!tensor_arena) return ESP_ERR_NO_MEM;
@@ -369,193 +170,27 @@ esp_err_t kws_init(void) {
     output_tensor = interpreter->output(0);
     return ESP_OK;
 }
-
-esp_err_t kws_classify(const float mfcc[MFCC_NUM_FRAMES][MFCC_NUM_COEFFS],
-                       kws_result_t *result) {
-    /* Квантизация FP32 MFCC -> INT8 по scale/zero_point модели */
-    float in_scale = input_tensor->params.scale;
-    int in_zp = input_tensor->params.zero_point;
-    int8_t *in_data = input_tensor->data.int8;
-
-    for (int f = 0; f < MFCC_NUM_FRAMES; f++) {
-        for (int c = 0; c < MFCC_NUM_COEFFS; c++) {
-            int q = (int)roundf(mfcc[f][c] / in_scale) + in_zp;
-            if (q < -128) q = -128;
-            if (q > 127) q = 127;
-            in_data[f * MFCC_NUM_COEFFS + c] = (int8_t)q;
-        }
-    }
-
-    /* Инференс */
-    int64_t t0 = esp_timer_get_time();
-    TfLiteStatus status = interpreter->Invoke();
-    int64_t dt = esp_timer_get_time() - t0;
-    if (status != kTfLiteOk) return ESP_FAIL;
-
-    /* Деквантизация INT8 -> FP32, argmax */
-    float out_scale = output_tensor->params.scale;
-    int out_zp = output_tensor->params.zero_point;
-    int8_t *out_data = output_tensor->data.int8;
-
-    int best_idx = 0;
-    float best_val = -1e9f;
-    for (int i = 0; i < KWS_NUM_CLASSES; i++) {
-        float v = ((float)out_data[i] - out_zp) * out_scale;
-        if (v > best_val) { best_val = v; best_idx = i; }
-    }
-
-    result->label = (kws_label_t)best_idx;
-    result->score = best_val;
-    return ESP_OK;
-}
 \end{verbatim}
 
-\subsection*{Д.5. Оркестрация цикла обработки (voice\_engine\_kws.c)}
-
-Модуль объединяет компоненты пайплайна (захват аудио, MFCC,
-инференс) в единый цикл обработки. Особенностью реализации
-является выбор окна с максимальной энергией из записанного
-2,5-секундного буфера~--- такое решение позволяет компенсировать
-неопределённость момента начала произнесения команды относительно
-момента пробуждения по сигналу LM393.
-
-\begin{verbatim}
-#define KWS_THRESHOLD 2.0f  /* порог уверенности классификатора */
-
-static int find_best_window(const int16_t *buf, int total_samples) {
-    int window = MFCC_CLIP_SAMPLES;     /* окно 1 секунда */
-    int stride = MFCC_STRIDE_SAMPLES;
-    int best_offset = 0;
-    float best_energy = 0.0f;
-
-    for (int off = 0; off + window <= total_samples; off += stride) {
-        float energy = 0.0f;
-        for (int i = off; i < off + window; i++) {
-            float s = (float)buf[i];
-            energy += s * s;
-        }
-        if (energy > best_energy) {
-            best_energy = energy;
-            best_offset = off;
-        }
-    }
-    return best_offset;
-}
-
-void voice_engine_run(uint32_t listen_ms, voice_detect_cb_t cb) {
-    int record_count = (MFCC_SAMPLE_RATE * listen_ms) / 1000;
-    int16_t *audio = heap_caps_malloc(
-        record_count * sizeof(int16_t), MALLOC_CAP_SPIRAM);
-    float (*mfcc)[MFCC_NUM_COEFFS] = heap_caps_malloc(
-        sizeof(float) * MFCC_NUM_FRAMES * MFCC_NUM_COEFFS, MALLOC_CAP_SPIRAM);
-
-    /* 1. Запись 2.5 с аудио */
-    record_samples_with_progress(audio, record_count);
-
-    /* 2. Поиск окна с максимальной энергией */
-    int offset = find_best_window(audio, record_count);
-
-    /* 3. MFCC по выбранному окну */
-    mfcc_compute(mfcc_ctx, audio + offset, mfcc);
-
-    /* 4. Инференс */
-    kws_result_t res;
-    kws_classify(mfcc, &res);
-
-    /* 5. Решающее правило с порогом уверенности */
-    if (res.label != KWS_SILENCE && res.label != KWS_UNKNOWN &&
-        res.score >= KWS_THRESHOLD) {
-        if (cb) cb((int)res.label, kws_label_name(res.label));
-    }
-
-    free(mfcc);
-    free(audio);
-}
-\end{verbatim}
-
-\appsection{Е}{Исходный код обучения и квантизации модели}
+\appsection{Е}{Ключевые фрагменты модулей обучения}
 \label{app:python_code}
 
-В настоящем приложении приведены ключевые модули обучения и
-квантизации модели DS-CNN, реализованные на Python с использованием
-фреймворка TensorFlow~2. Полный исходный код доступен в репозитории
-автора.
+В настоящем приложении приведены два ключевых фрагмента
+модулей обучения и квантизации, иллюстрирующих архитектуру
+нейросетевой модели (подраздел~Е.1) и слияние слоёв BatchNorm в
+предшествующие свёрточные слои перед применением QAT
+(подраздел~Е.2). Полный исходный код доступен в репозитории,
+указанном в приложении~\ref{app:repos}.
 
-\subsection*{Е.1. Конфигурация гиперпараметров (config.py)}
+\subsection*{Е.1. Архитектура DS-CNN (ds\_cnn.py)}
 
-Все параметры обучения, аудиопайплайна, архитектуры модели и
-процедуры квантизации сосредоточены в едином конфигурационном
-модуле, что обеспечивает воспроизводимость экспериментов и
-синхронизацию параметров между этапами обучения и развёртывания на
-микроконтроллере.
-
-\begin{verbatim}
-SAMPLE_RATE = 16000              # частота дискретизации, Гц
-CLIP_DURATION_MS = 1000          # длительность аудиоклипа, мс
-CLIP_SAMPLES = 16000
-
-WINDOW_SIZE_MS = 40              # длина фрейма
-WINDOW_STRIDE_MS = 20            # шаг сегментации
-WINDOW_SIZE_SAMPLES = 640
-WINDOW_STRIDE_SAMPLES = 320
-FFT_LENGTH = 1024
-
-NUM_MEL_BINS = 40                # число мел-фильтров
-MEL_LOWER_HZ = 20.0
-MEL_UPPER_HZ = 4000.0
-NUM_MFCC = 10                    # число сохраняемых коэффициентов
-NUM_FRAMES = 49                  # число фреймов на 1 секунду
-
-INPUT_SHAPE = (49, 10, 1)        # размерность входа модели
-
-TARGET_WORDS = ["yes", "no", "up", "down", "left", "right",
-                "on", "off", "stop", "go"]
-NUM_CLASSES = 12                 # 10 команд + silence + unknown
-
-# Обучение
-BATCH_SIZE = 100
-EPOCHS = 50
-LEARNING_RATE_INIT = 1e-3
-LEARNING_RATE_MIN = 1e-5         # для cosine decay
-L2_REGULARIZATION = 1e-4
-LABEL_SMOOTHING = 0.1
-
-# DS-CNN конфигурация Medium
-DS_CNN_CONFIG = {
-    "first_conv_filters": 172,
-    "first_conv_kernel": (10, 4),
-    "first_conv_stride": (2, 2),
-    "num_ds_blocks": 6,
-    "ds_filters": 172,
-    "ds_kernel": (3, 3),
-}
-
-# Квантизация
-PTQ_REPRESENTATIVE_SAMPLES = 500
-QAT_EPOCHS = 25
-QAT_LEARNING_RATE = 1e-4
-QAT_BATCH_SIZE = 100
-\end{verbatim}
-
-\subsection*{Е.2. Архитектура нейросетевой модели (ds\_cnn.py)}
-
-Модуль реализует архитектуру DS-CNN в конфигурации Medium,
-обоснованную в подразделе~2.4. Структура полностью соответствует
-эталонной реализации Hello Edge~\cite{src:1}.
+Параметризованная реализация архитектуры, используемая для
+обучения 134~различных конфигураций сетки $(F, B)$ из
+подраздела~3.4.
 
 \begin{verbatim}
-import tensorflow as tf
-from tensorflow.keras import layers, regularizers
-import config
-
-
-def _regularizer():
-    l2 = config.L2_REGULARIZATION
-    return regularizers.l2(l2) if l2 and l2 > 0 else None
-
-
 def _ds_block(x, filters, kernel, name):
-    """Один блок разделимой свёртки: DW-conv -> BN -> ReLU -> PW-conv -> BN -> ReLU."""
+    """Блок разделимой свёртки: DW -> BN -> ReLU -> PW -> BN -> ReLU."""
     reg = _regularizer()
     x = layers.DepthwiseConv2D(
         kernel_size=kernel, padding="same", strides=(1, 1),
@@ -573,13 +208,10 @@ def _ds_block(x, filters, kernel, name):
     return x
 
 
-def build_ds_cnn(input_shape=config.INPUT_SHAPE,
-                 num_classes=config.NUM_CLASSES,
-                 cfg=config.DS_CNN_CONFIG):
+def build_ds_cnn(input_shape, num_classes, cfg):
     reg = _regularizer()
     inputs = tf.keras.Input(shape=input_shape, name="mfcc_input")
 
-    # Первичный свёрточный слой
     x = layers.Conv2D(
         filters=cfg["first_conv_filters"],
         kernel_size=cfg["first_conv_kernel"],
@@ -590,87 +222,25 @@ def build_ds_cnn(input_shape=config.INPUT_SHAPE,
     x = layers.BatchNormalization(name="stem_bn")(x)
     x = layers.ReLU(name="stem_relu")(x)
 
-    # Шесть DS-блоков
     for i in range(cfg["num_ds_blocks"]):
         x = _ds_block(x, cfg["ds_filters"], cfg["ds_kernel"],
                       name=f"ds{i+1}")
 
-    # Глобальное усреднение и классификатор
     x = layers.GlobalAveragePooling2D(name="gap")(x)
     x = layers.Dropout(0.2, name="dropout")(x)
-    outputs = layers.Dense(
-        num_classes, activation=None,
-        kernel_regularizer=reg, name="logits"
-    )(x)
+    outputs = layers.Dense(num_classes, activation=None,
+                           kernel_regularizer=reg, name="logits")(x)
 
     return tf.keras.Model(inputs, outputs, name="ds_cnn")
 \end{verbatim}
 
-\subsection*{Е.3. Посттренировочная квантизация (quantize\_ptq.py)}
+\subsection*{Е.2. Слияние BatchNorm перед QAT (quantize\_qat.py)}
 
-Модуль выполняет PTQ обученной FP32-модели с использованием
-конвертера TensorFlow Lite в режиме полной целочисленной
-квантизации. Для калибровки активаций используется случайная
-выборка из 500~примеров обучающего множества.
-
-\begin{verbatim}
-import numpy as np
-import tensorflow as tf
-import config
-from data.dataset import build_dataset_cached
-from models.ds_cnn import build_ds_cnn
-
-
-def _representative_dataset_gen():
-    """500 примеров из train для калибровки."""
-    ds = build_dataset_cached("train", batch_size=1, training=False)
-    count = 0
-    for xb, _ in ds:
-        yield [tf.cast(xb, tf.float32)]
-        count += 1
-        if count >= config.PTQ_REPRESENTATIVE_SAMPLES:
-            return
-
-
-def main():
-    # 1. Загрузка обученной FP32-модели
-    model = build_ds_cnn()
-    model.load_weights(str(config.FP32_KERAS))
-
-    # 2. Конфигурация конвертера для полной INT8 квантизации
-    converter = tf.lite.TFLiteConverter.from_keras_model(model)
-    converter.optimizations = [tf.lite.Optimize.DEFAULT]
-    converter.representative_dataset = _representative_dataset_gen
-    converter.target_spec.supported_ops = [
-        tf.lite.OpsSet.TFLITE_BUILTINS_INT8
-    ]
-    converter.inference_input_type = tf.int8
-    converter.inference_output_type = tf.int8
-
-    # 3. Конвертация и сохранение
-    tflite_model = converter.convert()
-    config.PTQ_TFLITE.write_bytes(tflite_model)
-
-
-if __name__ == "__main__":
-    main()
-\end{verbatim}
-
-\subsection*{Е.4. Квантизация с дообучением (quantize\_qat.py)}
-
-Модуль выполняет QAT с предварительным слиянием слоёв
-BatchNormalization в предшествующие свёрточные слои. Слияние BN
-выполняется перед вставкой узлов симуляции квантования и
-обеспечивает численную устойчивость дообучения. Ниже приведён
-ключевой фрагмент, реализующий слияние; полный модуль содержит также
-построение модели без BN-слоёв на основании слитых параметров и
-цикл дообучения средствами библиотеки
-\texttt{tensorflow\_model\_optimization}.
+Слияние BN в предшествующий свёрточный слой выполняется перед
+вставкой узлов симуляции квантования и обеспечивает численную
+устойчивость дообучения, как описано в подразделе~2.5.
 
 \begin{verbatim}
-import tensorflow_model_optimization as tfmot
-
-
 def fold_bn(conv_layer, bn_layer):
     """Слияние BN в предшествующий Conv/DepthwiseConv.
 
@@ -683,61 +253,23 @@ def fold_bn(conv_layer, bn_layer):
 
     kernel = conv_layer.get_weights()[0]
     if isinstance(conv_layer, tf.keras.layers.DepthwiseConv2D):
-        # DepthwiseConv2D: kernel = (H, W, C, 1)
         new_kernel = kernel * scale[np.newaxis, np.newaxis, :, np.newaxis]
     else:
-        # Conv2D: kernel = (H, W, Cin, Cout)
         new_kernel = kernel * scale[np.newaxis, np.newaxis, np.newaxis, :]
 
     new_bias = beta - moving_mean * scale
     return new_kernel.astype(np.float32), new_bias.astype(np.float32)
-
-
-def main():
-    # 1. BN folding -> модель без BatchNorm
-    folded_model = _build_folded_model()  # см. полный код модуля
-
-    # 2. Квантизация (узлы симуляции вставляются автоматически)
-    qat_model = tfmot.quantization.keras.quantize_model(folded_model)
-
-    qat_model.compile(
-        optimizer=tf.keras.optimizers.Adam(
-            learning_rate=config.QAT_LEARNING_RATE),
-        loss=tf.keras.losses.CategoricalCrossentropy(
-            from_logits=True,
-            label_smoothing=config.LABEL_SMOOTHING),
-        metrics=[tf.keras.metrics.CategoricalAccuracy(name="acc")],
-    )
-
-    # 3. Дообучение QAT_EPOCHS эпох
-    qat_model.fit(
-        build_dataset_cached("train", config.QAT_BATCH_SIZE, training=True),
-        validation_data=build_dataset_cached(
-            "val", config.QAT_BATCH_SIZE, training=False),
-        epochs=config.QAT_EPOCHS,
-    )
-
-    # 4. Конвертация в TFLite INT8 (аналогично PTQ)
-    converter = tf.lite.TFLiteConverter.from_keras_model(qat_model)
-    converter.optimizations = [tf.lite.Optimize.DEFAULT]
-    converter.representative_dataset = _representative_dataset_gen
-    converter.target_spec.supported_ops = [
-        tf.lite.OpsSet.TFLITE_BUILTINS_INT8]
-    converter.inference_input_type = tf.int8
-    converter.inference_output_type = tf.int8
-    tflite_model = converter.convert()
-    config.QAT_TFLITE.write_bytes(tflite_model)
 \end{verbatim}
 
 \appsection{Ж}{Таблица разделов флеш-памяти микроконтроллера}
 \label{app:partitions}
 
 Конфигурационный файл \texttt{partitions.csv} задаёт разметку
-флеш-памяти ESP32-S3 (общий объём 8~МБ), используемую загрузчиком
-ESP-IDF. Раздел \texttt{nvs} (24~КБ) предназначен для хранения
-системных параметров; раздел \texttt{factory} (2000~КБ)~--- для
-прошивки приложения вместе с квантизованной моделью, встраиваемой в
-бинарный образ.
+флеш-памяти ESP32-S3 (общий объём 8~МБ), используемую
+загрузчиком ESP-IDF. Раздел \texttt{nvs} (24~КБ) предназначен
+для хранения системных параметров; раздел \texttt{factory}
+(2000~КБ)~--- для прошивки приложения вместе с квантизованной
+моделью, встраиваемой в бинарный образ.
 
 \begin{verbatim}
 # Name,     Type,  SubType,  Offset,    Size
