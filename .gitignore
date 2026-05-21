@@ -44,6 +44,8 @@ build/
 !thesis/lib/vak/*.pdf
 !thesis/lib/*.pdf
 !thesis/assets/*/*
+!thesis_RU.pdf
+!thesis/.latexmkrc
 
 ## Archives
 archive
