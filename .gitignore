@@ -46,6 +46,7 @@ build/
 !thesis/assets/*/*
 !thesis_RU.pdf
 !thesis/.latexmkrc
+!pre-graduation-practise/pre_thesis_practise_report.pdf
 
 ## Archives
 archive
