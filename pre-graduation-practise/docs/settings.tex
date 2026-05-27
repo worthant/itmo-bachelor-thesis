@@ -1,0 +1,262 @@
+% "высота букв, цифр и других знаков - не менее 12пт"
+\documentclass[a4paper,12pt]{extarticle}
+
+\usepackage{hhline}
+
+% Кодировка и язык
+\usepackage{polyglossia}
+\setdefaultlanguage{russian}
+\setotherlanguage{english}
+
+% Шрифты
+\usepackage{fontspec}
+\defaultfontfeatures{Ligatures=TeX}
+\setmainfont{Times New Roman}
+\newfontfamily\cyrillicfont{Times New Roman}[Ligatures=TeX]
+\newfontfamily\cyrillicfonttt{Times New Roman}[Ligatures=TeX]
+
+% Настройка полей страницы
+\usepackage{geometry}
+\geometry{
+	left=30mm,
+	right=15mm,
+	top=20mm,
+	bottom=20mm
+}
+
+% Межстрочный интервал 1.5
+\usepackage{setspace}
+\onehalfspacing
+
+% Абзацный отступ
+\usepackage{indentfirst}
+\setlength{\parindent}{1.25cm}
+
+% Нумерация страниц
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+
+% Ограничение глубины содержания (только 1.1, без 1.1.1)
+\setcounter{tocdepth}{2}
+
+% Настройка заголовков (ГОСТ)
+\usepackage{titlesec}
+
+% Настраиваем абзацный отступ для всех уровней
+\newlength{\gostindent}
+\setlength{\gostindent}{1.25cm}
+
+% --- РАЗДЕЛЫ ---
+% Нумерованные: с прописной буквы, жирный, 14пт, абзацный отступ
+\titleformat{\section}
+{\normalfont\fontsize{14pt}{\baselineskip}\selectfont\bfseries}
+{\thesection}
+{0.5em}
+{}
+\titlespacing*{\section}{\gostindent}{0pt}{0pt}
+
+% НЕНУМЕРОВАННЫЕ разделы (Введение, Список лит-ры) — ПО ЦЕНТРУ
+\titleformat{name=\section,numberless}
+{\normalfont\fontsize{14pt}{\baselineskip}\selectfont\bfseries\centering}
+{}
+{0pt}
+{\MakeUppercase}
+\titlespacing*{name=\section,numberless}{0pt}{0pt}{0pt}
+
+% --- ПОДРАЗДЕЛЫ ---
+\titleformat{\subsection}
+{\normalfont\fontsize{14pt}{\baselineskip}\selectfont\bfseries}
+{\thesubsection}
+{0.5em}
+{}
+\titlespacing*{\subsection}{\gostindent}{1em}{0.5em}
+
+% --- ПОДПУНКТЫ ---
+\titleformat{\subsubsection}
+{\normalfont\fontsize{14pt}{\baselineskip}\selectfont}
+{\thesubsubsection}
+{0.5em}
+{}
+\titlespacing*{\subsubsection}{\gostindent}{0pt}{0pt}
+
+% Каждый раздел с новой страницы
+\newcommand{\sectionbreak}{\clearpage}
+
+% Графика и рисунки
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{subcaption}
+
+% Настройка подписей к рисункам
+\DeclareCaptionLabelSeparator{emdash}{ -- }
+\captionsetup[figure]{
+	labelsep=emdash,
+	justification=centering,
+	font=normalsize,
+	skip=6pt  % Отступ между рисунком и подписью
+}
+
+% Настройка подписей к таблицам
+\captionsetup[table]{
+	labelsep=emdash,
+	justification=raggedright,
+	singlelinecheck=false,
+	font=normalsize,
+	skip=6pt  % Отступ между подписью и таблицей
+}
+
+% Таблицы
+\usepackage{array}
+\usepackage{longtable}
+% Настройка подписи для longtable по ГОСТ
+\setlength\LTleft{0pt}
+\setlength\LTright{\fill}
+\captionsetup[longtable]{
+	labelsep=emdash,
+	justification=raggedright,
+	singlelinecheck=false,
+	font=normalsize,
+	skip=6pt
+}
+\usepackage{multirow}
+
+% Математика
+\usepackage{amsmath}
+\usepackage{amssymb}
+
+% Списки: БЕЗ ТОЧЕК, только тире или скобки
+\usepackage{enumitem}
+% Общая настройка для всех списков
+\setlist{
+	nosep,                      % Убираем лишние вертикальные отступы
+	labelindent=\parindent,     % Позиция номера = абзацный отступ (1.25см)
+	leftmargin=*,               % Текст после первой строки идет от левого поля
+	align=left                  % Выравнивание номера по левому краю отступа
+}
+
+% Настройка названия рисунков
+\addto\captionsrussian{\renewcommand{\figurename}{Рисунок}}
+
+% Нумерованные списки (1)
+\setlist[enumerate]{
+	label=\arabic*),
+	widest=0,                   % Чтобы номер не съедал лишнее место
+	ref=\arabic*
+}
+
+% Маркированные списки (тире)
+\setlist[itemize]{
+	label=---
+}
+
+% Гиперссылки (для кликабельного содержания)
+\usepackage{hyperref}
+\hypersetup{
+	colorlinks=true,
+	linkcolor=black,
+	citecolor=black,
+	urlcolor=blue,
+	breaklinks=true
+}
+\usepackage{xurl}
+\sloppy
+
+% Для вставки PDF в приложение
+\usepackage{pdfpages}
+
+% Кликабельные ссылки на источники литературы
+\newcommand{\srcref}[1]{\hyperlink{src:#1}{[#1]}}
+
+% --------------------
+%  table of contents
+% --------------------
+\usepackage{tocloft}
+\usepackage{setspace}
+
+% Вертикальный воздух между пунктами TOC.
+% Внутри пункта строки идут одинарным интервалом (см. \fontsize ниже),
+% а между пунктами добавляется небольшой пробел, имитирующий полуторный.
+\setlength{\cftbeforesecskip}{0pt}
+\setlength{\cftbeforesubsecskip}{0pt}
+\setlength{\cftbeforesubsubsecskip}{0pt}
+
+% отступы:
+% > разделы 0
+% > подразделы 0.49см
+% > подпункты 0.99см
+\setlength{\cftsecindent}{0pt}
+\setlength{\cftsubsecindent}{0.49cm}
+\setlength{\cftsubsubsecindent}{0.99cm}
+
+% Ширина колонки номера
+\setlength{\cftsecnumwidth}{0.8em}
+\setlength{\cftsubsecnumwidth}{1.75em}
+\setlength{\cftsubsubsecnumwidth}{2.7em}
+
+% Плотность отточия
+\renewcommand{\cftdotsep}{1.1}
+
+% Ширина колонки номера страницы (2 цифры в кегле 14pt помещаются в 1.3em)
+\cftsetpnumwidth{0.85em}
+\cftsetrmarg{0.82em}
+
+\renewcommand{\cfttoctitlefont}{\hfill\fontsize{14pt}{\baselineskip}\selectfont\bfseries}
+\renewcommand{\cftaftertoctitle}{\hfill}
+\renewcommand{\cftaftertoctitleskip}{1em}
+
+% Отточие идёт вплотную к номеру страницы (без принудительного \hspace)
+\renewcommand{\cftsecleader}{\cftdotfill{\cftdotsep}}
+\renewcommand{\cftsubsecleader}{\cftdotfill{\cftdotsep}}
+\renewcommand{\cftsubsubsecleader}{\cftdotfill{\cftdotsep}}
+
+\addto\captionsrussian{%
+	\renewcommand{\contentsname}{СОДЕРЖАНИЕ}%
+}
+
+% Шрифт записей TOC: одинарный интервал (baselineskip = 17pt при кегле 14pt).
+% Так многострочные пункты не разъезжаются.
+\renewcommand{\cftsecfont}{\normalfont\fontsize{14pt}{14pt}\selectfont}
+\renewcommand{\cftsubsecfont}{\normalfont\fontsize{14pt}{14pt}\selectfont}
+\renewcommand{\cftsubsubsecfont}{\normalfont\fontsize{14pt}{14pt}\selectfont}
+
+% Шрифт номеров страниц: тот же одинарный интервал, без принудительной ширины
+\renewcommand{\cftsecpagefont}{\normalfont\fontsize{14pt}{14pt}\selectfont}
+\renewcommand{\cftsubsecpagefont}{\normalfont\fontsize{14pt}{14pt}\selectfont}
+\renewcommand{\cftsubsubsecpagefont}{\normalfont\fontsize{14pt}{14pt}\selectfont}
+
+% Гасим растягивание пробелов в многострочных пунктах TOC.
+% tocloft переопределяет \l@section/\l@subsection/\l@subsubsection своими
+% макросами, которые ставят \rightskip \@tocrmarg (фиксированное правое поле)
+% и тем самым justify-ят все строки заголовка. Через etoolbox\patchcmd
+% заменяем правое поле на упругое \@tocrmarg plus 1fil — теперь нерастянутые
+% строки оставляют пустое пространство справа, без растягивания пробелов.
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd{\l@section}
+  {\rightskip \@tocrmarg}{\rightskip \@tocrmarg plus 1fil}{}{}
+\patchcmd{\l@subsection}
+  {\rightskip \@tocrmarg}{\rightskip \@tocrmarg plus 1fil}{}{}
+\patchcmd{\l@subsubsection}
+  {\rightskip \@tocrmarg}{\rightskip \@tocrmarg plus 1fil}{}{}
+\makeatother
+
+\usepackage{float}
+
+\newcounter{appendixcounter}
+\renewcommand{\theappendixcounter}{\Asbuk{appendixcounter}}
+
+\newcommand{\appsection}[1]{%
+    \newpage
+    \refstepcounter{appendixcounter}%
+    \begin{flushright}
+        \textbf{Приложение \theappendixcounter}
+    \end{flushright}
+    \begin{center}
+        \textbf{#1}
+    \end{center}
+    \addcontentsline{toc}{section}{Приложение \theappendixcounter. #1}%
+}
