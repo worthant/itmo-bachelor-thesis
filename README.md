@@ -18,10 +18,9 @@ Everything here is measured on real hardware, not simulated: a dedicated bench
 with two electrically separate power domains records current at microamp
 resolution while the device under test runs the full cycle.
 
-![видос](./assets/vad_cascade_showcase.mp4)
 
-_15-second demo: the device wakes on sound, records, extracts features,
-classifies the command and goes back to deep sleep._
+https://github.com/user-attachments/assets/e8ce2f0d-9088-42ab-9b9f-c59ab210a2dc
+
 
 ## Presentation Highlights
 
