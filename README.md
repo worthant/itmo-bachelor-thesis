@@ -154,7 +154,8 @@ be more accurate. Both were run on **63 architectures** and compared.
 Median difference: **+0.05 pp**. 98 % of models fall inside a +-0.65 pp
 corridor, which is the Wilson confidence interval of the test set itself.
 
-> [!IMPORTANT] For INT8 on DS-CNN keyword spotting, QAT buys nothing measurable.
+> [!IMPORTANT]  
+> For INT8 on DS-CNN keyword spotting, QAT buys nothing measurable.
 > PTQ was selected: same accuracy, far less work to deploy. This conclusion is
 > deliberately narrow. At 4 or 2 bits, or on attention architectures, the
 > literature shows QAT does pay off.
@@ -204,8 +205,8 @@ One complete cycle costs **1525.4 mJ over 5968 ms**:
 | ![Energy budget of one cycle](thesis/assets/diagrams/fig4_7b_energy_donut_callouts.png) |
 | --------------------------------------------------------------------------------------- |
 
-> [!IMPORTANT] **Computation is 19.2 % of the cycle. Service phases are 80.8
-> %.**
+> [!IMPORTANT]  
+> **Computation is 19.2 % of the cycle. Service phases are 80.8%.**
 >
 > The literature on always-on monitoring treats computation as the dominant
 > consumer. In a cascaded system, where inference is episodic, the cost moves to
