@@ -1,433 +1,300 @@
-## Зачем этот репозиторий
+<p align="left">
+    <a aria-label="Translation" href="./README_RU.md">
+        <img alt="" src="https://img.shields.io/badge/translation-RU-red?style=for-the-badge">
+    </a>
+</p>
 
-- Пишу дипломную работу бакалавриата ИТМО.
-- **Тема**: "Разработка энергоэффективной системы распознавания речи с
-  использованием нейронных сетей для IoT-устройств".
-- **Период**: "Февраль-Июнь 2026"
+# Energy-Efficient Keyword Spotting for Battery-Powered IoT Devices
 
-## Содержание
+Bachelor's thesis, ITMO University, February to June 2026. Defended with honors.
 
-- [Проблематика](#проблематика)
-- [Цель и задачи](#цель-и-задачи)
-- [Выбор платформы](#выбор-платформы)
-- [Архитектура прототипа](#архитектура-прототипа)
-- [Текущий прогресс](#текущий-прогресс)
-- [План работ](#план-работ)
-- [Ожидаемые результаты](#ожидаемые-результаты)
-- [Структура репозитория](#структура-репозитория)
-- [Документация](#документация)
+A voice-controlled IoT device has to listen continuously, and continuous
+listening fights the battery. This work cuts the average power of a keyword
+spotting system by **530x** by splitting detection into a cascade of stages and
+running a quantized neural network only when the cheaper stages have already
+fired.
 
-## Проблематика
+Everything here is measured on real hardware, not simulated: a dedicated bench
+with two electrically separate power domains records current at microamp
+resolution while the device under test runs the full cycle.
 
-IoT-устройства с голосовым управлением (умные колонки, наушники, датчики)
-работают от батарей/аккумуляторов и должны функционировать `месяцами` без
-подзарядки. НО: распознавание речи и использование нейронок - очень
-энергозатратная задача.
+![видос](./assets/vad_cascade_showcase.mp4)
 
-**Традиционное решение**: отправляем аудио-данные в облако (Google Assistant,
-Alexa, Яндекс Cloud)
+_15-second demo: the device wakes on sound, records, extracts features,
+classifies the command and goes back to deep sleep._
 
-Всё бы хорошо, но:
+## Presentation Highlights
 
-1. Нужен постоянный интернет
-2. Есть задержки на приём и отправку
-3. Приватность??
-4. Энергопотребление wifi
+| ![Defense slides](./assets/thesis_slides.gif) |
+| --------------------------------------------- |
 
-**Edge AI**: решение запускать нейросеть прямо на устройстве, при этом
-балансируя производительность так, чтоб батарейка не села в первый же день.
+<p align="left">
+  <a href="./thesis_defense_slides_RU.pdf">
+    <b>View the full presentation (PDF, Russian)</b>
+  </a>
+  &nbsp;·&nbsp;
+  <a href="./thesis_text_RU.pdf">
+    <b>Full thesis text (PDF, Russian)</b>
+  </a>
+</p>
 
-> [!NOTE]  
-> конечно же не всё так гладко: как это сделать слабом железе на mcu, и
-> обеспечить **месяцы** автономной работы при постоянном распознавании речи?
+## Contents
 
-Об этом я и пишу диплом :)
+- [Results](#results)
+- [The problem](#the-problem)
+- [Cascade architecture](#cascade-architecture)
+- [Choosing the model](#choosing-the-model)
+- [PTQ or QAT](#ptq-or-qat)
+- [Measurement bench](#measurement-bench)
+- [Where the energy actually goes](#where-the-energy-actually-goes)
+- [Battery life](#battery-life)
+- [Contribution](#contribution)
+- [Repository structure](#repository-structure)
+- [Related repositories](#related-repositories)
 
-## Цель и задачи
+## Results
 
-### Цель работы
+Five quantitative criteria were fixed before the work started. All five were
+met.
+
+| #   | Criterion                          | Target    | Result      |
+| --- | ---------------------------------- | --------- | ----------- |
+| C1  | Recognition accuracy (MLPerf Tiny) | >= 90 %   | **96.12 %** |
+| C2  | Model size, internal SRAM          | <= 128 KB | **101 KB**  |
+| C3  | Accuracy lost to INT8 quantization | <= 1 pp   | **-0.3 pp** |
+| C4  | Inference latency on device        | <= 500 ms | **460 ms**  |
+| C5  | Average power reduction            | >= 100x   | **530x**    |
+
+> [!NOTE] C3 is negative because the INT8 model scored slightly **higher** than
+> the FP32 one. That is a regularization effect, and the difference sits inside
+> the Wilson confidence interval of the test set, so the honest reading is
+> "quantization costs nothing here", not "quantization helps".
+
+## The problem
+
+Voice control is becoming standard for wearables, smart home devices and
+industrial sensors. All of them run on a battery, which means recognition has to
+happen locally: sending audio to the cloud burns the radio, adds latency, and
+hands voice data to someone else.
+
+But local recognition means the device listens to the audio stream all the time,
+and that puts continuous microphone and CPU activity directly against a fixed
+energy budget.
+
+That conflict is what this work resolves.
+
+## Cascade architecture
+
+Detection is split into three stages of increasing cost. Only the stage that is
+needed right now stays powered, and each stage wakes the next one by event.
+
+| ![Cascade concept](thesis/assets/images/vad_concept.png) |
+| ---------------------------------------------------- |
+
+
+| Stage | What it does                              | Duty cycle             | Cost   |
+| ----- | ----------------------------------------- | ---------------------- | ------ |
+| 1     | Sound event detection, analog comparator  | always on              | lowest |
+| 2     | Audio capture and MFCC feature extraction | fractions of a percent | medium |
+| 3     | DS-CNN classification of the command      | fractions of a percent | high   |
+
+The state machine below is what actually runs on the device. Every transition
+and every current level in it was measured, not estimated.
+
+| ![Cascade state machine](thesis/assets/diagrams/edge_ai_voice_recognition_fsm.png) |
+| ---------------------------------------------------------------------------------- |
+
+The architecture is not tied to the platform. It applies to any microcontroller
+with deep sleep and an external wake source.
+
+**Feature extraction.** Audio arrives over I2S at 16 kHz and becomes a 49x10
+MFCC matrix.
+
+| ![Feature pipeline](thesis/assets/diagrams/feature_pipeline_improved.png) |
+| ------------------------------------------------------------------------- |
+
+## Choosing the model
+
+Rather than taking the reference model from the literature, the whole design
+space was swept: **134 models, 239 measured points** across a grid of filter
+counts and blocks, each trained, quantized and evaluated.
+
+| ![Accuracy vs model size](thesis/assets/plots/pareto_frontier_size_acc.png) | ![Accuracy heatmap over filters and blocks](thesis/assets/diagrams/heatmap_filters_blocks.png) |
+| --------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------- |
+
+_Left: INT8 model size in KB against classification accuracy, with the Pareto
+front in red. Right: accuracy over the filters (vertical) by blocks (horizontal)
+grid._
+
+The main finding: **the reference model from the literature does not lie on the
+Pareto front.** Hello Edge (172 filters, 6 blocks) is beaten on both axes at
+once. At the knee of the front, around 100 KB, extra accuracy gets expensive
+fast.
+
+Selected architecture: **104 filters, 5 blocks, 101.2 KB, 96.12 % accuracy.**
+
+Adding energy to the picture confirms the choice:
+
+| ![Accuracy vs inference energy](thesis/assets/plots/pareto_energy_acc.png) |
+| -------------------------------------------------------------------------- |
+
+_Energy per single inference in mJ against accuracy._
+
+The most accurate architecture in the sweep (176 filters, 7 blocks) buys **0.17
+percentage points** of accuracy for **3x the energy**: 451.2 mJ against 149.6
+mJ. That is not a trade worth making on a battery.
+
+## PTQ or QAT
+
+Post-training quantization is simpler; quantization-aware training is assumed to
+be more accurate. Both were run on **63 architectures** and compared.
+
+| ![PTQ against QAT](thesis/assets/diagrams/ptq_vs_qat.png) |
+| --------------------------------------------------------- |
+
+Median difference: **+0.05 pp**. 98 % of models fall inside a +-0.65 pp
+corridor, which is the Wilson confidence interval of the test set itself.
+
+> [!IMPORTANT] For INT8 on DS-CNN keyword spotting, QAT buys nothing measurable.
+> PTQ was selected: same accuracy, far less work to deploy. This conclusion is
+> deliberately narrow. At 4 or 2 bits, or on attention architectures, the
+> literature shows QAT does pay off.
+
+## Measurement bench
+
+The system runs on an ESP32-S3. Measuring it required a bench where the
+instrument cannot contaminate the measurement, so the two halves have
+**electrically separate power domains**: the device under test on one battery,
+the current sensor and logger on another.
+
+| ![Assembled bench](thesis/assets/images/bench_assembled_command.jpg) |
+| -------------------------------------------------------------------- |
+
+- Current sensor: **INA228**, 15 mOhm shunt, one LSB is about 2.6 uA, hardware
+  averaging brings the resolution down to roughly 1 uA
+- Deep sleep on the dev board measures 6.2 mA, active phases 49 to 83 mA, so the
+  resolution is far more than enough to separate them
+- Cascade phase boundaries are marked by a dedicated GPIO line synchronized with
+  the logger, so intervals are unambiguous rather than inferred
+- Every cycle was measured three times; the standard deviation is reported
+
+| ![Measurement sequence](thesis/assets/diagrams/measurements_sequence_diagram.png) |
+| --------------------------------------------------------------------------------- |
+
+## Where the energy actually goes
+
+This is the main research result.
+
+| ![Current profile of one cascade cycle](thesis/assets/diagrams/fig4_6_current_profile.png) |
+| ------------------------------------------------------------------------------------------ |
+
+_Instantaneous current over one full command cycle (top) and the average per
+phase (bottom)._
+
+One complete cycle costs **1525.4 mJ over 5968 ms**:
+
+| Phase                   | Duration, ms | Energy, mJ | Share  |
+| ----------------------- | ------------ | ---------- | ------ |
+| Hardware init (HW_BOOT) | 1982         | 532.57     | 34.9 % |
+| Audio capture (RECORD)  | 2519         | 569.74     | 37.4 % |
+| MFCC extraction         | 410          | 137.19     | 9.0 %  |
+| DS-CNN inference        | 460          | 155.65     | 10.2 % |
+| Shutdown to sleep       | 597          | 130.21     | 8.5 %  |
+| **Total**               | **5968**     | **1525.4** | 100 %  |
+
+| ![Energy budget of one cycle](thesis/assets/diagrams/fig4_7b_energy_donut_callouts.png) |
+| --------------------------------------------------------------------------------------- |
+
+> [!IMPORTANT] **Computation is 19.2 % of the cycle. Service phases are 80.8
+> %.**
+>
+> The literature on always-on monitoring treats computation as the dominant
+> consumer. In a cascaded system, where inference is episodic, the cost moves to
+> hardware initialization, audio capture and the transitions between power
+> modes. Peak current comes from the short compute phases, but the energy comes
+> from the long service ones.
+>
+> That inverts the optimization priorities: shaving another 20 % off the
+> inference kernel is worth 2 % of the cycle, while cutting the 1982 ms boot is
+> worth ten times more.
+
+## Battery life
+
+With the cycle energy known, autonomy follows directly. Battery: a standard 2500
+mAh 18650 cell.
+
+| ![Battery life](thesis/assets/diagrams/fig4_X_battery_life.png) |
+| --------------------------------------------------------------- |
+
+| Wake-ups per hour | Dev board (measured) | Target board (projected) |
+| ----------------- | -------------------- | ------------------------ |
+| 1                 | 17 days              | **1.9 years**            |
+| 10                | 14 days              | 2.9 months               |
+| 60                | 8 days               | 15 days                  |
+
+On the development board autonomy is not limited by the processing cycle at all.
+It is limited by the board itself: the ESP32-S3 die draws around 10 uA in deep
+sleep, while the regulator, USB bridge and LEDs around it draw 6.2 mA, a
+thousand times more. Removing that overhead on a purpose-built board is where
+the 40x jump comes from, not from any change to the algorithm.
+
+Projected standby budget for such a board: about 30 uA total, made of the die
+(~10 uA), an ultra-low-quiescent LDO (~4 uA), a wake-on-sound MEMS microphone
+(~10 uA), leakage (~5 uA), with the INMP441 fully powered down through a MOSFET
+switch.
+
+## Contribution
+
+1. **Systematic architecture search instead of a borrowed reference.** 134
+   models, 239 measured points, results reported against the Wilson confidence
+   interval of the test set. The commonly cited reference architecture turns out
+   not to be on the Pareto front.
+
+2. **Component-level energy decomposition of a cascade cycle.** Measured, not
+   modelled. It shows service phases dominating computation, which contradicts
+   the assumption carried over from always-on monitoring systems and redirects
+   where optimization effort should go.
+
+3. **PTQ against QAT on a statistically meaningful sample.** 63 architectures,
+   median difference +0.05 pp, 98 % inside the measurement's own confidence
+   interval. For INT8 DS-CNN keyword spotting the simpler method is sufficient.
+
+Everything is reproducible: the dataset is Google Speech Commands v2, the
+training, quantization, firmware and measurement processing code is published,
+and the reference point is the MLPerf Tiny benchmark.
+
+## Repository structure
 
 ```
-Разработать прототип системы распознавания речи
- для IoT-устройств
- на базе микроконтроллера ESP32-S3
- и снизить энергопотребление
- за счёт использования квантизированных нейронных сетей
- и оптимизации режимов работы
- с экспериментальной оценкой достигнутых результатов.
+thesis/                          LaTeX source of the thesis
+  assets/diagrams/               figures and charts
+  assets/plots/                  Pareto fronts, learning curves
+  assets/tables/                 result tables
+  assets/images/                 bench photographs, structural diagrams
+  lib/                           referenced papers
+edge-ai-voice-recognition/       submodule: ESP32-S3 firmware
+precise-power-logger/            submodule: measurement logger firmware
+itmo-industrial-practise-report/ industrial practice report
+pre-graduation-practise/         pre-graduation practice
+thesis_text_RU.pdf               full thesis, Russian
+thesis_defense_slides_RU.pdf     defense slides, Russian
 ```
 
-### Задачи
-
-1. **Провести анализ** существующих решений для распознавания речи на
-   edge-устройствах и методов оптимизации энергопотребления
-
-2. **Спроектировать и собрать** измерительный стенд с раздельными доменами
-   питания для точного измерения энергопотребления системы распознавания речи
-
-3. **Разработать прошивку** для ESP32-S3 с интеграцией MEMS микрофона (I2S) и
-   квантизированных моделей нейронных сетей (ESP-SR WakeNet9)
-
-4. **Разработать систему логирования** данных энергопотребления на базе ESP32-C3
-   и датчика INA219 с передачей на ПК для анализа
-
-5. **Провести экспериментальные измерения** энергопотребления в режимах: Active
-   (непрерывный inference), Light Sleep, Deep Sleep
-
-6. **Реализовать методы оптимизации** энергопотребления:
-
-   - Динамическое управление питанием периферии (микрофон)
-   - Duty cycle режим работы
-   - Сравнение различных конфигураций
-
-7. **Выполнить сравнительный анализ** полученных результатов с baseline
-   измерениями и оценить увеличение времени автономной работы
-
----
-
-## Выбор платформы
-
-Для создания прототипа я рассматривал несколько популярных платформ для edge AI:
-
-- **Arduino Nano 33 BLE Sense** — есть встроенный микрофон, но слабый CPU (64
-  MHz Cortex-M4, 256 KB RAM)
-- **STM32H7** — мощный процессор (480 MHz), но дорогой (~$15) и нет готовых AI
-  библиотек
-- **Raspberry Pi Pico** — дешёвый ($4), но маловато RAM (264 KB) для AI моделей
-- **Nordic nRF52840** — отличный low power, но RAM 256 KB недостаточно для
-  моделей 200-300 KB
-- **Espressif ESP32-S3** — оптимальный баланс
-  производительность/память/цена/экосистема
-
-По итогу остановился на **ESP32-S3** и вот почему:
-
-1. **Векторные инструкции (SIMD)**: Архитектура Xtensa LX7 с поддержкой SIMD
-   (Single Instruction, Multiple Data). За один раз можно обработать несколько
-   чисел => быстрее инференс нейросети.
-
-2. **Достаточно памяти**: 512 KB SRAM -- как раз для стандартных моделей keyword
-   spotting (200-300 KB) + аудио буферы.
-
-3. **Периферия для аудио**: Аппаратный I2S контроллер для прямого подключения
-   MEMS микрофонов без внешних кодеков.
-
-4. **Энергоэффективность**: Несколько режимов сна с разным энергопотреблением:
-
-   - Активный режим: ~40-80 mA (ИИ инференс)
-   - Лёгкий сон: ~0.8 mA (CPU остановлен, можно проснуться по таймеру)
-   - Глубокий сон: ~10 µA (только RTC, просыпаемся на GPIO)
-
-**5. Экосистема разработки**
-
-- **ESP-IDF** — зрелый фреймворк с отличной документацией
-- **ESP-SR** — готовые предобученные модели (WakeNet, MultiNet)
-- **ESP-DL** — квантизированные модели с SIMD оптимизацией
-- Активное сообщество, примеры кода
-
-**6. Цена и доступность**  
-~$3-5 за чип, широко доступен на российском рынке (Ozon, Wildberries, местные
-магазины радиодеталей).
-
-**Примечание:** Хотя ESP32-S3 имеет WiFi/BLE модули, в измеряемой системе они
-отключены для чистоты эксперимента. Связь осуществляется только через INA219 ↔
-ESP32-C3 логгер.
-
----
-
-## Архитектура прототипа
-
-### Концепция: два изолированных домена питания
-
-Для точного измерения энергопотребления AI системы используется архитектура с
-**раздельными доменами питания**:
-
-- **Domain #1 (измеряемая система):** ESP32-S3 + INMP441 микрофон — то что мы
-  исследуем
-- **Domain #2 (система логирования):** ESP32-C3 + INA219 — то чем мы измеряем
-
-**Зачем раздельное питание?**  
-ESP32-C3 при работе WiFi создаёт импульсные помехи до 300 mA. Если обе платы
-питать от одной батареи → измерения INA219 будут зашумлены этими скачками тока.
-
-| <img width="577" height="1280" alt="image" src="https://github.com/user-attachments/assets/a0c71b5a-1e72-468c-9f7b-6d213ee6ffaa" /> |
-| ----------------------------------------------------------------------------------------------------------------------------------- |
-
-_Прототип на макетной плате с раздельными доменами питания_
-
-Архитектурная диаграмма:
-
-| <img width="1133" height="625" alt="image" src="https://github.com/user-attachments/assets/d6a88a68-b8ca-407e-a077-7c79f3d8c458" /> |
-| ----------------------------------------------------------------------------------------------------------------------------------- |
-
-<details>
-<summary>Исходный код диаграммы (Mermaid)</summary>
-
-```mermaid
----
-config:
-  layout: dagre
----
-flowchart LR
-    subgraph system1["Power Domain №1 (Измеряемая система)"]
-        direction TB
-        BAT1["18650<br>~4V DC"]
-        TP1["TP4056<br>защита"]
-        INA["INA219<br>измерение<br>I2C addr 0x40"]
-        S3["ESP32-S3 Zero<br>TFLite Micro<br>sleep modes"]
-        MIC["INMP441<br>MEMS микрофон<br>I2S interface"]
-    end
-
-    subgraph system2["Power Domain №2 (Логгер)"]
-        direction LR
-        BAT2["18650<br>~4V DC"]
-        TP2["TP4056<br>защита"]
-        C3["ESP32-C3 Mini<br>сбор данных<br>UART/WiFi/BT"]
-    end
-
-    BAT1 --> TP1
-    TP1 --> INA
-    INA --> S3
-    MIC -->|slave I2S master| S3
-
-    BAT2 --> TP2
-    TP2 --> C3
-    INA <-- I2C master<br>slave &nbsp; &nbsp; &nbsp; &nbsp; --> C3
-
-    C3 -->|USB-UART<br>WiFi<br>BLE| PC["PC<br>анализ<br>matplotlib<br>real-time"]
-    C3 -.->|I2C/SPI<br>опционально| DISPLAY["OLED/LCD/TFT<br>display"]
-
-    BAT1:::powerDomain
-    TP1:::powerDomain
-    INA:::sensor
-    S3:::powerDomain
-    MIC:::audio
-    BAT2:::logger
-    TP2:::logger
-    C3:::logger
-    PC:::logger
-
-    classDef powerDomain fill:#e1f5ff,stroke:#0066cc,stroke-width:2px
-    classDef sensor fill:#fff4e1,stroke:#ff9800,stroke-width:2px
-    classDef logger fill:#f0fff0,stroke:#4caf50,stroke-width:2px
-    classDef audio fill:#ffe1f0,stroke:#e91e63,stroke-width:2px
-
-```
-
-</details>
-
-### Компоненты системы
-
-#### Power Domain #1 (измеряемая система)
-
-| Компонент         | Назначение             | Характеристики                          |
-| ----------------- | ---------------------- | --------------------------------------- |
-| **18650 Li-ion**  | Автономное питание     | 2000 mAh, 3.7V номинал                  |
-| **TP4056**        | Контроллер заряда      | Защита от перезаряда/переразряда/КЗ     |
-| **INA219**        | Датчик тока/напряжения | ±3.2A, 12-bit ADC, I2C интерфейс        |
-| **ESP32-S3 Zero** | Микроконтроллер        | Waveshare S3FH4R2: 2MB Flash, 2MB PSRAM |
-| **INMP441**       | MEMS микрофон          | I2S интерфейс, 16 kHz sampling, 1.4 mA  |
-
-#### Power Domain #2 (система логирования)
-
-| Компонент               | Назначение                 | Характеристики               |
-| ----------------------- | -------------------------- | ---------------------------- |
-| **18650 Li-ion**        | Автономное питание логгера | 2000 mAh (отдельная батарея) |
-| **TP4056**              | Контроллер заряда          | Защита (отдельный модуль)    |
-| **ESP32-C3 Super Mini** | Сбор данных по I2C         | WiFi/BLE для передачи на ПК  |
-
----
-
-## Текущий прогресс
-
-**Дата последнего обновления:** 17 февраля 2026
-
-### Завершено
-
-**1. Аналитическая часть**
-
-- [x] Обзор платформ для edge AI
-- [x] Обоснование выбора ESP32-S3
-- [x] Анализ архитектур энергоэффективности
-- [x] Изучение ESP-SR/ESP-DL фреймворков
-
-**2. Проектирование**
-
-- [x] Разработана схема с двумя изолированными доменами питания
-- [x] Выбраны все компоненты системы
-- [x] Спроектирована топология соединений
-
-**3. Изготовление прототипа**
-
-- [x] Спаяна схема на макетной плате
-- [x] Установлены сокеты для быстрой замены модулей
-- [x] Реализованы тумблеры управления питанием
-- [x] Добавлены LED индикаторы питания доменов
-- [x] Проверена работоспособность обоих доменов
-
-**4. Разработка firmware ESP32-S3**
-
-- [x] Настроена среда разработки (PlatformIO + ESP-IDF v5.4.0)
-- [x] Настроен LSP (clangd) для разработки в Neovim
-- [x] Изучены аппаратные ограничения платы (2MB Flash, 2MB PSRAM)
-- [x] Выбрана стратегия: WakeNet9 без MultiNet (из-за ограничений памяти)
-- [x] Написан Hello World, плата прошивается
-
-**5. Документация**
-
-- [x] README главного репозитория
-- [x] README firmware ESP32-S3 с подробным описанием архитектуры ESP-SR
-- [x] Блок-схема системы в Mermaid
-- [x] Структура ВКР
-
-### В процессе
-
-- [ ] Подключение INMP441 по I2S (код написан, тестирование)
-- [ ] Интеграция WakeNet9 из ESP-SR
-- [ ] Firmware ESP32-C3 для чтения INA219
-
-### Заказано (ожидается 9 марта)
-
-- **INA228** — более точный датчик тока (16-bit ADC vs 12-bit у INA219)
-- **ESP32-S3 Zero Mini** — 8MB Flash + 8MB PSRAM (вместо 2MB/2MB)
-  - Позволит запустить полный стек ESP-Skainet (WakeNet + MultiNet)
-  - Распознавание произвольных голосовых команд, а не только wake word
-
-**Примечание:** Дедлайн по производственной практике — **14 марта**. До этого
-момента работа ведётся на текущей плате (2MB/2MB) с WakeNet9. После получения
-нового оборудования (9 марта) будет реализована полная функциональность с
-MultiNet.
-
----
-
-## План работ
-
-### Этап 1: Базовая функциональность (до 14 марта — производственная практика)
-
-| Задача                                               | Срок        | Приоритет |
-| ---------------------------------------------------- | ----------- | --------- |
-| Подключить INMP441, проверить I2S поток              | 23 февраля  | Критично  |
-| Интегрировать WakeNet9, получить первое срабатывание | 25 февраля  | Критично  |
-| Разработать firmware C3 для чтения INA219            | 27 февраля  | Критично  |
-| Baseline измерения: Active mode                      | 1 марта     | Критично  |
-| Baseline измерения: Light/Deep Sleep                 | 3 марта     | Важно     |
-| Python скрипт для визуализации данных                | 5 марта     | Важно     |
-| Подготовить отчёт по производственной практике       | 10-13 марта | Критично  |
-
-### Этап 2: Расширенная функциональность (после 9 марта)
-
-| Задача                                             | Срок     | Приоритет  |
-| -------------------------------------------------- | -------- | ---------- |
-| Перепрошить на ESP32-S3 Zero Mini (8MB/8MB)        | 10 марта | Важно      |
-| Интегрировать MultiNet4 для распознавания команд   | 15 марта | Важно      |
-| Реализовать управление питанием микрофона (MOSFET) | 20 марта | Желательно |
-| Измерения оптимизированной системы (Фаза 2)        | 25 марта | Важно      |
-
-### Этап 3: Сравнительный анализ
-
-| Задача                                         | Срок   | Приоритет   |
-| ---------------------------------------------- | ------ | ----------- |
-| Интеграция TFLite Micro для сравнения с ESP-SR | Апрель | Желательно  |
-| Построение сравнительных графиков и таблиц     | Апрель | Важно       |
-| ULP wake-on-sound (опционально)                | Апрель | Опционально |
-
-### Этап 4: Написание ВКР
-
-| Задача                                  | Срок         | Приоритет |
-| --------------------------------------- | ------------ | --------- |
-| Глава 1: Обзор литературы               | Конец марта  | Важно     |
-| Глава 2-3: Проектирование и реализация  | Апрель       | Важно     |
-| Глава 4: Экспериментальные исследования | Начало мая   | Важно     |
-| Заключение, оформление                  | Середина мая | Важно     |
-
-### Этап 5: Защита
-
-| Задача                      | Срок        | Приоритет |
-| --------------------------- | ----------- | --------- |
-| Презентация (10-15 слайдов) | Конец мая   | Критично  |
-| Демо-видео работы прототипа | Конец мая   | Важно     |
-| Репетиция защиты            | Начало июня | Важно     |
-
----
-
-## Ожидаемые результаты
-
-### Научные
-
-1. **Экспериментальные данные** энергопотребления ESP32-S3 при выполнении ML
-   inference для задачи распознавания речи
-2. **Сравнительный анализ** различных режимов работы и их влияния на
-   автономность
-3. **Методика измерения** энергопотребления edge AI систем с использованием
-   раздельных доменов питания
-4. **Оценка эффективности** квантизированных моделей (INT8) в контексте
-   энергопотребления
-
-### Практические
-
-1. **Рабочий прототип** системы распознавания речи с измерением
-   энергопотребления
-2. **Open-source firmware** (GitHub: edge-ai-voice-recognition)
-3. **Рекомендации** по оптимизации времени автономной работы IoT-устройств с AI
-4. **Документация** для воспроизведения результатов
-
-### Целевые метрики (предварительная оценка? примерно написал)
-
-#### 1: Baseline (WakeNet9, без оптимизации)
-
-| Режим работы                       | Потребление | Время жизни батареи 2000 mAh |
-| ---------------------------------- | ----------- | ---------------------------- |
-| Active (непрерывный inference)     | ~70 mA      | ~28 часов                    |
-| Duty cycle (200ms work / 2s sleep) | ~8 mA       | ~10 дней                     |
-| Deep Sleep (только микрофон)       | ~1.4 mA     | ~59 дней\*                   |
-
-\*не работает распознавание, только измерение потребления микрофона
-
-#### 2: Оптимизация (управление питанием)
-
-| Режим работы                 | Потребление | Время жизни батареи 2000 mAh |
-| ---------------------------- | ----------- | ---------------------------- |
-| Duty cycle с выключением mic | ~2 mA       | ~40 дней                     |
-| Deep Sleep (mic выключен)    | ~0.01 mA    | ~200+ дней\*                 |
-
-\*требуется внешний wake-триггер
-
-#### 3: Advanced (ULP wake-on-sound, опционально)
-
-| Режим работы                   | Потребление               | Время жизни батареи 2000 mAh |
-| ------------------------------ | ------------------------- | ---------------------------- |
-| Ожидание (ULP слушает MAX4466) | ~0.8 mA                   | ~104 дня                     |
-| Full system (реакция на голос) | ~70 mA (короткие вспышки) | ~90+ дней                    |
-
-**Примечание:** Конкретные численные значения будут уточнены после проведения
-экспериментальных измерений.
-
----
-
-## Документация
-
-### Основные документы
-
-- [**Firmware ESP32-S3**](firmware/esp32s3/README.md) — подробная документация
-  прошивки, архитектура ESP-SR, WakeNet
-- [**Схема подключения**](hardware/schematic.png) — электрическая схема
-  прототипа
-- **Thesis LaTeX** — исходники диплома (добавлю потом)
-
-### Полезные ссылки
-
-**Официальная документация:**
-
-- [ESP-IDF Programming Guide](https://docs.espressif.com/projects/esp-idf/en/latest/esp32s3/)
-- [ESP-SR (Speech Recognition)](https://github.com/espressif/esp-sr)
-- [ESP-Skainet](https://github.com/espressif/esp-skainet)
-- [ESP-DL](https://github.com/espressif/esp-dl)
-
-**Даташиты:**
-
-- [ESP32-S3 Datasheet](https://www.espressif.com/sites/default/files/documentation/esp32-s3_datasheet_en.pdf)
-- [INMP441 MEMS Microphone](https://invensense.tdk.com/products/analog/inmp441/)
-- [INA219 Current Sensor](https://www.ti.com/lit/ds/symlink/ina219.pdf)
-
----
-
-**Последнее обновление:** 17 февраля 2026
+## Related repositories
+
+- [**edge-ai-voice-recognition**](https://github.com/worthant/edge-ai-voice-recognition)
+  ESP32-S3 firmware: I2S capture, MFCC in C, DS-CNN inference on TFLite Micro
+  with Xtensa SIMD, the cascade state machine, and the training and quantization
+  pipeline in Python.
+- [**precise-power-logger**](https://github.com/worthant/precise-power-logger)
+  Firmware for the logging domain: INA228 readout and synchronization with the
+  device under test.
+
+## Documents
+
+- [Thesis text, Russian (PDF)](./thesis_text_RU.pdf)
+- [Defense slides, Russian (PDF)](./thesis_defense_slides_RU.pdf)
+
+Supervisor: Sergey Bykovsky, ITMO University. Contact:
+[boris0indeed@gmail.com](mailto:boris0indeed@gmail.com), telegram
+[@worthant](https://t.me/worthant).
